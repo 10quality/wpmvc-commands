@@ -1,0 +1,23 @@
+{
+    "name": "10quality/wpmvc-commands",
+    "description": "Ayuco commands/jobs for Wordpress MVC.",
+    "license": "MIT",
+    "keywords": ["wordpress","mvc","ayuco","jobs"],
+    "authors": [
+        {
+            "name": "Alejandro Mostajo",
+            "email": "amostajo@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "10quality/ayuco": "^1.0",
+        "nikic/php-parser": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "WPMVC\\Commands\\": "src"
+        }
+    },
+    "minimum-stability": "dev"
+}

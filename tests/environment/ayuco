@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__.'/../../vendor/autoload.php';
+
+use Ayuco\Listener;
+use WPMVC\Commands\SetNameCommand;
+use WPMVC\Commands\SetupCommand;
+
+$ayuco = new Listener();
+
+$ayuco->register(new SetNameCommand(__DIR__));
+$ayuco->register(new SetupCommand(__DIR__));
+
+$ayuco->interpret();
