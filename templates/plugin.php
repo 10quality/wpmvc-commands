@@ -16,4 +16,4 @@ Author URI: [MY IR COMPANY URL]
 // Use "plugin\Main.php" to add your hooks.
 //
 //------------------------------------------------------------
-require_once( __DIR__ . 'boot/bootstrap.php' );
+require_once( __DIR__ . '/app/Boot/bootstrap.php' );
