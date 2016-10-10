@@ -11,8 +11,8 @@ use Ayuco\Exceptions\NoticeException;
  * @author Alejandro Mostajo <http://about.me/amostajo>
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
- * @package WPMVC
- * @version 1.0.0
+ * @package WPMVC\Commands
+ * @version 1.0.1
  */
 class SetupCommand extends Command
 {
@@ -33,6 +33,7 @@ class SetupCommand extends Command
     /**
      * Calls to command action.
      * @since 1.0.0
+     * @since 1.0.1 Removed strtolower
      *
      * @param array $args Action arguments.
      */
@@ -56,7 +57,7 @@ class SetupCommand extends Command
             $namespace = $this->listener->getInput();
             $command->setName(empty($namespace)
                 ? 'App'
-                : str_replace(' ', '', ucwords(strtolower($namespace)))
+                : str_replace(' ', '', ucwords($namespace))
             );
             // TYPE
             $this->_print('------------------------------');

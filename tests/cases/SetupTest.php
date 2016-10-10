@@ -1,11 +1,11 @@
 <?php
 /**
- * Tests MVC Views.
+ * Tests Setup command.
  *
  * @author Alejandro Mostajo <http://about.me/amostajo>
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
- * @package WPMVC\MVC
+ * @package WPMVC\Commands
  * @version 1.0.0
  */
 class SetupTest extends AyucoTestCase
@@ -15,6 +15,8 @@ class SetupTest extends AyucoTestCase
      */
     public function test()
     {
-        $this->assertCommand('setup', '------------------------------');
+        $execution = exec('php '.WPMVC_AYUCO.' setup');
+
+        $this->assertEquals($execution, 'SetupCommand: "setname" command is not registered in ayuco.');
     }
 }

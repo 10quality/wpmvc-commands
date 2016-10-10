@@ -11,8 +11,8 @@ use Ayuco\Exceptions\NoticeException;
  * @author Alejandro Mostajo <http://about.me/amostajo>
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
- * @package WPMVC
- * @version 1.0.0
+ * @package WPMVC\Commands
+ * @version 1.0.1
  */
 class SetNameCommand extends Command
 {
@@ -47,6 +47,7 @@ class SetNameCommand extends Command
     /**
      * Sets project name.
      * @since 1.0.0
+     * @since 1.0.1 Added strtolower.
      *
      * @param string $name Project name.
      */
@@ -94,6 +95,13 @@ class SetNameCommand extends Command
                 '"' . $currentname,
                 '"' . $name,
                 $this->rootPath . '/composer.json'
+            );
+
+        if (file_exists($this->rootPath . '/package.json'))
+            $this->replaceInFile( 
+                '"' . strtolower($currentname),
+                '"' . strtolower($name),
+                $this->rootPath . '/package.json'
             );
 
         $this->_print('Namespace changed!');

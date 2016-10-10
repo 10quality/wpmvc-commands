@@ -4,7 +4,7 @@
  */
 
 return [
-    'namespace' => 'App',
+    'namespace' => 'MyApp',
     'type' => 'theme',
     'paths' => [
         'views' => __DIR__.'./../views',
