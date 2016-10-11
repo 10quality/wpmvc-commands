@@ -3,6 +3,7 @@
 namespace WPMVC\Commands;
 
 use WPMVC\Commands\Traits\CreateViewTrait;
+use WPMVC\Commands\Traits\CreateControllerTrait;
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 
@@ -18,7 +19,7 @@ use Ayuco\Exceptions\NoticeException;
  */
 class CreateCommand extends Command
 {
-    use CreateViewTrait;
+    use CreateViewTrait, CreateControllerTrait;
 
     /**
      * Command key.
@@ -54,7 +55,10 @@ class CreateCommand extends Command
                 $this->createView($object[1], $args);
                 break;
             case 'controller':
-                # code...
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": Controller definition is missing.');
+                $controller = explode('@', $object[1]);
+                $this->createController($controller[0], $args);
                 break;
         }
     }

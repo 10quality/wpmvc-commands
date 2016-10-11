@@ -16,7 +16,7 @@ use Ayuco\Exceptions\NoticeException;
 trait CreateViewTrait
 {
     /**
-     * Registers and creates new widget.
+     * Creates a view.
      * @since 1.0.0
      *
      * @param string $key  View key/name.
