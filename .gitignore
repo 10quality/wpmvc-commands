@@ -1,5 +1,6 @@
 /vendor
 /tests/environment/vendor
 /tests/environment/app/Widgets
+/tests/environment/assets/views/*.php
 composer.lock
 debug.log

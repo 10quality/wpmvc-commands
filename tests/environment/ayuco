@@ -7,10 +7,12 @@ use Ayuco\Listener;
 use WPMVC\Commands\SetNameCommand;
 use WPMVC\Commands\SetupCommand;
 use WPMVC\Commands\RegisterCommand;
+use WPMVC\Commands\CreateCommand;
 
 $ayuco = new Listener();
 
 $ayuco->register(new SetupCommand(__DIR__));
 $ayuco->register(new RegisterCommand(__DIR__));
+$ayuco->register(new CreateCommand(__DIR__));
 
 $ayuco->interpret();

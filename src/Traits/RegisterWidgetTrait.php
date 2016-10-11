@@ -8,7 +8,7 @@ use WPMVC\Commands\Core\Builder;
 use WPMVC\Commands\Visitors\AddMethodCallVisitor;
 
 /**
- * Command that sets project name.
+ * Trait used to register widgets in a command.
  *
  * @author Alejandro Mostajo <http://about.me/amostajo>
  * @copyright 10Quality <http://www.10quality.com>
