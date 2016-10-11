@@ -153,6 +153,7 @@ class Builder
     {
         $printer = new Printer;
         $this->stmts = $this->traverser->traverse($this->stmts);
+        //$this->debug();
         // Save into file
         file_put_contents(
             $this->filename,

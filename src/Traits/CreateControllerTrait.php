@@ -2,7 +2,9 @@
 
 namespace WPMVC\Commands\Traits;
 
+use WPMVC\Commands\Core\Builder;
 use Ayuco\Exceptions\NoticeException;
+use WPMVC\Commands\Visitors\AddClassMethodVisitor;
 
 /**
  * Trait used to create views in a commad.
@@ -43,6 +45,32 @@ trait CreateControllerTrait
                 );
             // Print end
             $this->_print('Controller created!');
+            $this->_lineBreak();
+        } catch (Exception $e) {
+            file_put_contents(
+                $this->rootPath.'/error_log',
+                $e->getMessage()
+            );
+            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+        }
+    }
+
+    /**
+     * Creates a controller method.
+     * @since 1.0.0
+     *
+     * @param string $controller Controller name.
+     * @param string $name       Method name.
+     * @param array  $params     Method parameters.
+     */
+    protected function createControllerMethod($controller, $method, $params = [])
+    {
+        try {
+            $builder = Builder::parser($this->rootPath.'/app/Controllers/'.$controller.'.php');
+            $builder->addVisitor(new AddClassMethodVisitor($method, $params));
+            $builder->build();
+            // Print end
+            $this->_print('Method added!');
             $this->_lineBreak();
         } catch (Exception $e) {
             file_put_contents(
