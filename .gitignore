@@ -1,3 +1,5 @@
 /vendor
 /tests/environment/vendor
+/tests/environment/app/Widgets
 composer.lock
+debug.log
