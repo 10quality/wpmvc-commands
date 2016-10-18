@@ -37,15 +37,24 @@ class AddClassMethodVisitor extends NodeVisitorAbstract
     protected $params = [];
 
     /**
+     * Method's parameters.
+     * @since 1.0.0
+     * @var array
+     */
+    protected $comment = [];
+
+    /**
      * Default constructor.
      * 
      * @param string $methodName Method name.
      * @param array  $params     Method parameters.
+     * @param array  $comment    Method Comment.
      */
-    public function __construct($methodName, $params = [])
+    public function __construct($methodName, $params = [], $comment = '')
     {
         $this->methodName = $methodName;
         $this->params = $params;
+        $this->comment = $comment;
     }
 
     /**
@@ -60,6 +69,7 @@ class AddClassMethodVisitor extends NodeVisitorAbstract
         if ($node instanceof Class_) {
             // Build params
             $params = [];
+            $paramComments = '';
             foreach ($this->params as $param) {
                 if (is_array($param)) {
                     $params[] = isset($param['type']) && isset($param['name'])
@@ -68,16 +78,31 @@ class AddClassMethodVisitor extends NodeVisitorAbstract
                 } else {
                     $params[] = new Param($param);
                 }
+                $paramComments .= '    * @param '
+                    .(isset($param['type']) ? $param['type'] : 'mixed')
+                    .' $'.(isset($param['name']) ? $param['name'] : $param)."\n";
             }
+            if (count($params) > 0)
+                $paramComments = '     *'."\n".$paramComments;
             // ADD statement
             $node->stmts[] = new ClassMethod(
-                $this->methodName,
+                preg_replace('/\-\./', '_', $this->methodName),
                 [
                     'type'      => 1,
                     'params'    => $params,
                 ],
                 [
-                    'comments'  => [new Comment(sprintf('// Ayuco: addition %s', date('Y-m-d h:i a')))]
+                    'comments'  => [new Comment(sprintf(
+                        '/**'."\n"
+                            . (empty($this->comment) ? '' : '    * '.$this->comment."\n")
+                            .'     * Ayuco: addition %s'."\n"
+                            .'     * @since fill'."\n"
+                            .$paramComments
+                            .'     *'."\n"
+                            .'     * @return'."\n"
+                            .'     */',
+                        date('Y-m-d h:i a'))
+                    )]
                 ]
             );
         }

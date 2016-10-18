@@ -62,12 +62,13 @@ trait CreateControllerTrait
      * @param string $controller Controller name.
      * @param string $name       Method name.
      * @param array  $params     Method parameters.
+     * @param string $comment    Method comment.
      */
-    protected function createControllerMethod($controller, $method, $params = [])
+    protected function createControllerMethod($controller, $method, $params = [], $comment = '')
     {
         try {
             $builder = Builder::parser($this->rootPath.'/app/Controllers/'.$controller.'.php');
-            $builder->addVisitor(new AddClassMethodVisitor($method, $params));
+            $builder->addVisitor(new AddClassMethodVisitor($method, $params, $comment));
             $builder->build();
             // Print end
             $this->_print('Method added!');
