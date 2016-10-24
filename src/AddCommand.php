@@ -46,12 +46,12 @@ class AddCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting a hook (action|filter).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting a hook (action|filter|shortcode).');
 
         $object = explode(':', $args[2]);
 
         // Validations
-        if (!in_array($object[0], ['action', 'filter']))
+        if (!in_array($object[0], ['action', 'filter', 'shortcode']))
             throw new NoticeException('Command "'.$this->key.'": Invalid hook. Expecting action or filter.');
 
         if (!isset($object[1]))
