@@ -55,7 +55,7 @@ class {0} extends WP_Widget
         // TODO display widget.
         // Example:
         //
-        // $main->view( 'widgets.widget-id' );
+        // $this->main->view( 'widgets.widget-id' );
         // ----------------
 
         echo $args['after_widget'];
@@ -106,7 +106,7 @@ class {0} extends WP_Widget
         // ----------------
         // TODO display form
         //
-        // theme_view( 'admin.widgets.widget-id', [
+        // $this->main->view( 'admin.widgets.widget-id', [
         //     'widget'    => $this,
         //     'instance'  => $instance,
         // ] );

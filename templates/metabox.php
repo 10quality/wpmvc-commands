@@ -14,11 +14,11 @@
         <?php if ( preg_match( '/meta\_/', $meta_field ) ) : ?>
 
             <tr valign="top">
-                <th scope="row"><?= ucfirst( preg_replace( '/\-\_/', ' ', $alias ) ) ?></th>
+                <th scope="row"><?php echo ucfirst( preg_replace( '/\-|_|\./', ' ', $alias ) ) ?></th>
                 <td>
                     <input type="text"
-                        name="<?= $meta_field ?>"
-                        value="<?= $model->$alias ?>"
+                        name="<?php echo $meta_field ?>"
+                        value="<?php echo $model->$alias ?>"
                     />
                 </td>
             </tr>
