@@ -56,7 +56,7 @@ class SetupCommand extends Command
             $this->_lineBreak();
             $namespace = $this->listener->getInput();
             $command->setName(empty($namespace)
-                ? 'App'
+                ? 'MyApp'
                 : str_replace(' ', '', ucwords($namespace))
             );
             // TYPE
