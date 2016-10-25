@@ -2,6 +2,7 @@
 
 namespace WPMVC\Commands\Traits;
 
+use Exception;
 use Ayuco\Exceptions\NoticeException;
 
 /**
@@ -19,10 +20,10 @@ trait CreateViewTrait
      * Creates a view.
      * @since 1.0.0
      *
-     * @param string $key  View key/name.
-     * @param array  $args Command arguments.
+     * @param string $key      View key/name.
+     * @param array  $template Template to use.
      */
-    protected function createView($key, $args = [])
+    protected function createView($key, $template = 'view.php')
     {
         try {
             // Prepare
@@ -36,7 +37,7 @@ trait CreateViewTrait
                     if (!file_exists($filename))
                         file_put_contents(
                             $filename,
-                            preg_replace('/\{0\}/', $key, $this->getTemplate('view.php'))
+                            preg_replace('/\{0\}/', $key, $this->getTemplate($template))
                         );
                 } else {
                     // Directory check

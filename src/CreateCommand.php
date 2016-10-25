@@ -3,6 +3,7 @@
 namespace WPMVC\Commands;
 
 use WPMVC\Commands\Traits\CreateViewTrait;
+use WPMVC\Commands\Traits\CreateModelTrait;
 use WPMVC\Commands\Traits\CreateControllerTrait;
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
@@ -19,7 +20,7 @@ use Ayuco\Exceptions\NoticeException;
  */
 class CreateCommand extends Command
 {
-    use CreateViewTrait, CreateControllerTrait;
+    use CreateModelTrait, CreateViewTrait, CreateControllerTrait;
 
     /**
      * Command key.
@@ -33,7 +34,7 @@ class CreateCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'Creates controllers and views. i.e. ayuco create view:posts.metabox';
+    protected $description = 'Creates models, views and controllers. i.e. ayuco create view:posts.metabox';
 
     /**
      * Calls to command action.
@@ -44,7 +45,7 @@ class CreateCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (model|view|controller).');
 
         $object = explode(':', $args[2]);
 
@@ -62,6 +63,12 @@ class CreateCommand extends Command
                 // Create method
                 if (count($controller) > 1)
                     $this->createControllerMethod($controller[0], $controller[1]);
+                break;
+            case 'model':
+            case 'postmodel':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": Model definition is missing.');
+                $this->createModel($object[1]);
                 break;
         }
     }

@@ -2,9 +2,11 @@
 
 namespace WPMVC\Commands\Traits;
 
+use Exception;
 use WPMVC\Commands\Core\Builder;
 use Ayuco\Exceptions\NoticeException;
 use WPMVC\Commands\Visitors\AddClassMethodVisitor;
+use WPMVC\Commands\Visitors\AddClassPropertyVisitor;
 
 /**
  * Trait used to create views in a commad.
@@ -70,9 +72,67 @@ trait CreateControllerTrait
             $builder = Builder::parser($this->rootPath.'/app/Controllers/'.$controller.'.php');
             $builder->addVisitor(new AddClassMethodVisitor($method, $params, $comment));
             $builder->build();
+        } catch (Exception $e) {
+            file_put_contents(
+                $this->rootPath.'/error_log',
+                $e->getMessage()
+            );
+            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+        }
+    }
+    /**
+     * Creates a model controller.
+     * @since 1.0.0
+     *
+     * @param string $name Controller name.
+     */
+    protected function createModelController($name)
+    {
+        try {
+            // Prepare
+            $path = $this->rootPath.'/app/Controllers';
+            // Directory
+            if (!is_dir($path))
+                mkdir($path);
+            // Controller file
+            $filename = $path.'/'.$name.'.php';
+            if (!file_exists($filename))
+                file_put_contents(
+                    $filename,
+                    preg_replace(
+                        ['/\{0\}/', '/\{1\}/'],
+                        [$this->config['namespace'], $name],
+                        $this->getTemplate('modelcontroller.php')
+                    )
+                );
             // Print end
-            $this->_print('Method added!');
+            $this->_print('Controller created!');
             $this->_lineBreak();
+        } catch (Exception $e) {
+            file_put_contents(
+                $this->rootPath.'/error_log',
+                $e->getMessage()
+            );
+            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+        }
+    }
+
+    /**
+     * Creates a controller property.
+     * @since 1.0.0
+     *
+     * @param string $controller Controller name.
+     * @param string $name       Name.
+     * @param mixed  $value      Value.
+     * @param int    $type       Type (public, private or protected)
+     * @param string $comment    Comment.
+     */
+    protected function createControllerProperty($controller, $property, $value = null, $type = 2, $comment = '')
+    {
+        try {
+            $builder = Builder::parser($this->rootPath.'/app/Controllers/'.$controller.'.php');
+            $builder->addVisitor(new AddClassPropertyVisitor($property, $value, $type, $comment));
+            $builder->build();
         } catch (Exception $e) {
             file_put_contents(
                 $this->rootPath.'/error_log',
