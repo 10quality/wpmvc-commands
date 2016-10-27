@@ -19,7 +19,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.0
+ * @version 1.0.1
  */
 class RegisterCommand extends Command
 {
@@ -42,6 +42,7 @@ class RegisterCommand extends Command
     /**
      * Calls to command action.
      * @since 1.0.0
+     * @since 1.0.1 Added suppot for assets and models.
      *
      * @param array $args Action arguments.
      */
@@ -82,6 +83,28 @@ class RegisterCommand extends Command
                 $builder = Builder::parser($this->rootPath.'/app/Main.php');
                 $builder->addVisitor(new AddMethodCallVisitor('init', 'add_model', [$model]));
                 $builder->build();
+                break;
+            case 'model':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": Expecting a model name.');
+                // Register model at bridge
+                $builder = Builder::parser($this->rootPath.'/app/Main.php');
+                $builder->addVisitor(new AddMethodCallVisitor('init', 'add_model', [$object[1]]));
+                $builder->build();
+                // Print end
+                $this->_print('Model registered!');
+                $this->_lineBreak();
+                break;
+            case 'asset':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": Expecting an asset relative path.');
+                // Register model at bridge
+                $builder = Builder::parser($this->rootPath.'/app/Main.php');
+                $builder->addVisitor(new AddMethodCallVisitor('init', 'add_asset', [$object[1]]));
+                $builder->build();
+                // Print end
+                $this->_print('Asset registered!');
+                $this->_lineBreak();
                 break;
         }
     }
