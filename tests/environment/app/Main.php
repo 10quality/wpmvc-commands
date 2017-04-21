@@ -19,6 +19,22 @@ class Main extends Bridge
      */
     public function init()
     {
+        // Ayuco: addition 2017-04-21 11:31 am
+        $this->add_widget('Test');
+        // Ayuco: addition 2017-04-21 11:36 am
+        $this->add_widget('Test');
+        // Ayuco: addition 2017-04-21 11:37 am
+        $this->add_widget('Test');
+        // Ayuco: addition 2017-04-21 11:39 am
+        $this->add_widget('Test');
+        // Ayuco: addition 2017-04-21 11:40 am
+        $this->add_widget('Test');
+        // Ayuco: addition 2017-04-21 11:42 am
+        $this->add_widget('Test');
+        // Ayuco: addition 2017-04-21 11:42 am
+        $this->add_widget('Test');
+        // Ayuco: addition 2017-04-21 11:42 am
+        $this->add_widget('Test');
     }
     /**
      * Declaration of admin only wordpress hooks.
