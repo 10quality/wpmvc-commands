@@ -3,6 +3,7 @@
 namespace WPMVC\Commands;
 
 use WPMVC\Commands\Traits\SetVersionTrait;
+use WPMVC\Commands\Traits\SetTextDomainTrait;
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 
@@ -13,11 +14,11 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.4
+ * @version 1.1.0
  */
 class SetCommand extends Command
 {
-    use SetVersionTrait;
+    use SetVersionTrait, SetTextDomainTrait;
 
     /**
      * Command key.
@@ -36,19 +37,20 @@ class SetCommand extends Command
     /**
      * Calls to command action.
      * @since 1.0.4
+     * @since 1.1.0 Support for text domains.
      *
      * @param array $args Action arguments.
      */
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting a setting (version).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting a setting (version|domain).');
 
         $object = explode(':', $args[2]);
 
         // Validations
-        if (!in_array($object[0], ['version']))
-            throw new NoticeException('Command "'.$this->key.'": Invalid setting. Expecting version.');
+        if (!in_array($object[0], ['version','domain']))
+            throw new NoticeException('Command "'.$this->key.'": Invalid setting. Expecting (version|domain).');
 
         switch ($object[0]) {
             case 'version':
@@ -56,6 +58,12 @@ class SetCommand extends Command
                 if ($object[0] === 'version' && !isset($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting a version.');
                 $this->setVersion($object[1]);
+                break;
+            case 'domain':
+                // Validate second parameter
+                if ($object[0] === 'domain' && !isset($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": Expecting a text domain.');
+                $this->setTextDomain($object[1]);
                 break;
         }
     }

@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.1
+ * @version 1.1.0
  */
 class SetupCommand extends Command
 {
@@ -34,14 +34,18 @@ class SetupCommand extends Command
      * Calls to command action.
      * @since 1.0.0
      * @since 1.0.1 Removed strtolower
+     * @since 1.1.0 Domain path added.
      *
      * @param array $args Action arguments.
      */
     public function call($args = [])
     {
         $command = $this->listener->get('setname');
+        $setCommand = $this->listener->get('set');
         if (!$command)
             throw new NoticeException('SetupCommand: "setname" command is not registered in ayuco.');
+        if (!$setCommand)
+            throw new NoticeException('SetupCommand: "set" command is not registered in ayuco.');
             
         try {
             $this->_lineBreak();
@@ -66,15 +70,22 @@ class SetupCommand extends Command
             $this->_lineBreak();
             $type = $this->listener->getInput();
             $this->setType($type);
+            // DOMAIN PATH
+            $this->_print('------------------------------');
+            $this->_lineBreak();
+            $this->_print('Enter your project\'s domain (example: my-app), this will be used for localization and builds:');
+            $this->_lineBreak();
+            $domain = $this->listener->getInput();
+            $setCommand->setTextDomain(empty($domain) ? 'my-app' : $domain);
             // DESCRIPTION
             $this->_print('------------------------------');
             $this->_lineBreak();
-            $this->getDescription();
+            $this->description;
             $this->_lineBreak();
             // End
             $this->_print('------------------------------');
             $this->_lineBreak();
-            $this->_print('Your plugin namespace is "%s"', $namespace);
+            $this->_print('Your project namespace is "%s"', $namespace);
             $this->_lineBreak();
             $this->_print('Setup completed!');
             $this->_lineBreak();

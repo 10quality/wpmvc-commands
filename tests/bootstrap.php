@@ -6,4 +6,5 @@ require_once __DIR__.'/../vendor/10quality/ayuco/tests/framework/class.AyucoTest
 require_once __DIR__.'/../vendor/10quality/ayuco/tests/framework/class.AyucoBuilder.php';
 // Constant
 define('FRAMEWORK_PATH', __DIR__);
+define('ENV_PATH', __DIR__.'/environments');
 define('WPMVC_AYUCO', FRAMEWORK_PATH.'/environment/ayuco');

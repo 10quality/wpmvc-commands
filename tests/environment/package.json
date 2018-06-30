@@ -1,7 +1,6 @@
 {
-  "name": "MyApp",
+  "name": "my-app",
   "version": "1.0.0",
-  "description": "Fill description here",
   "dependencies": {
     "gulp": "^3.9.1",
     "gulp-wpmvc": "^1.0.*"

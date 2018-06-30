@@ -6,6 +6,8 @@ Description: [MY DESCRIPTION]
 Version: 1.0.0
 Author: [MY NAME OR COMPANY]
 Author URI: [MY IR COMPANY URL]
+Text Domain: my-app
+Domain Path: /assets/lang
 */
 //------------------------------------------------------------
 //
