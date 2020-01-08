@@ -77,16 +77,16 @@ class SetNameCommand extends Command
             );
         }
 
-        foreach (scandir($config['paths']['controllers']) as $filename) {
+        foreach (scandir($this->config['paths']['controllers']) as $filename) {
             $this->replaceInFile( 
                 'namespace ' . $currentname,
                 'namespace ' . $name,
-                $config['paths']['controllers'] . $filename
+                $this->config['paths']['controllers'] . $filename
             );
             $this->replaceInFile( 
                 'use ' . $currentname,
                 'use ' . $name,
-                $config['paths']['controllers'] . $filename
+                $this->config['paths']['controllers'] . $filename
             );
         }
 
