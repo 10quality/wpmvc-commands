@@ -68,7 +68,7 @@ class SetupCommand extends Command
             // DESCRIPTION
             $this->_print('------------------------------');
             $this->_lineBreak();
-            $this->getDescription();
+            $this->__get('description');
             $this->_lineBreak();
             // End
             $this->_print('------------------------------');
