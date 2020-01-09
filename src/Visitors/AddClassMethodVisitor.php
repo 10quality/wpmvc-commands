@@ -94,11 +94,11 @@ class AddClassMethodVisitor extends NodeVisitorAbstract
                 [
                     'comments'  => [new Comment(sprintf(
                         '/**'."\n"
-                            . (empty($this->comment) ? '' : '    * '.$this->comment."\n")
-                            .'     * Ayuco: addition %s'."\n"
+                            .'     * Ayuco: %s'."\n"
                             .'     * @since fill'."\n"
-                            .$paramComments
                             .'     *'."\n"
+                            . (empty($this->comment) ? '' : '    * '.$this->comment."\n")
+                            .$paramComments
                             .'     * @return'."\n"
                             .'     */',
                         date('Y-m-d h:i a'))

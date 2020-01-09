@@ -17,7 +17,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.0
+ * @version 1.1.0
  */
 class AddCommand extends Command
 {
@@ -76,7 +76,7 @@ class AddCommand extends Command
                     $vc[0],
                     $vc[1],
                     $this->getHookParams($object[1]),
-                    (ucfirst($object[0]).' "'.$object[1].'"'."\n".'     * Wordpress hook')
+                    ('@hook '.$object[1]."\n".'     *')
                 );
                 break;
         }
