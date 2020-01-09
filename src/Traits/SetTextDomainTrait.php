@@ -26,7 +26,7 @@ trait SetTextDomainTrait
     {
         try {
             $domain = preg_replace('/\s/', '-', strtolower(trim($domain)));
-            $currentDomain = $this->config['domain'];
+            $currentDomain = $this->config['localize']['textdomain'];
             // Replace in config file
             $this->replaceInFile('\''.$currentDomain.'\'', '\''.$domain.'\'', $this->configFilename);
             // Replace in package.json

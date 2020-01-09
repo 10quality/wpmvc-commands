@@ -33,8 +33,6 @@ class SetupCommand extends Command
     /**
      * Calls to command action.
      * @since 1.0.0
-     * @since 1.0.1 Removed strtolower
-     * @since 1.1.0 Domain path added.
      *
      * @param array $args Action arguments.
      */
