@@ -14,5 +14,6 @@ return [
     ],
     'localize' => [
         'textdomain'    => 'my-app',
+        'path'          => __DIR__ . '/../../assets/lang/',
     ],
 ];
