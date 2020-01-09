@@ -9,7 +9,8 @@ return [
     'version' => '1.0.0',
     'domain' => 'my-app',
     'paths' => [
-        'views' => __DIR__.'./../views',
-        'controllers' => __DIR__.'./../controllers',
+        'base'          => __DIR__ . '/../',
+        'controllers'   => __DIR__ . '/../Controllers/',
+        'views'         => __DIR__ . '/../../assets/views/',
     ],
 ];
