@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.1
+ * @version 1.1.1
  */
 class SetNameCommand extends Command
 {
@@ -89,20 +89,6 @@ class SetNameCommand extends Command
                 $this->config['paths']['controllers'] . $filename
             );
         }
-
-        if (file_exists($this->rootPath . '/composer.json'))
-            $this->replaceInFile( 
-                '"' . $currentname,
-                '"' . $name,
-                $this->rootPath . '/composer.json'
-            );
-
-        if (file_exists($this->rootPath . '/package.json'))
-            $this->replaceInFile( 
-                '"' . strtolower($currentname),
-                '"' . strtolower($name),
-                $this->rootPath . '/package.json'
-            );
 
         $this->_print('Namespace changed!');
         $this->_lineBreak();

@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.0
+ * @version 1.1.1
  */
 trait SetTextDomainTrait
 {
@@ -32,9 +32,16 @@ trait SetTextDomainTrait
             // Replace in package.json
             $packageJson = json_decode(file_get_contents($this->rootPath.'/package.json'));
             $this->replaceInFile(
-                '"name": "'.$packageJson->name.'"',
-                '"name": "'.$domain.'"',
-                $this->rootPath.'/package.json'
+                '"'.$packageJson->name.'"',
+                '"'.$domain.'"',
+                $this->rootPath . '/package.json'
+            );
+            // Replace in composer.json
+            $composerJson = json_decode(file_get_contents($this->rootPath.'/composer.json'));
+            $this->replaceInFile(
+                $currentDomain.'"',
+                $domain.'"',
+                $this->rootPath . '/composer.json'
             );
             // Replace in project
             $filename = $this->config['type'] === 'theme'

@@ -1,4 +1,5 @@
 {
+  "name": "wpmvc/my-app",
   "autoload":{
     "psr-0":{
       "":[
