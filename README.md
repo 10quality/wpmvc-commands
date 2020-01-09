@@ -1,15 +1,15 @@
-# Ayuco Commands (For Wordpress MVC)
+# Ayuco Commands (For WordPress MVC)
 --------------------------------
 
 [![Latest Stable Version](https://poser.pugx.org/10quality/wpmvc-commands/v/stable)](https://packagist.org/packages/10quality/wpmvc-commands)
 [![Total Downloads](https://poser.pugx.org/10quality/wpmvc-commands/downloads)](https://packagist.org/packages/10quality/wpmvc-commands)
 [![License](https://poser.pugx.org/10quality/wpmvc-commands/license)](https://packagist.org/packages/10quality/wpmvc-commands)
 
-Set of Ayuco command jobs for Wordpress MVC framework.
+Set of Ayuco command jobs for WordPress MVC framework.
 
 ## Coding Guidelines
 
-The coding is a mix between PSR-2 and Wordpress PHP guidelines.
+The coding is a mix between PSR-2 and WordPress PHP guidelines.
 
 ## License
 

@@ -11,7 +11,7 @@ use WPMVC\Commands\Core\Builder;
 use WPMVC\Commands\Visitors\AddMethodCallVisitor;
 
 /**
- * Command that adds wordpress hooks into wordpress mvc.
+ * Command that adds WordPress hooks into WordPress MVC.
  *
  * @author Alejandro Mostajo <http://about.me/amostajo>
  * @copyright 10Quality <http://www.10quality.com>
@@ -35,7 +35,7 @@ class AddCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'Adds wordpress hooks. i.e. ayuco add action:init AppController@init';
+    protected $description = 'Adds WordPress hooks. i.e. ayuco add action:init AppController@init';
 
     /**
      * Calls to command action.

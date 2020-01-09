@@ -9,7 +9,7 @@ use WPMVC\Commands\Visitors\AddClassMethodVisitor;
 use WPMVC\Commands\Visitors\AddClassPropertyVisitor;
 
 /**
- * Trait used to create views in a commad.
+ * Trait used to create views in a command.
  *
  * @author Alejandro Mostajo <http://about.me/amostajo>
  * @copyright 10Quality <http://www.10quality.com>
@@ -53,7 +53,7 @@ trait CreateControllerTrait
                 $this->rootPath.'/error_log',
                 $e->getMessage()
             );
-            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+            throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
         }
     }
 
@@ -77,7 +77,7 @@ trait CreateControllerTrait
                 $this->rootPath.'/error_log',
                 $e->getMessage()
             );
-            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+            throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
         }
     }
     /**
@@ -113,7 +113,7 @@ trait CreateControllerTrait
                 $this->rootPath.'/error_log',
                 $e->getMessage()
             );
-            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+            throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
         }
     }
 
@@ -138,7 +138,7 @@ trait CreateControllerTrait
                 $this->rootPath.'/error_log',
                 $e->getMessage()
             );
-            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+            throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
         }
     }
 }

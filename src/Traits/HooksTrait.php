@@ -5,7 +5,7 @@ namespace WPMVC\Commands\Traits;
 use Ayuco\Exceptions\NoticeException;
 
 /**
- * Trait used that contains wordpress hooks definitions.
+ * Trait used that contains WordPress hooks definitions.
  *
  * @author Alejandro Mostajo <http://about.me/amostajo>
  * @copyright 10Quality <http://www.10quality.com>

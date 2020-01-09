@@ -12,7 +12,7 @@ use WPMVC\Commands\Core\Builder;
 use WPMVC\Commands\Visitors\AddMethodCallVisitor;
 
 /**
- * Command that registers stuff into wordpress.
+ * Command that registers stuff into WordPress.
  * Registers widgets, post_types.
  *
  * @author Alejandro Mostajo <http://about.me/amostajo>
