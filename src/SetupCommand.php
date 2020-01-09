@@ -28,7 +28,7 @@ class SetupCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'Wordpress MVC setup wizard.';
+    protected $description = 'WordPress MVC setup wizard.';
 
     /**
      * Calls to command action.
@@ -49,7 +49,7 @@ class SetupCommand extends Command
             $this->_lineBreak();
             $this->_print('------------------------------');
             $this->_lineBreak();
-            $this->_print('Wordpress MVC (AYUCO) Setup');
+            $this->_print('WordPress MVC (AYUCO) Setup');
             $this->_lineBreak();
             // NAMESPACE || PROJECT NAME
             $this->_print('------------------------------');

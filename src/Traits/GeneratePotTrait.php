@@ -96,7 +96,7 @@ trait GeneratePotTrait
             '"MIME-Version: 1.0\n"',
             '"Content-Type: text/plain; charset=UTF-8\n"',
             '"Content-Transfer-Encoding: 8bit\n"',
-            '"X-Generator: Wordpress MVC Commands 1.1.0\n"',
+            '"X-Generator: WordPress MVC Commands 1.1.0\n"',
             '"Language: '.$lang.'\n"',
         ];
     }

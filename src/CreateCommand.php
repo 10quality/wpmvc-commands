@@ -9,7 +9,7 @@ use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 
 /**
- * Command that creates stuff into wordpress mvc.
+ * Command that creates stuff into WordPress MVC.
  * Creates views and controllers.
  *
  * @author Alejandro Mostajo <http://about.me/amostajo>

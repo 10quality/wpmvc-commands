@@ -47,7 +47,7 @@ class BaseCommand extends Command
     public function __construct($rootPath)
     {
         $this->rootPath = $rootPath;
-        // Checkfor MVC configuration file
+        // Check for MVC configuration file
         $this->configFilename = file_exists($this->rootPath . '/app/config/app.php')
             ? $this->rootPath . '/app/config/app.php'
             : null;

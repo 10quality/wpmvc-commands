@@ -59,7 +59,7 @@ trait SetVersionTrait
                 $this->rootPath.'/error_log',
                 $e->getMessage()
             );
-            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+            throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
         }
     }
 }

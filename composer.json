@@ -1,6 +1,6 @@
 {
     "name": "10quality/wpmvc-commands",
-    "description": "Ayuco commands/jobs for Wordpress MVC.",
+    "description": "Ayuco commands/jobs for WordPress MVC.",
     "license": "MIT",
     "keywords": ["wordpress","mvc","ayuco","jobs"],
     "authors": [

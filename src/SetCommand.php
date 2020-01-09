@@ -8,7 +8,7 @@ use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 
 /**
- * Command that sets configuration and other values in wordpress mvc.
+ * Command that sets configuration and other values in WordPress MVC.
  *
  * @author Alejandro Mostajo <http://about.me/amostajo>
  * @copyright 10Quality <http://www.10quality.com>
@@ -32,7 +32,7 @@ class SetCommand extends Command
      * @since 1.0.4
      * @var string
      */
-    protected $description = 'Sets configuration and values in Wordpress MVC.';
+    protected $description = 'Sets configuration and values in WordPress MVC.';
 
     /**
      * Calls to command action.
