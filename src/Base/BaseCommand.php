@@ -66,7 +66,7 @@ class BaseCommand extends Command
      */
     protected function replaceInFile($needle, $replace, $filename)
     {
-        if ($filename == '.' || $filename == '..') return;
+        if (substr($filename,-1) === '.') return;
         file_put_contents( 
             $filename, 
             preg_replace(
