@@ -114,6 +114,7 @@ class SetupCommand extends Command
         // Type handling
         $currentType = $this->config['type'];
         $this->replaceInFile('\''.$currentType.'\'', '\''.$type.'\'', $this->configFilename);
+        $this->config = include $this->configFilename;
 
         $this->_print('Type set!');
         $this->_lineBreak();

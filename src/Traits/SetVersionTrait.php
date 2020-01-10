@@ -29,6 +29,7 @@ trait SetVersionTrait
             $currentVersion = $this->config['version'];
             // Replace in config file
             $this->replaceInFile($currentVersion, $version, $this->configFilename);
+            $this->config = include $this->configFilename;
             // Replace in package.json
             $packageJson = json_decode(file_get_contents($this->rootPath.'/package.json'));
             $this->replaceInFile(

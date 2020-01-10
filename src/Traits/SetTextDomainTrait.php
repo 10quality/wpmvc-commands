@@ -29,6 +29,7 @@ trait SetTextDomainTrait
             $currentDomain = $this->config['localize']['textdomain'];
             // Replace in config file
             $this->replaceInFile('\''.$currentDomain.'\'', '\''.$domain.'\'', $this->configFilename);
+            $this->config = include $this->configFilename;
             // Replace in package.json
             $packageJson = json_decode(file_get_contents($this->rootPath.'/package.json'));
             $this->replaceInFile(

@@ -62,6 +62,7 @@ class SetNameCommand extends Command
         $currentname = $this->config['namespace'];
 
         $this->replaceInFile($currentname, $name, $this->configFilename);
+        $this->config = include $this->configFilename;
         if (file_exists($this->rootPath . '/app/Main.php'))
             $this->replaceInFile( 
                 'namespace ' . $currentname,
