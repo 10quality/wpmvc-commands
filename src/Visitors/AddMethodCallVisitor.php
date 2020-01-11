@@ -4,6 +4,7 @@ namespace WPMVC\Commands\Visitors;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
+use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\Variable;
@@ -79,7 +80,7 @@ class AddMethodCallVisitor extends NodeVisitorAbstract
      */
     public function leaveNode(Node $node)
     {
-        if ($node instanceof ClassMethod && $node->name === $this->nodeName) {
+        if ($node instanceof ClassMethod && $node->name == $this->nodeName) {
             // Build arguments.
             $args = [];
             foreach ($this->args as $arg) {
@@ -99,10 +100,12 @@ class AddMethodCallVisitor extends NodeVisitorAbstract
             ]);
             $node->stmts[] = $nop;
             // ADD statement
-            $node->stmts[] = new MethodCall(
-                empty($this->variable) ? null : new Variable($this->variable),
-                $this->methodName,
-                $args
+            $node->stmts[] = new Expression(
+                new MethodCall(
+                    empty($this->variable) ? null : new Variable($this->variable),
+                    $this->methodName,
+                    $args
+                )
             );
         }
     }
