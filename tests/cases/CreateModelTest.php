@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.0
+ * @version 1.1.2
  */
 class CreateModelTest extends AyucoTestCase
 {
@@ -45,5 +45,29 @@ class CreateModelTest extends AyucoTestCase
         $this->assertTrue(is_file(FRAMEWORK_PATH.'/environment/app/Models/AppCategoryModel.php'));
 
         unlink(FRAMEWORK_PATH.'/environment/app/Models/AppCategoryModel.php');
+    }
+    /**
+     * Test term model.
+     */
+    public function testTermModel()
+    {
+        $execution = exec('php '.WPMVC_AYUCO.' create termmodel:AppTermModel');
+
+        $this->assertEquals($execution, 'Model created!');
+        $this->assertTrue(is_file(FRAMEWORK_PATH.'/environment/app/Models/AppTermModel.php'));
+
+        unlink(FRAMEWORK_PATH.'/environment/app/Models/AppTermModel.php');
+    }
+    /**
+     * Test term model.
+     */
+    public function testTermModelWithTax()
+    {
+        $execution = exec('php '.WPMVC_AYUCO.' create termmodel:AppTermModel custom_tax');
+
+        $this->assertEquals($execution, 'Model created!');
+        $this->assertTrue(is_file(FRAMEWORK_PATH.'/environment/app/Models/AppTermModel.php'));
+
+        unlink(FRAMEWORK_PATH.'/environment/app/Models/AppTermModel.php');
     }
 }

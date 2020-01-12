@@ -16,7 +16,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.3
+ * @version 1.1.2
  */
 class CreateCommand extends Command
 {
@@ -92,6 +92,14 @@ class CreateCommand extends Command
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Model definition is missing.');
                 $this->createModel($object[1], 'CategoryModel');
+                break;
+            case 'termmodel':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": Model definition is missing.');
+                $this->createModel($object[1], 'TermModel');
+                // Add taxonomy
+                if (isset($args[3]))
+                    $this->createModelProperty($object[1], 'model_taxonomy', $args[3]);
                 break;
         }
     }
