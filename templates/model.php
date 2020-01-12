@@ -2,7 +2,7 @@
 
 namespace {0}\Models;
 
-use WPMVC\MVC\Traits\FindTrait;
+use WPMVC\MVC\Traits\{3};
 use WPMVC\MVC\Models\{1} as Model;
 
 /**
@@ -14,5 +14,5 @@ use WPMVC\MVC\Models\{1} as Model;
  */
 class {2} extends Model
 {
-    use FindTrait;
+    use {3};
 }

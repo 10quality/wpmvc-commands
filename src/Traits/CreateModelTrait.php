@@ -15,7 +15,7 @@ use WPMVC\Commands\Visitors\AddClassPropertyVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.0
+ * @version 1.1.3
  */
 trait CreateModelTrait
 {
@@ -23,9 +23,11 @@ trait CreateModelTrait
      * Creates a model.
      * @since 1.0.0
      *
-     * @param string $name Model name.
+     * @param string $name  Model name.
+     * @param string $type  Model type.
+     * @param string $trait Find trait class.
      */
-    protected function createModel($name, $type = 'PostModel')
+    protected function createModel($name, $type = 'PostModel', $trait = 'FindTrait')
     {
         try {
             // Prepare
@@ -39,8 +41,8 @@ trait CreateModelTrait
                 file_put_contents(
                     $filename,
                     preg_replace(
-                        ['/\{0\}/', '/\{1\}/', '/\{2\}/'],
-                        [$this->config['namespace'], $type, $name],
+                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/'],
+                        [$this->config['namespace'], $type, $name, $trait],
                         $this->getTemplate('model.php')
                     )
                 );
