@@ -19,7 +19,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.1
+ * @version 1.1.2
  */
 class RegisterCommand extends Command
 {

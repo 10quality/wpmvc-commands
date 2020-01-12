@@ -11,7 +11,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.0
+ * @version 1.1.2
  */
 trait HooksTrait
 {
