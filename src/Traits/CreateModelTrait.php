@@ -37,7 +37,7 @@ trait CreateModelTrait
                 mkdir($path);
             // Controller file
             $filename = $path.'/'.$name.'.php';
-            if (!file_exists($filename))
+            if (!file_exists($filename)) {
                 file_put_contents(
                     $filename,
                     preg_replace(
@@ -46,9 +46,14 @@ trait CreateModelTrait
                         $this->getTemplate('model.php')
                     )
                 );
-            // Print end
-            $this->_print('Model created!');
-            $this->_lineBreak();
+                // Print created
+                $this->_print('Model created!');
+                $this->_lineBreak();
+            } else {
+                // Print exists
+                $this->_print('Model exists!');
+                $this->_lineBreak();
+            }
         } catch (Exception $e) {
             file_put_contents(
                 $this->rootPath.'/error_log',

@@ -34,11 +34,19 @@ trait CreateViewTrait
                 if (count($views) - 1 == $i) {
                     // File check
                     $filename = $path.'/'.$views[$i].'.php';
-                    if (!file_exists($filename))
+                    if (!file_exists($filename)) {
                         file_put_contents(
                             $filename,
                             preg_replace('/\{0\}/', $key, $this->getTemplate($template))
                         );
+                        // Print created
+                        $this->_print('View created!');
+                        $this->_lineBreak();
+                    } else {
+                        // Print exists
+                        $this->_print('View exists!');
+                        $this->_lineBreak();
+                    }
                 } else {
                     // Directory check
                     $path .= '/'.$views[$i];
@@ -46,9 +54,6 @@ trait CreateViewTrait
                         mkdir($path);
                 }
             }
-            // Print end
-            $this->_print('View created!');
-            $this->_lineBreak();
         } catch (Exception $e) {
             file_put_contents(
                 $this->rootPath.'/error_log',
