@@ -68,7 +68,7 @@ class AddCommand extends Command
         }
         switch ($vc[0]) {
             case 'view':
-                $this->createView($vc[1]);
+                $this->createView($vc[1], isset($args[4]) ? $args[4] : 'view.php');
                 break;
             default:
                 $this->createController($vc[0]);
