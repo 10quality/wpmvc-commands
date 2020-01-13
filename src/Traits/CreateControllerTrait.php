@@ -36,7 +36,7 @@ trait CreateControllerTrait
                 mkdir($path);
             // Controller file
             $filename = $path.'/'.$name.'.php';
-            if (!file_exists($filename))
+            if (!file_exists($filename)) {
                 file_put_contents(
                     $filename,
                     preg_replace(
@@ -45,9 +45,14 @@ trait CreateControllerTrait
                         $this->getTemplate('controller.php')
                     )
                 );
-            // Print end
-            $this->_print('Controller created!');
-            $this->_lineBreak();
+                // Print created
+                $this->_print('Controller created!');
+                $this->_lineBreak();
+            } else {
+                // Print exists
+                $this->_print('Controller exists!');
+                $this->_lineBreak();
+            }
         } catch (Exception $e) {
             file_put_contents(
                 $this->rootPath.'/error_log',
@@ -96,7 +101,7 @@ trait CreateControllerTrait
                 mkdir($path);
             // Controller file
             $filename = $path.'/'.$name.'.php';
-            if (!file_exists($filename))
+            if (!file_exists($filename)) {
                 file_put_contents(
                     $filename,
                     preg_replace(
@@ -105,9 +110,14 @@ trait CreateControllerTrait
                         $this->getTemplate('modelcontroller.php')
                     )
                 );
-            // Print end
-            $this->_print('Controller created!');
-            $this->_lineBreak();
+                // Print created
+                $this->_print('Controller created!');
+                $this->_lineBreak();
+            } else {
+                // Print exists
+                $this->_print('Controller exists!');
+                $this->_lineBreak();
+            }
         } catch (Exception $e) {
             file_put_contents(
                 $this->rootPath.'/error_log',
