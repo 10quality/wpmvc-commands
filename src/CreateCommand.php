@@ -56,7 +56,7 @@ class CreateCommand extends Command
             case 'view':
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": View key name is missing.');
-                $this->createView($object[1], $args);
+                $this->createView($object[1]);
                 break;
             case 'controller':
                 if (!isset($object[1]) || empty($object[1]))
