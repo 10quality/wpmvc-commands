@@ -57,10 +57,8 @@ class SetupCommand extends Command
             $this->_print('Enter your project\'s namespace (example: MyProject):');
             $this->_lineBreak();
             $namespace = $this->listener->getInput();
-            $command->setName(empty($namespace)
-                ? 'MyApp'
-                : str_replace(' ', '', ucwords($namespace))
-            );
+            $namespace = empty($namespace) ? 'MyApp' : str_replace(' ', '', ucwords($namespace));
+            $command->setName($namespace);
             // TYPE
             $this->_print('------------------------------');
             $this->_lineBreak();
