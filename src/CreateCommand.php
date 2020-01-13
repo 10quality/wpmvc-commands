@@ -63,9 +63,10 @@ class CreateCommand extends Command
                     throw new NoticeException('Command "'.$this->key.'": Controller definition is missing.');
                 $controller = explode('@', $object[1]);
                 $this->createController($controller[0], $args);
-                // Create method
+                // Create methods
                 if (count($controller) > 1)
-                    $this->createControllerMethod($controller[0], $controller[1]);
+                    foreach (array_slice($controller, 1) as $controller_method)
+                        $this->createControllerMethod($controller[0], $controller_method);
                 break;
             case 'model':
             case 'postmodel':
