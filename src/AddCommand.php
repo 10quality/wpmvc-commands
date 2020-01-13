@@ -52,7 +52,7 @@ class AddCommand extends Command
 
         // Validations
         if (!in_array($object[0], ['action', 'filter', 'shortcode']))
-            throw new NoticeException('Command "'.$this->key.'": Invalid hook. Expecting action or filter.');
+            throw new NoticeException('Command "'.$this->key.'": Invalid hook. Expecting action, filter or shortcode.');
 
         if (!isset($object[1]))
             throw new NoticeException('Command "'.$this->key.'": Expecting a hook name. i.e. add:init (where "init" would be the hook name).');
