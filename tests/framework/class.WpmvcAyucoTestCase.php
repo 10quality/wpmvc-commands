@@ -29,6 +29,8 @@ class WpmvcAyucoTestCase extends AyucoTestCase
         if (!is_array($this->path))
             $this->path = array($this->path);
         foreach ($this->path as $path) {
+            if (!is_dir($path))
+                continue;
             $dir = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
             foreach (new RecursiveIteratorIterator($dir, RecursiveIteratorIterator::SELF_FIRST) as $filename => $item) {
                 if ($item->isDir()) {

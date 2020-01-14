@@ -15,6 +15,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
      */
     protected $path = [
         FRAMEWORK_PATH.'/environment/assets/raw/js',
+        FRAMEWORK_PATH.'/environment/assets/raw/css',
         FRAMEWORK_PATH.'/environment/assets/raw',
     ];
     /**
@@ -27,7 +28,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create js:yolo');
         // Assert
-        $this->assertEquals($execution, 'JavaScript asset created!');
+        $this->assertEquals($execution, 'js asset created!');
         $this->assertFileExists($filename);
     }
     /**
@@ -40,8 +41,21 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create js:jquery.yolo jquery');
         // Assert
-        $this->assertEquals($execution, 'JavaScript asset created!');
+        $this->assertEquals($execution, 'js asset created!');
         $this->assertFileExists($filename);
         $this->assertPregMatchContents('/jQuery/', $filename);
+    }
+    /**
+     * Test.
+     */
+    public function testCss()
+    {
+        // Prepare
+        $filename = FRAMEWORK_PATH.'/environment/assets/raw/css/yolo.css';
+        // Execure
+        $execution = exec('php '.WPMVC_AYUCO.' create css:yolo');
+        // Assert
+        $this->assertEquals($execution, 'css asset created!');
+        $this->assertFileExists($filename);
     }
 }

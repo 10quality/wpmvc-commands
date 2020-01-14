@@ -33,20 +33,21 @@ trait CreateAssetTrait
             // Check type
             switch ($type) {
                 case 'js':
+                case 'css':
                     // Prepare path
                     $path .= '/'.$type;
                     if (!is_dir($path))
                         mkdir($path);
                     // Make file
-                    $file = $path.'/'.$filename.'.js';
+                    $file = $path.'/'.$filename.'.'.$type;
                     if (!file_exists($file)) {
                         file_put_contents( $file, preg_replace(
                             ['/\{0\}/', '/\{1\}/', '/\{2\}/'],
                             [$filename, $this->config['version'], $this->config['localize']['textdomain']],
-                            $this->getTemplate( (array_key_exists('template', $args) ? $args['template'] : 'asset').'.js' )
+                            $this->getTemplate((array_key_exists('template', $args) ? $args['template'] : 'asset').'.'.$type)
                         ) );
                         // Print created
-                        $this->_print('JavaScript asset created!');
+                        $this->_print($type.' asset created!');
                         $this->_lineBreak();
                     } else {
                         // Print exists

@@ -104,6 +104,11 @@ class CreateCommand extends Command
                     throw new NoticeException('Command "'.$this->key.'": JavaScript filename is missing.');
                 $this->createAsset('js', $object[1], ['template' => isset($args[3]) ? $args[3] : 'asset']);
                 break;
+            case 'css':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": CSS filename is missing.');
+                $this->createAsset('css', $object[1]);
+                break;
         }
     }
 }
