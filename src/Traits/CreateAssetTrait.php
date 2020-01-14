@@ -11,7 +11,7 @@ use Exception;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.5
+ * @version 1.1.5.1
  */
 trait CreateAssetTrait
 {
@@ -23,7 +23,7 @@ trait CreateAssetTrait
      * @param string $filename Filename.
      * @param array  $args     Additional arguments.
      */
-    protected function createAsset($type, $filename, $args = null)
+    protected function createAsset($type, $filename, $args = [])
     {
         try {
             // Prepare assets

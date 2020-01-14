@@ -40,9 +40,6 @@ class CreateCommand extends Command
     /**
      * Calls to command action.
      * @since 1.0.0
-     * @since 1.0.1 Added type definition.
-     * @since 1.0.2 Added option model.
-     * @since 1.0.3 Fixed category option model creation.
      *
      * @param array $args Action arguments.
      */
