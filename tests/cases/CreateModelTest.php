@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.4
+ * @version 1.1.5
  */
 class CreateModelTest extends WpmvcAyucoTestCase
 {
@@ -53,6 +53,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertEquals($execution, 'Model created!');
         $this->assertFileExists($filename);
+        $this->assertPregMatchContents('/TermModel/', $filename);
     }
     /**
      * Test term model.

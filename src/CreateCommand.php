@@ -16,7 +16,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.3
+ * @version 1.1.5
  */
 class CreateCommand extends Command
 {
@@ -48,7 +48,7 @@ class CreateCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|categorymodel|termmodel).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel).');
 
         $object = explode(':', $args[2]);
 
@@ -90,10 +90,6 @@ class CreateCommand extends Command
                 $this->createModel($object[1], 'UserModel');
                 break;
             case 'categorymodel':
-                if (!isset($object[1]) || empty($object[1]))
-                    throw new NoticeException('Command "'.$this->key.'": Model definition is missing.');
-                $this->createModel($object[1], 'CategoryModel');
-                break;
             case 'termmodel':
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Model definition is missing.');
