@@ -7,7 +7,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.4
+ * @version 1.1.5
  */
 class WpmvcAyucoTestCase extends AyucoTestCase
 {
@@ -26,15 +26,19 @@ class WpmvcAyucoTestCase extends AyucoTestCase
     {
         if (!isset($this->path) || empty($this->path))
             return;
-        $dir = new RecursiveDirectoryIterator($this->path, RecursiveDirectoryIterator::SKIP_DOTS);
-        foreach (new RecursiveIteratorIterator($dir, RecursiveIteratorIterator::SELF_FIRST) as $filename => $item) {
-            if ($item->isDir()) {
-                rmdir($filename);
-            } else {
-                unlink($filename);
+        if (!is_array($this->path))
+            $this->path = array($this->path);
+        foreach ($this->path as $path) {
+            $dir = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
+            foreach (new RecursiveIteratorIterator($dir, RecursiveIteratorIterator::SELF_FIRST) as $filename => $item) {
+                if ($item->isDir()) {
+                    rmdir($filename);
+                } else {
+                    unlink($filename);
+                }
             }
+            rmdir($path);
         }
-        rmdir($this->path);
     }
     /**
      * Asserts if a regular expresion matches inside file contents.

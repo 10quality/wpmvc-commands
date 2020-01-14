@@ -5,6 +5,7 @@ namespace WPMVC\Commands;
 use WPMVC\Commands\Traits\CreateViewTrait;
 use WPMVC\Commands\Traits\CreateModelTrait;
 use WPMVC\Commands\Traits\CreateControllerTrait;
+use WPMVC\Commands\Traits\CreateAssetTrait;
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 
@@ -20,7 +21,7 @@ use Ayuco\Exceptions\NoticeException;
  */
 class CreateCommand extends Command
 {
-    use CreateModelTrait, CreateViewTrait, CreateControllerTrait;
+    use CreateModelTrait, CreateViewTrait, CreateControllerTrait, CreateAssetTrait;
 
     /**
      * Command key.
@@ -48,7 +49,7 @@ class CreateCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|js).');
 
         $object = explode(':', $args[2]);
 
@@ -97,6 +98,11 @@ class CreateCommand extends Command
                 // Add taxonomy
                 if (isset($args[3]))
                     $this->createModelProperty($object[1], 'model_taxonomy', $args[3]);
+                break;
+            case 'js':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": JavaScript filename is missing.');
+                $this->createAsset('js', $object[1], ['template' => isset($args[3]) ? $args[3] : 'asset']);
                 break;
         }
     }
