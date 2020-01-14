@@ -49,7 +49,7 @@ class CreateCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|js).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|js|css|sass).');
 
         $object = explode(':', $args[2]);
 
@@ -108,6 +108,15 @@ class CreateCommand extends Command
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": CSS filename is missing.');
                 $this->createAsset('css', $object[1]);
+                break;
+            case 'sass':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": SASS filename is missing.');
+                $importin = isset($args[3]) ? $args[3] : null;
+                // Attempt to create master file first
+                if ($importin)
+                    $this->createAsset('sass', $importin);
+                $this->createAsset('sass', $object[1], ['importin' => $importin]);
                 break;
         }
     }
