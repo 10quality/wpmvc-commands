@@ -69,7 +69,7 @@ class SetupCommand extends Command
             // DOMAIN PATH
             $this->_print('------------------------------');
             $this->_lineBreak();
-            $this->_print('Enter your project\'s domain (example: my-app), this will be used for localization and builds:');
+            $this->_print('Enter your project\'s text domain (example: my-app), this will be used for localization and builds:');
             $this->_lineBreak();
             $domain = $this->listener->getInput();
             $domain = empty($domain) ? 'my-app' : $domain;
@@ -82,9 +82,9 @@ class SetupCommand extends Command
             // End
             $this->_print('------------------------------');
             $this->_lineBreak();
-            $this->_print('Your project namespace is "%s"', $namespace);
+            $this->_print('Your project\'s namespace is "%s"', $namespace);
             $this->_lineBreak();
-            $this->_print('Your project domain is "%s"', $domain);
+            $this->_print('Your project\'s text domain is "%s"', $domain);
             $this->_lineBreak();
             $this->_print('Setup completed!');
             $this->_lineBreak();
