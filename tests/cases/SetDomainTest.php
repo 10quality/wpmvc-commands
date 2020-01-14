@@ -35,7 +35,7 @@ class SetDomainTest extends AyucoTestCase
         exec('php '.WPMVC_AYUCO.' set domain:my-app');
     }
     /**
-     * Test package.json.
+     * Test composer.json.
      */
     public function testComposerDomainValue()
     {
