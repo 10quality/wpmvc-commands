@@ -94,6 +94,14 @@ trait CreateAssetTrait
                         $this->_print($ispart ? 'Asset exists!' : 'Master asset exists!');
                         $this->_lineBreak();
                     }
+                    // Add compiled file to .gitignore
+                    $gitignore = $this->rootPath.'/.gitignore';
+                    $master = $ispart ? $args['importin'] : $filename;
+                    $contents = is_file($gitignore) ? file_get_contents($gitignore) : '';
+                    if (strpos($contents, '/assets/raw/css/'.$master) === false) {
+                        $contents .= "\n".'# SASS COMPILATION'."\n".'/assets/raw/css/'.$master.'.css';
+                        file_put_contents($gitignore, $contents);
+                    }
                     break;
             }
         } catch (Exception $e) {
