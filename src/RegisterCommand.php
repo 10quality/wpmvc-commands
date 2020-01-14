@@ -49,7 +49,7 @@ class RegisterCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting an object to resigter (widget|type).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting an object to register (widget|type).');
 
         $object = explode(':', $args[2]);
 
