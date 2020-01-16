@@ -25,24 +25,23 @@ trait SetAuthorTrait
         try {
             $input = ['name' => null, 'contact' => null];
             // Ask for author information
-            $this->_lineBreak();
             $this->_print('------------------------------');
             $this->_lineBreak();
             $this->_print('Enter the author\'s name:');
             $this->_lineBreak();
             $input['name'] = $this->listener->getInput();
-            $this->_print('------------------------------');
-            $this->_lineBreak();
             $this->_print('Enter the author\'s contact info (for example an email or URL):');
             $this->_lineBreak();
             $input['contact'] = $this->listener->getInput();
-            $this->_lineBreak();
-            // Prepare authro
+            // Prepare author
             $author = empty($input['name']) ? null : $input['name'];
             if ($author && !empty($input['contact']))
                 $author .= ' <'.$input['contact'].'>';
             if (array_key_exists('author', $this->config)) {
                 $current = $this->config['author'];
+                // Sanitize URLs for Regex replacement
+                if (strpos($current, '/') !== false)
+                    $current = str_replace('/','\/',$current);
                 // Replace in config file
                 $this->replaceInFile('author\'(|\s)=>(|\s)\''.$current.'\'', 'author\' => \''.$author.'\'', $this->configFilename);
                 $this->config = include $this->configFilename;

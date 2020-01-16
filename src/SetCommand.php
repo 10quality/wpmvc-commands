@@ -49,8 +49,8 @@ class SetCommand extends Command
         $object = explode(':', $args[2]);
 
         // Validations
-        if (!in_array($object[0], ['version','domain']))
-            throw new NoticeException('Command "'.$this->key.'": Invalid setting. Expecting (version|domain).');
+        if (!in_array($object[0], ['version','domain','author']))
+            throw new NoticeException('Command "'.$this->key.'": Invalid setting. Expecting (version|domain|author).');
 
         switch ($object[0]) {
             case 'version':

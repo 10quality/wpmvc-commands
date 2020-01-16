@@ -46,7 +46,6 @@ class SetupCommand extends Command
             throw new NoticeException('SetupCommand: "set" command is not registered in ayuco.');
             
         try {
-            $this->_lineBreak();
             $this->_print('------------------------------');
             $this->_lineBreak();
             $this->_print('WordPress MVC (AYUCO) Setup');
@@ -76,6 +75,7 @@ class SetupCommand extends Command
             $setCommand->setTextDomain(empty($domain) ? 'my-app' : $domain);
             // AUTHOR
             $setCommand->setAuthor();
+            $this->config = include $this->configFilename;
             // DESCRIPTION
             $this->_print('------------------------------');
             $this->_lineBreak();
@@ -87,6 +87,8 @@ class SetupCommand extends Command
             $this->_print('Your project\'s namespace is "%s"', $namespace);
             $this->_lineBreak();
             $this->_print('Your project\'s text domain is "%s"', $domain);
+            $this->_lineBreak();
+            $this->_print('Your project\'s author is "%s"', $this->config['author']);
             $this->_lineBreak();
             $this->_print('Setup completed!');
             $this->_lineBreak();
