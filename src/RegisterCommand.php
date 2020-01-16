@@ -49,17 +49,23 @@ class RegisterCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting an object to register (widget|type).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting an object to register (widget|type|model|asset).');
 
         $object = explode(':', $args[2]);
 
+        // Validations
+        if (!in_array($object[0], ['widget','type','model','asset']))
+            throw new NoticeException('Command "'.$this->key.'": Invalid setting. Expecting (widget|type|model|asset).');
+
         switch ($object[0]) {
             case 'widget':
+                // Validate second parameter
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting a widget class name.');
                 $this->registerWidget($object[1], $args);
                 break;
             case 'type':
+                // Validate second parameter
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting a post type. I.e. "ayuco register type:book" (where "book" would be the type)');
                 // Prepare
@@ -85,6 +91,7 @@ class RegisterCommand extends Command
                 $builder->build();
                 break;
             case 'model':
+                // Validate second parameter
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting a model name.');
                 // Register model at bridge
@@ -96,6 +103,7 @@ class RegisterCommand extends Command
                 $this->_lineBreak();
                 break;
             case 'asset':
+                // Validate second parameter
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting an asset relative path.');
                 // Register model at bridge
