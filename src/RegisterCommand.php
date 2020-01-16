@@ -81,7 +81,7 @@ class RegisterCommand extends Command
                 }
                 // Register model at bridge
                 $builder = Builder::parser($this->rootPath.'/app/Main.php');
-                $builder->addVisitor(new AddMethodCallVisitor('init', 'add_model', [$model]));
+                $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
                 $builder->build();
                 break;
             case 'model':
@@ -89,7 +89,7 @@ class RegisterCommand extends Command
                     throw new NoticeException('Command "'.$this->key.'": Expecting a model name.');
                 // Register model at bridge
                 $builder = Builder::parser($this->rootPath.'/app/Main.php');
-                $builder->addVisitor(new AddMethodCallVisitor('init', 'add_model', [$object[1]]));
+                $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$object[1]]));
                 $builder->build();
                 // Print end
                 $this->_print('Model registered!');
@@ -100,7 +100,7 @@ class RegisterCommand extends Command
                     throw new NoticeException('Command "'.$this->key.'": Expecting an asset relative path.');
                 // Register model at bridge
                 $builder = Builder::parser($this->rootPath.'/app/Main.php');
-                $builder->addVisitor(new AddMethodCallVisitor('init', 'add_asset', [$object[1]]));
+                $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_asset', [$object[1]]));
                 $builder->build();
                 // Print end
                 $this->_print('Asset registered!');

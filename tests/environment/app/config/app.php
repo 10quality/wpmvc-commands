@@ -7,6 +7,7 @@ return [
     'namespace' => 'MyApp',
     'type' => 'theme',
     'version' => '1.0.0',
+    'author' => 'Developer <developer@wpmvc>',
     'paths' => [
         'base'          => __DIR__ . '/../',
         'controllers'   => __DIR__ . '/../Controllers/',

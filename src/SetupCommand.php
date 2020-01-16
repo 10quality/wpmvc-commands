@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.6
  */
 class SetupCommand extends Command
 {
@@ -74,6 +74,8 @@ class SetupCommand extends Command
             $domain = $this->listener->getInput();
             $domain = empty($domain) ? 'my-app' : $domain;
             $setCommand->setTextDomain(empty($domain) ? 'my-app' : $domain);
+            // AUTHOR
+            $setCommand->setAuthor();
             // DESCRIPTION
             $this->_print('------------------------------');
             $this->_lineBreak();

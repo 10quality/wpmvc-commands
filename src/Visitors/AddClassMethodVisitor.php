@@ -3,12 +3,12 @@
 namespace WPMVC\Commands\Visitors;
 
 use PhpParser\Node;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Param;
 use PhpParser\Node\Name;
 use PhpParser\Comment;
+use WPMVC\Commands\Base\NodeVisitor;
 
 /**
  * Visits the node to add a new class method.
@@ -18,9 +18,9 @@ use PhpParser\Comment;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.0
+ * @version 1.1.6
  */
-class AddClassMethodVisitor extends NodeVisitorAbstract
+class AddClassMethodVisitor extends NodeVisitor
 {
     /**
      * Method's name to add.
@@ -46,12 +46,14 @@ class AddClassMethodVisitor extends NodeVisitorAbstract
     /**
      * Default constructor.
      * 
+     * @param array  $config     Config
      * @param string $methodName Method name.
      * @param array  $params     Method parameters.
      * @param array  $comment    Method Comment.
      */
-    public function __construct($methodName, $params = [], $comment = '')
+    public function __construct($config, $methodName, $params = [], $comment = '')
     {
+        parent::__construct($config);
         $this->methodName = $methodName;
         $this->params = $params;
         $this->comment = $comment;
@@ -95,7 +97,7 @@ class AddClassMethodVisitor extends NodeVisitorAbstract
                     'comments'  => [new Comment(sprintf(
                         '/**'."\n"
                             .'     * Ayuco: %s'."\n"
-                            .'     * @since fill'."\n"
+                            .'     * @since '.$this->config['version']."\n"
                             .'     *'."\n"
                             . (empty($this->comment) ? '' : '    * '.$this->comment."\n")
                             .$paramComments

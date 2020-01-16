@@ -15,7 +15,7 @@ use WPMVC\Commands\Visitors\AddClassPropertyVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.6
  */
 trait CreateControllerTrait
 {
@@ -40,8 +40,14 @@ trait CreateControllerTrait
                 file_put_contents(
                     $filename,
                     preg_replace(
-                        ['/\{0\}/', '/\{1\}/'],
-                        [$this->config['namespace'], $name],
+                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/', '/\{4\}/'],
+                        [
+                            $this->config['namespace'],
+                            $name,
+                            array_key_exists('author', $this->config) ? $this->config['author'] : '',
+                            $this->config['localize']['textdomain'],
+                            $this->config['version'],
+                        ],
                         $this->getTemplate('controller.php')
                     )
                 );
@@ -75,7 +81,7 @@ trait CreateControllerTrait
     {
         try {
             $builder = Builder::parser($this->rootPath.'/app/Controllers/'.$controller.'.php');
-            $builder->addVisitor(new AddClassMethodVisitor($method, $params, $comment));
+            $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
             $builder->build();
         } catch (Exception $e) {
             file_put_contents(
@@ -141,7 +147,7 @@ trait CreateControllerTrait
     {
         try {
             $builder = Builder::parser($this->rootPath.'/app/Controllers/'.$controller.'.php');
-            $builder->addVisitor(new AddClassPropertyVisitor($property, $value, $type, $comment));
+            $builder->addVisitor(new AddClassPropertyVisitor($this->config, $property, $value, $type, $comment));
             $builder->build();
         } catch (Exception $e) {
             file_put_contents(

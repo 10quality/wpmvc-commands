@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.0
+ * @version 1.1.6
  */
 trait CreateViewTrait
 {
@@ -37,7 +37,15 @@ trait CreateViewTrait
                     if (!file_exists($filename)) {
                         file_put_contents(
                             $filename,
-                            preg_replace('/\{0\}/', $key, $this->getTemplate($template))
+                            preg_replace(
+                                ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/'],
+                                [
+                                    $key,
+                                    array_key_exists('author', $this->config) ? $this->config['author'] : '',
+                                    $this->config['localize']['textdomain'],
+                                    $this->config['version'],
+                                ],
+                                $this->getTemplate($template))
                         );
                         // Print created
                         $this->_print('View created!');

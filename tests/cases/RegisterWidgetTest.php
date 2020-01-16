@@ -27,4 +27,15 @@ class RegisterWidgetTest extends WpmvcAyucoTestCase
         $this->assertEquals($execution, 'Widget registered!');
         $this->assertFileExists($filename);
     }
+    /**
+     * Test.
+     */
+    public function testPreventDuplicate()
+    {
+        // Execure
+        exec('php '.WPMVC_AYUCO.' register widget:Original');
+        $execution = exec('php '.WPMVC_AYUCO.' register widget:Original');
+        // Assert
+        $this->assertEquals($execution, 'Widget exists!');
+    }
 }

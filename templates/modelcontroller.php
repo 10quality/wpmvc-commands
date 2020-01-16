@@ -8,8 +8,9 @@ use WPMVC\MVC\Controllers\ModelController as Controller;
  * {1} controller.
  * Generated with ayuco.
  *
- * @author fill
- * @version fill
+ * @author {2}
+ * @package {3}
+ * @version {4}
  */
 class {1} extends Controller
 {

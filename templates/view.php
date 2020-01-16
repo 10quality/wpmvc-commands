@@ -3,7 +3,8 @@
  * {0} view.
  * Generated with ayuco.
  *
- * @author fill
- * @version fill
+ * @author {1}
+ * @package {2}
+ * @version {3}
  */
 ?>

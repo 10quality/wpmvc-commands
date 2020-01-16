@@ -3,13 +3,13 @@
 namespace WPMVC\Commands\Visitors;
 
 use PhpParser\Node;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\TraitUse;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\PropertyProperty;
 use PhpParser\Comment;
 use WPMVC\Commands\Traits\VisitorValueTrait;
+use WPMVC\Commands\Base\NodeVisitor;
 
 /**
  * Visits the node to add a new property.
@@ -21,7 +21,7 @@ use WPMVC\Commands\Traits\VisitorValueTrait;
  * @package WPMVC\Commands
  * @version 1.0.0
  */
-class AddClassPropertyVisitor extends NodeVisitorAbstract
+class AddClassPropertyVisitor extends NodeVisitor
 {
     use VisitorValueTrait;
 
@@ -56,13 +56,15 @@ class AddClassPropertyVisitor extends NodeVisitorAbstract
     /**
      * Default constructor.
      * 
+     * @param array  $config  Config
      * @param string $name    Name.
      * @param mixed  $value   Value.
      * @param int    $type    Type (public, private or protected)
      * @param string $comment Comment.
      */
-    public function __construct($name, $value = null, $type = 2, $comment = '')
+    public function __construct($config, $name, $value = null, $type = 2, $comment = '')
     {
+        parent::__construct($config);
         $this->name = $name;
         $this->value = $value;
         $this->type = $type;
@@ -91,7 +93,7 @@ class AddClassPropertyVisitor extends NodeVisitorAbstract
                             .'     * Property %s.'."\n"
                             . (empty($this->comment) ? '' : '    * '.$this->comment."\n")
                             .'     * Ayuco: addition %s'."\n"
-                            .'     * @since fill'."\n"
+                            .'     * @since '.$this->config['version']."\n"
                             .'     *'."\n"
                             .'     * @var '.$this->getValueType($this->value)."\n"
                             .'     */',

@@ -4,45 +4,41 @@
  * {0} Widget.
  * Generated with ayuco.
  *
- * @author fill
- * @version fill
+ * @author {2}
+ * @package {3}
+ * @version {4}
  */
 class {0} extends WP_Widget
 {
     /**
      * MAIN reference
      * @var object
-     * @since fill
+     * @since {4}
      */
     protected $main;
-
     /**
      * Constructor.
-     * @since fill
-     *
-     * @global Main ${1} theme's main class.
+     * @since {4}
      */
     public function __construct( $id = '', $name = '', $args = array() )
     {
-        global ${1};
-        $this->main = ${1};
+        $this->main = get_bridge( '{1}' );
         parent::__construct(
             'widget-id', // Widget ID
-            'Widget name', // Widget name
+            __( 'Widget name', '{3}' ), // Widget name
             [
                 'classname'     => '{0}', // Widget class name
-                'description'   => __( 'Widget description.', '{2}' ), // Widget description
+                'description'   => __( 'Widget description.', '{3}' ), // Widget description
             ]
         );
     }
-
     /**
      * Widget display.
      * Renders what will be inside the widget when displayed.
-     * @since fill
+     * @since {4}
      *
-     * @param array $args     Arguments for the theme.
-     * @param class $instance Parameters.
+     * @param array $args     Arguments.
+     * @param class $instance Instance parameters.
      */
     public function widget( $args, $instance )
     {
@@ -60,11 +56,10 @@ class {0} extends WP_Widget
 
         echo $args['after_widget'];
     }
-
     /**
      * Widget update.
      * Called when user updates settings at widget setting in admin dashboard.
-     * @since fill
+     * @since {4}
      *
      * @param array $new_instance Widget instance.
      * @param array $old_instance Widget instance.
@@ -84,14 +79,12 @@ class {0} extends WP_Widget
 
         return $instance;
     }
-
     /**
      * Widget form.
      * Renders the form displayed  at widget setting in admin dashboard.
-     * @since fill
+     * @since {4}
      *
-     * @param array $new_instance Widget instance.
-     * @param array $old_instance Widget instance.
+     * @param array $instance Saved widget instance.
      */
     public function form( $instance )
     {

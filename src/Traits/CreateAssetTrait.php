@@ -11,7 +11,7 @@ use Exception;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.5.1
+ * @version 1.1.6
  */
 trait CreateAssetTrait
 {
@@ -42,8 +42,13 @@ trait CreateAssetTrait
                     $file = $path.'/'.$filename.'.'.$type;
                     if (!file_exists($file)) {
                         file_put_contents($file, preg_replace(
-                            ['/\{0\}/', '/\{1\}/', '/\{2\}/'],
-                            [$filename, $this->config['version'], $this->config['localize']['textdomain']],
+                            ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/'],
+                            [
+                                $filename,
+                                $this->config['version'],
+                                $this->config['localize']['textdomain'],
+                                array_key_exists('author', $this->config) ? $this->config['author'] : '',
+                            ],
                             $this->getTemplate((array_key_exists('template', $args) ? $args['template'] : 'asset').'.'.$type)
                         ));
                         // Print created
@@ -82,8 +87,13 @@ trait CreateAssetTrait
                     $file = $path.'/'.($ispart ? '_' : '').$filename.'.'.$type;
                     if (!file_exists($file)) {
                         file_put_contents($file, preg_replace(
-                            ['/\{0\}/', '/\{1\}/', '/\{2\}/'],
-                            [$filename, $this->config['version'], $this->config['localize']['textdomain']],
+                            ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/'],
+                            [
+                                $filename,
+                                $this->config['version'],
+                                $this->config['localize']['textdomain'],
+                                array_key_exists('author', $this->config) ? $this->config['author'] : '',
+                            ],
                             $this->getTemplate(($ispart ? 'asset' : 'master').'.'.$type)
                         ));
                         // Print created

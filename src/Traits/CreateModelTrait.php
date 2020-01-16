@@ -15,7 +15,7 @@ use WPMVC\Commands\Visitors\AddClassPropertyVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.3
+ * @version 1.1.6
  */
 trait CreateModelTrait
 {
@@ -41,8 +41,16 @@ trait CreateModelTrait
                 file_put_contents(
                     $filename,
                     preg_replace(
-                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/'],
-                        [$this->config['namespace'], $type, $name, $trait],
+                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/', '/\{4\}/', '/\{5\}/', '/\{6\}/'],
+                        [
+                            $this->config['namespace'],
+                            $type,
+                            $name,
+                            $trait,
+                            array_key_exists('author', $this->config) ? $this->config['author'] : '',
+                            $this->config['localize']['textdomain'],
+                            $this->config['version'],
+                        ],
                         $this->getTemplate('model.php')
                     )
                 );
@@ -76,7 +84,7 @@ trait CreateModelTrait
     {
         try {
             $builder = Builder::parser($this->rootPath.'/app/Models/'.$model.'.php');
-            $builder->addVisitor(new AddClassMethodVisitor($method, $params, $comment));
+            $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
             $builder->build();
         } catch (Exception $e) {
             file_put_contents(
@@ -101,7 +109,7 @@ trait CreateModelTrait
     {
         try {
             $builder = Builder::parser($this->rootPath.'/app/Models/'.$model.'.php');
-            $builder->addVisitor(new AddClassPropertyVisitor($property, $value, $type, $comment));
+            $builder->addVisitor(new AddClassPropertyVisitor($this->config, $property, $value, $type, $comment));
             $builder->build();
         } catch (Exception $e) {
             file_put_contents(

@@ -9,8 +9,9 @@ use WPMVC\MVC\Models\{1} as Model;
  * {2} model.
  * Generated with ayuco.
  *
- * @author fill
- * @version fill
+ * @author {4}
+ * @package {5}
+ * @version {6}
  */
 class {2} extends Model
 {

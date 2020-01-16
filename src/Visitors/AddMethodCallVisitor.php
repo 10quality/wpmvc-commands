@@ -3,7 +3,6 @@
 namespace WPMVC\Commands\Visitors;
 
 use PhpParser\Node;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Expr\MethodCall;
@@ -14,6 +13,7 @@ use PhpParser\Node\Scalar\LNumber;
 use PhpParser\Node\Scalar\DNumber;
 use PhpParser\Node\Stmt\Nop;
 use PhpParser\Comment;
+use WPMVC\Commands\Base\NodeVisitor;
 
 /**
  * Visits the node to add a new line with method..
@@ -23,9 +23,9 @@ use PhpParser\Comment;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.6
  */
-class AddMethodCallVisitor extends NodeVisitorAbstract
+class AddMethodCallVisitor extends NodeVisitor
 {
     /**
      * Node name (ClassMethod) where to add the call.
@@ -58,13 +58,15 @@ class AddMethodCallVisitor extends NodeVisitorAbstract
     /**
      * Default constructor.
      * 
+     * @param array  $config     Config
      * @param string $nodeName   Node name.
      * @param string $methodName Method name.
      * @param array  $args       Method arguments.
      * @param string $variable   Variable holding method.
      */
-    public function __construct($nodeName, $methodName, $args = [], $variable = 'this')
+    public function __construct($config, $nodeName, $methodName, $args = [], $variable = 'this')
     {
+        parent::__construct($config);
         $this->nodeName = $nodeName;
         $this->methodName = $methodName;
         $this->args = $args;
