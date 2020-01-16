@@ -88,7 +88,7 @@ trait RegisterWidgetTrait
             // Dump autoload
             $this->_print('Widget registered!');
             $this->_lineBreak();
-            exec( 'composer dump-autoload' );
+            exec( 'composer dump-autoload --no-plugins' );
         } catch (Exception $e) {
             file_put_contents(
                 $this->rootPath.'/error_log',
