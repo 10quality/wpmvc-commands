@@ -5,7 +5,7 @@ namespace WPMVC\Commands\Base;
 use PhpParser\NodeVisitorAbstract;
 
 /**
- * Base command.
+ * Base node visitor.
  *
  * @author Ale Mostajo <http://about.me/amostajo>
  * @copyright 10Quality <http://www.10quality.com>
@@ -16,7 +16,7 @@ use PhpParser\NodeVisitorAbstract;
 class NodeVisitor extends NodeVisitorAbstract
 {
     /**
-     * Apps config file.
+     * App config file.
      * @since 1.0.0
      * @var string
      */
