@@ -4,5 +4,6 @@
 /tests/environment/app/Controllers
 /tests/environment/app/Models
 /tests/environment/assets/views/*.php
+/tests/environment/app/Main.php
 composer.lock
 debug.log
