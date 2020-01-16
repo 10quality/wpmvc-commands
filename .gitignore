@@ -5,5 +5,8 @@
 /tests/environment/app/Models
 /tests/environment/assets/views/*.php
 /tests/environment/app/Main.php
+/tests/environment/composer.json
+/tests/environment/package.json
+/tests/environment/composer.lock
 composer.lock
 debug.log

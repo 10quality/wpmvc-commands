@@ -14,7 +14,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.6
  */
 trait RegisterWidgetTrait
 {
@@ -55,7 +55,8 @@ trait RegisterWidgetTrait
             $json = json_decode(file_get_contents($this->rootPath.'/composer.json'));
             $jsonUpdated = false;
             if (!isset($json->autoload->{'psr-0'})) {
-                $json->autoload->{'psr-0'} = ['' => []];
+                $json->autoload->{'psr-0'} = new stdClass;
+                $json->autoload->{'psr-0'}->{''} = [];
             }
             if (is_array($json->autoload->{'psr-0'})
                 && !in_array('app\\Widgets', $json->autoload->{'psr-0'}[''])
@@ -63,11 +64,13 @@ trait RegisterWidgetTrait
                 $json->autoload->{'psr-0'}[''][] = 'app\\Widgets';
                 $jsonUpdated = true;
             }
-            if (is_array($json->autoload->{'psr-0'}->{_empty_})
-                && !in_array('app\\Widgets', $json->autoload->{'psr-0'}->{_empty_})
+            if (isset($json->autoload->{'psr-0'})
+                && is_object($json->autoload->{'psr-0'})
+                && is_array($json->autoload->{'psr-0'}->{''})
+                && !in_array('app\\Widgets', $json->autoload->{'psr-0'}->{''})
             ) {
-                $empty = $json->autoload->{'psr-0'}->{_empty_};
-                unset($json->autoload->{'psr-0'}->{_empty_});
+                $empty = $json->autoload->{'psr-0'}->{''};
+                unset($json->autoload->{'psr-0'}->{''});
                 $json->autoload->{'psr-0'} = ['' => $empty];
                 $json->autoload->{'psr-0'}[''][] = 'app\\Widgets';
                 $jsonUpdated = true;
