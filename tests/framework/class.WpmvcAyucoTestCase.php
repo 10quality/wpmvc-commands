@@ -22,7 +22,7 @@ class WpmvcAyucoTestCase extends AyucoTestCase
      * Clear path.
      * @since 1.1.4
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if (!isset($this->path) || empty($this->path))
             return;

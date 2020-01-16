@@ -10,3 +10,6 @@
 /tests/environment/composer.lock
 composer.lock
 debug.log
+
+# PHPUnit
+.phpunit.result.cache
