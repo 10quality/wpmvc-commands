@@ -71,7 +71,7 @@ class RegisterCommand extends Command
                 // Prepare
                 $model = !isset($args[3]) || empty($args[3]) ? ucfirst($object[1]) : $args[3];
                 $controller = !isset($args[4]) || empty($args[4]) ? null : $args[4];
-                // Create controller
+                // Create model
                 $this->createModel($model);
                 // Set properties
                 $this->createModelProperty($model, 'type', $object[1]);
@@ -94,9 +94,13 @@ class RegisterCommand extends Command
                 // Validate second parameter
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting a model name.');
+                //Prepare
+                $model = ucfirst($object[1]);
+                // Create model
+                $this->createModel($model);
                 // Register model at bridge
                 $builder = Builder::parser($this->rootPath.'/app/Main.php');
-                $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$object[1]]));
+                $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
                 $builder->build();
                 // Print end
                 $this->_print('Model registered!');
@@ -106,7 +110,7 @@ class RegisterCommand extends Command
                 // Validate second parameter
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting an asset relative path.');
-                // Register model at bridge
+                // Register asset at bridge
                 $builder = Builder::parser($this->rootPath.'/app/Main.php');
                 $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_asset', [$object[1]]));
                 $builder->build();
