@@ -7,6 +7,7 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Param;
 use PhpParser\Node\Name;
+use PhpParser\Node\Expr\Variable;
 use PhpParser\Comment;
 use WPMVC\Commands\Base\NodeVisitor;
 
@@ -18,7 +19,7 @@ use WPMVC\Commands\Base\NodeVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.7
  */
 class AddClassMethodVisitor extends NodeVisitor
 {
@@ -75,10 +76,10 @@ class AddClassMethodVisitor extends NodeVisitor
             foreach ($this->params as $param) {
                 if (is_array($param)) {
                     $params[] = isset($param['type']) && isset($param['name'])
-                        ? new Param($param['name'], null, new Name([$param['type']]))
-                        : new Param($param[0]);
+                        ? new Param(new Variable($param['name']), null, new Name([$param['type']]))
+                        : new Param(new Variable($param[0]));
                 } else {
-                    $params[] = new Param($param);
+                    $params[] = new Param(new Variable($param));
                 }
                 $paramComments .= '    * @param '
                     .(isset($param['type']) ? $param['type'] : 'mixed')

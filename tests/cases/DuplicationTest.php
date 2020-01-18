@@ -6,14 +6,17 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.7
  */
 class DuplicationTest extends WpmvcAyucoTestCase
 {
     /**
      * Tests path.
      */
-    protected $path = TESTING_PATH.'/app/Controllers/';
+    protected $path = [
+        TESTING_PATH.'/app/Controllers/',
+        TESTING_PATH.'/app/Models/',
+    ];
     /**
      * Test.
      */

@@ -9,7 +9,7 @@ use PHPUnit\Framework\AssertionFailedError;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.7
  */
 class WpmvcAyucoTestCase extends AyucoTestCase
 {
@@ -127,5 +127,25 @@ class WpmvcAyucoTestCase extends AyucoTestCase
             $regex .= '(|\s)=(|\s)' . (is_string($value) && $value !== 'true' && $value !== 'false' ? ('\''.$value.'\'') : $value);
         $regex .= '/';
         $this->assertPregMatchContents($regex, $filename, 'Failed asserting variable existence.');
+    }
+    /**
+     * Asserts if a string matches inside file contents.
+     * @since 1.1.7
+     *
+     * @param string $string   String to search for.
+     * @param string $filename Fulename
+     * @param string $message  PHPUNIT message.
+     *
+     * @throws \PHPUnit\Framework\AssertionFailedError
+     */
+    public function assertStringMatchContents($string, $filename, $message = 'Failed asserting matching contents.')
+    {
+        if (!is_file($filename))
+            throw new AssertionFailedError('Filename doesn\'t exists');
+        self::assertThat(
+            strpos(file_get_contents($filename), $string) !== false,
+            self::isTrue(),
+            $message
+        );
     }
 }
