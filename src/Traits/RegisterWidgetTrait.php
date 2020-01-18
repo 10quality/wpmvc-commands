@@ -14,7 +14,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.7
  */
 trait RegisterWidgetTrait
 {
@@ -87,9 +87,11 @@ trait RegisterWidgetTrait
                     );
                 }
                 // Add to main
-                $builder = Builder::parser($this->rootPath.'/app/Main.php');
+                $builder = Builder::parser($this->getMainClassPath());
                 $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_widget', [$name]));
                 $builder->build();
+                // Update class version
+                $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
                 // Dump autoload
                 $this->_print('Widget registered!');
                 $this->_lineBreak();

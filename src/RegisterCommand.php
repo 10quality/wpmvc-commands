@@ -7,6 +7,7 @@ use WPMVC\Commands\Traits\RegisterWidgetTrait;
 use WPMVC\Commands\Traits\CreateViewTrait;
 use WPMVC\Commands\Traits\CreateModelTrait;
 use WPMVC\Commands\Traits\CreateControllerTrait;
+use WPMVC\Commands\Traits\UpdateCommentTrait;
 use Ayuco\Exceptions\NoticeException;
 use WPMVC\Commands\Core\Builder;
 use WPMVC\Commands\Visitors\AddMethodCallVisitor;
@@ -23,7 +24,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  */
 class RegisterCommand extends Command
 {
-    use RegisterWidgetTrait, CreateModelTrait, CreateControllerTrait, CreateViewTrait;
+    use RegisterWidgetTrait, CreateModelTrait, CreateControllerTrait, CreateViewTrait, UpdateCommentTrait;
 
     /**
      * Command key.
@@ -91,6 +92,8 @@ class RegisterCommand extends Command
                     $builder = Builder::parser($filename);
                     $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
                     $builder->build();
+                    // Update class version
+                    $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
                 } else {
                     // Print exists
                     $this->_print('Hook call exists!');
@@ -111,6 +114,8 @@ class RegisterCommand extends Command
                     $builder = Builder::parser($filename);
                     $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
                     $builder->build();
+                    // Update class version
+                    $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
                     // Print end
                     $this->_print('Model registered!');
                     $this->_lineBreak();
@@ -131,6 +136,8 @@ class RegisterCommand extends Command
                         $builder = Builder::parser($filename);
                         $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_asset', [$object[1]]));
                         $builder->build();
+                        // Update class version
+                        $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
                         // Print end
                         $this->_print('Asset registered!');
                         $this->_lineBreak();

@@ -6,6 +6,7 @@ use WPMVC\Commands\Traits\CreateViewTrait;
 use WPMVC\Commands\Traits\CreateModelTrait;
 use WPMVC\Commands\Traits\CreateControllerTrait;
 use WPMVC\Commands\Traits\CreateAssetTrait;
+use WPMVC\Commands\Traits\UpdateCommentTrait;
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 
@@ -21,7 +22,7 @@ use Ayuco\Exceptions\NoticeException;
  */
 class CreateCommand extends Command
 {
-    use CreateModelTrait, CreateViewTrait, CreateControllerTrait, CreateAssetTrait;
+    use CreateModelTrait, CreateViewTrait, CreateControllerTrait, CreateAssetTrait, UpdateCommentTrait;
 
     /**
      * Command key.

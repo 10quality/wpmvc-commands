@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.7
  */
 class SetNameCommand extends Command
 {
@@ -95,6 +95,6 @@ class SetNameCommand extends Command
         $this->_lineBreak();
 
         if (file_exists($this->rootPath . '/composer.json'))
-            exec( 'composer dump-autoload' );
+            exec( 'composer dump-autoload --no-plugins' );
     }
 }

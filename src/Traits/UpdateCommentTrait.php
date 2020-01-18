@@ -26,8 +26,8 @@ trait UpdateCommentTrait
     {
         try {
             $this->replaceInFile(
-                '\*\s\@'.$comment.'[\s\S]+\n',
-                '* @'.$comment.' '.$value."\n",
+                '\*\s\@'.$comment.'[^\n]*',
+                '* @'.$comment.' '.$value,
                 $filename
             );
         } catch (Exception $e) {

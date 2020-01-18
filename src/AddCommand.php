@@ -5,6 +5,7 @@ namespace WPMVC\Commands;
 use WPMVC\Commands\Traits\CreateViewTrait;
 use WPMVC\Commands\Traits\CreateControllerTrait;
 use WPMVC\Commands\Traits\HooksTrait;
+use WPMVC\Commands\Traits\UpdateCommentTrait;
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 use WPMVC\Commands\Core\Builder;
@@ -17,11 +18,11 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.7
  */
 class AddCommand extends Command
 {
-    use CreateViewTrait, CreateControllerTrait, HooksTrait;
+    use CreateViewTrait, CreateControllerTrait, HooksTrait, UpdateCommentTrait;
 
     /**
      * Command key.
@@ -87,6 +88,8 @@ class AddCommand extends Command
             $builder = Builder::parser($filename);
             $builder->addVisitor(new AddMethodCallVisitor($this->config, $this->getHookScope($object[1]), 'add_'.$object[0], [$object[1], $args[3]]));
             $builder->build();
+            // Update class version
+            $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
         } else {
             // Print exists
             $this->_print('Hook call exists!');

@@ -89,6 +89,8 @@ trait CreateModelTrait
                 $builder = Builder::parser($filename);
                 $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
                 $builder->build();
+                // Update class version
+                $this->updateComment('version', $this->config['version'], $filename);
             } catch (Exception $e) {
                 file_put_contents(
                     $this->rootPath.'/error_log',
@@ -122,6 +124,8 @@ trait CreateModelTrait
                 $builder = Builder::parser($filename);
                 $builder->addVisitor(new AddClassPropertyVisitor($this->config, $property, $value, $type, $comment));
                 $builder->build();
+                // Update class version
+                $this->updateComment('version', $this->config['version'], $filename);
             } catch (Exception $e) {
                 file_put_contents(
                     $this->rootPath.'/error_log',
