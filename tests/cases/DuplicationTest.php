@@ -16,6 +16,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
     protected $path = [
         TESTING_PATH.'/app/Controllers/',
         TESTING_PATH.'/app/Models/',
+        TESTING_PATH.'/assets/js/',
     ];
     /**
      * Test.
@@ -80,7 +81,10 @@ class DuplicationTest extends WpmvcAyucoTestCase
     {
         // Prepare
         $filename = TESTING_PATH . '/app/Main.php';
+        $dir = TESTING_PATH . '/assets/js/';
         // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents(TESTING_PATH . '/assets/js/test.js', '// None');
         exec('php '.WPMVC_AYUCO.' register asset:js/test.js');
         $execution = exec('php '.WPMVC_AYUCO.' register asset:js/test.js');
         // Assert

@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.7
  */
 class CreateAssetTest extends WpmvcAyucoTestCase
 {
@@ -125,5 +125,15 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertFileExists($filename);
         $this->assertPregMatchContents('/\# SASS COMPILATION/', $filename);
         unlink($filename);
+    }
+    /**
+     * Test.
+     */
+    public function testPreventAssetRegistration()
+    {
+        // Execure
+        $execution = exec('php '.WPMVC_AYUCO.' register asset:css/test.css');
+        // Assert
+        $this->assertEquals('Asset doesn\'t exist!', $execution);
     }
 }

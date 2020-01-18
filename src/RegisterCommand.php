@@ -19,7 +19,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.7
  */
 class RegisterCommand extends Command
 {
@@ -124,18 +124,24 @@ class RegisterCommand extends Command
                 // Validate second parameter
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting an asset relative path.');
-                $filename = $this->getMainClassPath();
-                if (!$this->existsMethodCallIn($filename, 'add_asset', $object[1])) {
-                    // Register asset at bridge
-                    $builder = Builder::parser($filename);
-                    $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_asset', [$object[1]]));
-                    $builder->build();
-                    // Print end
-                    $this->_print('Asset registered!');
-                    $this->_lineBreak();
+                if (is_file($this->rootPath.'/assets/'.$object[1])) {
+                    $filename = $this->getMainClassPath();
+                    if (!$this->existsMethodCallIn($filename, 'add_asset', $object[1])) {
+                        // Register asset at bridge
+                        $builder = Builder::parser($filename);
+                        $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_asset', [$object[1]]));
+                        $builder->build();
+                        // Print end
+                        $this->_print('Asset registered!');
+                        $this->_lineBreak();
+                    } else {
+                        // Print exists
+                        $this->_print('Asset registration exists!');
+                        $this->_lineBreak();
+                    }
                 } else {
                     // Print exists
-                    $this->_print('Asset registration exists!');
+                    $this->_print('Asset doesn\'t exist!');
                     $this->_lineBreak();
                 }
                 break;
