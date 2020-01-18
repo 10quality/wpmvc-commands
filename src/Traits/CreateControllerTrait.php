@@ -111,8 +111,14 @@ trait CreateControllerTrait
                 file_put_contents(
                     $filename,
                     preg_replace(
-                        ['/\{0\}/', '/\{1\}/'],
-                        [$this->config['namespace'], $name],
+                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/', '/\{4\}/'],
+                        [
+                            $this->config['namespace'],
+                            $name,
+                            array_key_exists('author', $this->config) ? $this->config['author'] : '',
+                            $this->config['localize']['textdomain'],
+                            $this->config['version'],
+                        ],
                         $this->getTemplate('modelcontroller.php')
                     )
                 );

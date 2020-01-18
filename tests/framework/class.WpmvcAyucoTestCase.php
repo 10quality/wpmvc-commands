@@ -31,16 +31,27 @@ class WpmvcAyucoTestCase extends AyucoTestCase
         foreach ($this->path as $path) {
             if (!is_dir($path))
                 continue;
-            $dir = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
-            foreach (new RecursiveIteratorIterator($dir, RecursiveIteratorIterator::SELF_FIRST) as $filename => $item) {
-                if ($item->isDir()) {
-                    rmdir($filename);
-                } else {
-                    unlink($filename);
-                }
-            }
-            rmdir($path);
+            $this->emptyRemoveDirectory($path);
         }
+    }
+    /**
+     * Empties and removes directory.
+     * @since 1.1.6
+     * 
+     * @param string $path
+     */
+    private function emptyRemoveDirectory($path)
+    {
+        if (!is_dir($path)) return;
+        $dir = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
+        foreach (new RecursiveIteratorIterator($dir, RecursiveIteratorIterator::SELF_FIRST) as $filename => $item) {
+            if ($item->isDir()) {
+                $this->emptyRemoveDirectory($filename);
+            } else {
+                unlink($filename);
+            }
+        }
+        rmdir($path);
     }
     /**
      * Asserts if a regular expresion matches inside file contents.
