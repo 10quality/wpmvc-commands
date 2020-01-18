@@ -82,8 +82,15 @@ class AddCommand extends Command
         }
 
         // Add hook to bridge
-        $builder = Builder::parser($this->rootPath.'/app/Main.php');
-        $builder->addVisitor(new AddMethodCallVisitor($this->config, $this->getHookScope($object[1]), 'add_'.$object[0], [$object[1], $args[3]]));
-        $builder->build();
+        $filename = $this->getMainClassPath();
+        if (!$this->existsMethodCallIn($filename, 'add_'.$object[0], $object[1], $args[3])) {
+            $builder = Builder::parser($filename);
+            $builder->addVisitor(new AddMethodCallVisitor($this->config, $this->getHookScope($object[1]), 'add_'.$object[0], [$object[1], $args[3]]));
+            $builder->build();
+        } else {
+            // Print exists
+            $this->_print('Hook call exists!');
+            $this->_lineBreak();
+        }
     }
 }

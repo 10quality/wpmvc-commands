@@ -86,9 +86,16 @@ class RegisterCommand extends Command
                     $this->createView('admin.metaboxes.'.$object[1].'.meta', 'metabox.php');
                 }
                 // Register model at bridge
-                $builder = Builder::parser($this->rootPath.'/app/Main.php');
-                $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
-                $builder->build();
+                $filename = $this->getMainClassPath();
+                if (!$this->existsMethodCallIn($filename, 'add_model', $model)) {
+                    $builder = Builder::parser($filename);
+                    $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
+                    $builder->build();
+                } else {
+                    // Print exists
+                    $this->_print('Hook call exists!');
+                    $this->_lineBreak();
+                }
                 break;
             case 'model':
                 // Validate second parameter
@@ -99,24 +106,38 @@ class RegisterCommand extends Command
                 // Create model
                 $this->createModel($model);
                 // Register model at bridge
-                $builder = Builder::parser($this->rootPath.'/app/Main.php');
-                $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
-                $builder->build();
-                // Print end
-                $this->_print('Model registered!');
-                $this->_lineBreak();
+                $filename = $this->getMainClassPath();
+                if (!$this->existsMethodCallIn($filename, 'add_model', $model)) {
+                    $builder = Builder::parser($filename);
+                    $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
+                    $builder->build();
+                    // Print end
+                    $this->_print('Model registered!');
+                    $this->_lineBreak();
+                } else {
+                    // Print exists
+                    $this->_print('Model registration exists!');
+                    $this->_lineBreak();
+                }
                 break;
             case 'asset':
                 // Validate second parameter
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting an asset relative path.');
-                // Register asset at bridge
-                $builder = Builder::parser($this->rootPath.'/app/Main.php');
-                $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_asset', [$object[1]]));
-                $builder->build();
-                // Print end
-                $this->_print('Asset registered!');
-                $this->_lineBreak();
+                $filename = $this->getMainClassPath();
+                if (!$this->existsMethodCallIn($filename, 'add_asset', $object[1])) {
+                    // Register asset at bridge
+                    $builder = Builder::parser($filename);
+                    $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_asset', [$object[1]]));
+                    $builder->build();
+                    // Print end
+                    $this->_print('Asset registered!');
+                    $this->_lineBreak();
+                } else {
+                    // Print exists
+                    $this->_print('Asset registration exists!');
+                    $this->_lineBreak();
+                }
                 break;
         }
     }

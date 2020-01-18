@@ -16,8 +16,8 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
     protected $path = [
         FRAMEWORK_PATH.'/environment/app/Controllers/',
         FRAMEWORK_PATH.'/environment/app/Models/',
-        FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/book/meta/',
-        FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/book/',
+        FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/car/meta/',
+        FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/car/',
         FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/',
         FRAMEWORK_PATH.'/environment/assets/views/admin/',
     ];
@@ -27,13 +27,13 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
     public function testRegisterAutoModelName()
     {
         // Prepare
-        $filename = FRAMEWORK_PATH.'/environment/app/Models/Book.php';
+        $filename = FRAMEWORK_PATH.'/environment/app/Models/Car.php';
         // Execure
-        $execution = exec('php '.WPMVC_AYUCO.' register type:book');
+        $execution = exec('php '.WPMVC_AYUCO.' register type:car');
         // Assert
-        $this->assertEquals($execution, 'Model created!');
+        $this->assertEquals('Model created!', $execution);
         $this->assertFileExists($filename);
-        $this->assertFileVariableExists('type', $filename, 'book');
+        $this->assertFileVariableExists('type', $filename, 'car');
         $this->assertFileVariableExists('aliases', $filename);
     }
     /**
@@ -46,7 +46,7 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' register type:book MyBook');
         // Assert
-        $this->assertEquals($execution, 'Model created!');
+        $this->assertEquals('Model created!', $execution);
         $this->assertFileExists($filename);
         $this->assertFileVariableExists('type', $filename, 'book');
     }
@@ -56,18 +56,31 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
     public function testRegisterWithController()
     {
         // Prepare
-        $modelfile = FRAMEWORK_PATH.'/environment/app/Models/Book.php';
-        $controllerfile = FRAMEWORK_PATH.'/environment/app/Controllers/BookController.php';
-        $viewfile = FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/book/meta/metabox.php';
+        $modelfile = FRAMEWORK_PATH.'/environment/app/Models/MyCar.php';
+        $controllerfile = FRAMEWORK_PATH.'/environment/app/Controllers/CarController.php';
+        $viewfile = FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/car/meta/metabox.php';
         // Execure
-        $execution = exec('php '.WPMVC_AYUCO.' register type:book Book BookController');
+        $execution = exec('php '.WPMVC_AYUCO.' register type:car MyCar CarController');
         // Assert
-        $this->assertEquals($execution, 'View created!');
+        $this->assertEquals('View created!', $execution);
         $this->assertFileExists($modelfile);
         $this->assertFileExists($controllerfile);
-        $this->assertFileVariableExists('type', $modelfile, 'book');
-        $this->assertFileVariableExists('registry_controller', $modelfile, 'BookController');
+        $this->assertFileVariableExists('type', $modelfile, 'car');
+        $this->assertFileVariableExists('registry_controller', $modelfile, 'CarController');
         $this->assertFileVariableExists('registry_metabox', $modelfile);
         $this->assertFileVariableExists('model', $controllerfile);
+    }
+    /**
+     * Test.
+     */
+    public function testRegisterModel()
+    {
+        // Prepare
+        $filename = FRAMEWORK_PATH.'/environment/app/Main.php';
+        // Execure
+        $execution = exec('php '.WPMVC_AYUCO.' register model:MacGyver');
+        // Assert
+        $this->assertEquals('Model registered!', $execution);
+        $this->assertPregMatchContents('/add_model\(\'MacGyver\'/', $filename);
     }
 }

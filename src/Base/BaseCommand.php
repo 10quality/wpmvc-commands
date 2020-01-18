@@ -211,4 +211,42 @@ class BaseCommand extends Command
         }
         return $this->pregMatchIn($filename, '/'.($visibility ? $visibility . '(|\s)' : '').'$'.$property.'/') === 1;
     }
+    /**
+     * Returns flag indicating if a property exists within a filename.
+     * @since 1.1.6
+     * 
+     * @param string $arg[0]      The filename to process.
+     * @param string $arg[1]      Method name.
+     * @param mixed  $arg[2, ...] Parameters passed.
+     * 
+     * @return bool
+     */
+    public function existsMethodCallIn()
+    {
+        $args = func_get_args();
+        $filename = null;
+        if (count($args) > 0) {
+            $filename = $args[0];
+            unset($args[0]);
+        }
+        $method = null;
+        if (count($args) > 1) {
+            $method = $args[1];
+            unset($args[1]);
+        };
+        $params = implode('(|\s)\,(|\s)', array_map(function($arg) {
+            return is_string($arg) ? '(\'|\")'.str_replace('/', '\/', $arg).'(\'|\")' : $arg;
+        }, $args));
+        return $filename && $method && $this->pregMatchIn($filename, '/\$this\-\>'.$method.'(|\s)\((|\s)'.$params.'/') === 1;
+    }
+    /**
+     * Returns the path to the Main class.
+     * @since 1.1.6
+     * 
+     * @return string
+     */
+    public function getMainClassPath()
+    {
+        return $this->rootPath.'/app/Main.php';
+    }
 }
