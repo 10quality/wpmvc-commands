@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.4
+ * @version 1.1.6
  */
 class RegisterWidgetTest extends WpmvcAyucoTestCase
 {
@@ -24,7 +24,7 @@ class RegisterWidgetTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' register widget:Test');
         // Assert
-        $this->assertEquals($execution, 'Widget registered!');
+        $this->assertEquals('Widget registered!', $execution);
         $this->assertFileExists($filename);
     }
     /**
@@ -36,6 +36,6 @@ class RegisterWidgetTest extends WpmvcAyucoTestCase
         exec('php '.WPMVC_AYUCO.' register widget:Original');
         $execution = exec('php '.WPMVC_AYUCO.' register widget:Original');
         // Assert
-        $this->assertEquals($execution, 'Widget exists!');
+        $this->assertEquals('Widget exists!', $execution);
     }
 }

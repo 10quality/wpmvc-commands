@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.5
+ * @version 1.1.6
  */
 class CreateAssetTest extends WpmvcAyucoTestCase
 {
@@ -30,7 +30,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create js:yolo');
         // Assert
-        $this->assertEquals($execution, 'js asset created!');
+        $this->assertEquals('js asset created!', $execution);
         $this->assertFileExists($filename);
     }
     /**
@@ -43,7 +43,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create js:jquery.yolo jquery');
         // Assert
-        $this->assertEquals($execution, 'js asset created!');
+        $this->assertEquals('js asset created!', $execution);
         $this->assertFileExists($filename);
         $this->assertPregMatchContents('/jQuery/', $filename);
     }
@@ -57,7 +57,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create css:yolo');
         // Assert
-        $this->assertEquals($execution, 'css asset created!');
+        $this->assertEquals('css asset created!', $execution);
         $this->assertFileExists($filename);
     }
     /**
@@ -70,7 +70,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create sass:styles');
         // Assert
-        $this->assertEquals($execution, 'scss asset created!');
+        $this->assertEquals('scss asset created!', $execution);
         $this->assertFileExists($filename);
         $this->assertPregMatchContents('/master/', $filename);
     }
@@ -85,7 +85,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create sass:theme main');
         // Assert
-        $this->assertEquals($execution, 'scss asset created!');
+        $this->assertEquals('scss asset created!', $execution);
         $this->assertFileExists($masterfile);
         $this->assertFileExists($partfile);
         $this->assertPregMatchContents('/master/', $masterfile);
@@ -105,7 +105,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         exec('php '.WPMVC_AYUCO.' create sass:header theme');
         $execution = exec('php '.WPMVC_AYUCO.' create sass:footer theme');
         // Assert
-        $this->assertEquals($execution, 'scss asset created!');
+        $this->assertEquals('scss asset created!', $execution);
         $this->assertFileExists($masterfile);
         $this->assertFileExists($part1file);
         $this->assertFileExists($part2file);

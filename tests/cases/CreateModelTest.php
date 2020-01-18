@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.5
+ * @version 1.1.6
  */
 class CreateModelTest extends WpmvcAyucoTestCase
 {
@@ -24,7 +24,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create optionmodel:App app');
         // Assert
-        $this->assertEquals($execution, 'Model created!');
+        $this->assertEquals('Model created!', $execution);
         $this->assertFileExists($filename);
         $this->assertFileVariableExists('id', $filename, 'app');
     }
@@ -38,7 +38,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create usermodel:User');
         // Assert
-        $this->assertEquals($execution, 'Model created!');
+        $this->assertEquals('Model created!', $execution);
         $this->assertFileExists($filename);
     }
     /**
@@ -51,7 +51,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create categorymodel:AppCategoryModel');
         // Assert
-        $this->assertEquals($execution, 'Model created!');
+        $this->assertEquals('Model created!', $execution);
         $this->assertFileExists($filename);
         $this->assertPregMatchContents('/TermModel/', $filename);
     }
@@ -65,7 +65,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create termmodel:AppTermModel');
         // Assert
-        $this->assertEquals($execution, 'Model created!');
+        $this->assertEquals('Model created!', $execution);
         $this->assertFileExists($filename);
     }
     /**
@@ -78,7 +78,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create termmodel:AppTermModel custom_tax');
         // Assert
-        $this->assertEquals($execution, 'Model created!');
+        $this->assertEquals('Model created!', $execution);
         $this->assertFileExists($filename);
         $this->assertFileVariableExists('model_taxonomy', $filename, 'custom_tax');
     }

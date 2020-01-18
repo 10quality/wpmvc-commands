@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.0.0
+ * @version 1.1.6
  */
 class SetupTest extends AyucoTestCase
 {
@@ -17,6 +17,6 @@ class SetupTest extends AyucoTestCase
     {
         $execution = exec('php '.WPMVC_AYUCO.' setup');
 
-        $this->assertEquals($execution, 'SetupCommand: "setname" command is not registered in ayuco.');
+        $this->assertEquals('SetupCommand: "setname" command is not registered in ayuco.', $execution);
     }
 }

@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.4
+ * @version 1.1.6
  */
 class CreateViewTest extends WpmvcAyucoTestCase
 {
@@ -24,7 +24,7 @@ class CreateViewTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create view:test.test');
         // Assert
-        $this->assertEquals($execution, 'View created!');
+        $this->assertEquals('View created!', $execution);
         $this->assertFileExists($filename);
     }
 }

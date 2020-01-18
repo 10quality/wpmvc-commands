@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.4
+ * @version 1.1.6
  */
 class CreateControllerTest extends WpmvcAyucoTestCase
 {
@@ -24,7 +24,7 @@ class CreateControllerTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create controller:CreateController@yolo');
         // Assert
-        $this->assertEquals($execution, 'Controller created!');
+        $this->assertEquals('Controller created!', $execution);
         $this->assertFileExists($filename);
         $this->assertFileFunctionExists('yolo', $filename);
     }
@@ -38,7 +38,7 @@ class CreateControllerTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' add action:init ActionController@init');
         // Assert
-        $this->assertEquals($execution, 'Controller created!');
+        $this->assertEquals('Controller created!', $execution);
         $this->assertFileExists($filename);
         $this->assertFileFunctionExists('init', $filename);
     }
@@ -52,7 +52,7 @@ class CreateControllerTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' create controller:CreateController@yolo@init@twice');
         // Assert
-        $this->assertEquals($execution, 'Controller created!');
+        $this->assertEquals('Controller created!', $execution);
         $this->assertFileExists($filename);
         $this->assertFileFunctionExists('yolo', $filename);
         $this->assertFileFunctionExists('init', $filename);
