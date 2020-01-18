@@ -81,6 +81,6 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
         $execution = exec('php '.WPMVC_AYUCO.' register model:MacGyver');
         // Assert
         $this->assertEquals('Model registered!', $execution);
-        $this->assertPregMatchContents('/add_model\(\'MacGyver\'/', $filename);
+        $this->assertPregMatchContents('/add_model\((|\s)\'MacGyver\'/', $filename);
     }
 }

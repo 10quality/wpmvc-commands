@@ -5,10 +5,9 @@ namespace WPMVC\Commands\Core;
 use PhpParser\Error;
 use PhpParser\ParserFactory;
 use PhpParser\BuilderFactory;
-use PhpParser\PrettyPrinter;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
-use PhpParser\PrettyPrinter\Standard as Printer;
+use WPMVC\Commands\Parser\WPPrinter as Printer;
 
 /**
  * PHP parser and builder.

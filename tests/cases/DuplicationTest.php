@@ -40,7 +40,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
         $execution = exec('php '.WPMVC_AYUCO.' add action:init DuplicateController@init');
         // Assert
         $this->assertEquals('Hook call exists!', $execution);
-        $this->assertPregMatchCount(1, '/add_action\(\'init\'\,\s\'DuplicateController@init\'/', $filename);
+        $this->assertPregMatchCount(1, '/add_action\((|\s)\'init\'\,\s\'DuplicateController@init\'/', $filename);
     }
     /**
      * Test.
@@ -54,7 +54,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
         $execution = exec('php '.WPMVC_AYUCO.' register type:book');
         // Assert
         $this->assertEquals('Hook call exists!', $execution);
-        $this->assertPregMatchCount(1, '/add_model\(\'Book\'/', $filename);
+        $this->assertPregMatchCount(1, '/add_model\((|\s)\'Book\'/', $filename);
     }
     /**
      * Test.
@@ -68,7 +68,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
         $execution = exec('php '.WPMVC_AYUCO.' register model:Rocket');
         // Assert
         $this->assertEquals('Model registration exists!', $execution);
-        $this->assertPregMatchCount(1, '/add_model\(\'Rocket\'/', $filename);
+        $this->assertPregMatchCount(1, '/add_model\((|\s)\'Rocket\'/', $filename);
     }
     /**
      * Test.
@@ -82,6 +82,6 @@ class DuplicationTest extends WpmvcAyucoTestCase
         $execution = exec('php '.WPMVC_AYUCO.' register asset:js/test.js');
         // Assert
         $this->assertEquals('Asset registration exists!', $execution);
-        $this->assertPregMatchCount(1, '/add_asset\(\'js\/test.js\'/', $filename);
+        $this->assertPregMatchCount(1, '/add_asset\((|\s)\'js\/test.js\'/', $filename);
     }
 }
