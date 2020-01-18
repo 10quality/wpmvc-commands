@@ -66,4 +66,20 @@ class PrinterTest extends WpmvcAyucoTestCase
         $this->assertStringMatchContents('$array = array( 1, 2, 3 );', $filename);
         $this->assertStringMatchContents('$array2 = [ 5, 6, \'7\' ];', $filename);
     }
+    /**
+     * Test.
+     */
+    public function testPrintedEmptyArrays()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { function artu ($artu) { $array=array( ); $array2=[ ]; } }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertStringMatchContents('$array = array();', $filename);
+        $this->assertStringMatchContents('$array2 = [];', $filename);
+    }
 }

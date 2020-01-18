@@ -253,9 +253,9 @@ class WPPrinter extends Printer
         $syntax = $node->getAttribute('kind',
             $this->options['shortArraySyntax'] ? Expr\Array_::KIND_SHORT : Expr\Array_::KIND_LONG);
         if ($syntax === Expr\Array_::KIND_SHORT) {
-            return '[ ' . $this->pMaybeMultiline($node->items, true) . ' ]';
+            return '[' . (count($node->items) ? ' ' : '') . $this->pMaybeMultiline($node->items, true) . (count($node->items) ? ' ' : '') . ']';
         } else {
-            return 'array( ' . $this->pMaybeMultiline($node->items, true) . ' )';
+            return 'array(' . (count($node->items) ? ' ' : '') . $this->pMaybeMultiline($node->items, true) . (count($node->items) ? ' ' : '') . ')';
         }
     }
     /**
