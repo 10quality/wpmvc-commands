@@ -22,28 +22,24 @@ class BaseCommand extends Command
      * @var string
      */
     protected $config;
-
     /**
      * Apps config filename.
      * @since 1.0.0
      * @var string
      */
     protected $configFilename;
-
     /**
      * Projects root path.
      * @since 1.0.0
      * @var string
      */
     protected $rootPath;
-
     /**
      * Stores the file contents that are being processed for quick access.
      * @since 1.1.6
      * @var array
      */
     protected $file_buffer = [];
-
     /**
      * Default controller.
      * Loads app configuration.
@@ -62,7 +58,6 @@ class BaseCommand extends Command
             throw new NoticeException($this->key.'Command: No configuration file found.');
         $this->config = include $this->configFilename;
     }
-
     /**
      * Replaces needle in file.
      * @since 1.0.0
@@ -83,7 +78,6 @@ class BaseCommand extends Command
             ) 
         );
     }
-
     /**
      * Copies template file to specified destination.
      * @since 1.0.0
@@ -98,7 +92,6 @@ class BaseCommand extends Command
             return file_put_contents($dest, file_get_contents($source));
         }
     }
-
     /**
      * Returns the contents of a template.
      * @since 1.0.1
@@ -112,7 +105,6 @@ class BaseCommand extends Command
         $source = __DIR__.'/../../templates/'.$template;
         return file_exists($source) ? file_get_contents($source) : null;
     }
-
     /**
      * jsonpp - Pretty print JSON data
      *

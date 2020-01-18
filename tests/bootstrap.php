@@ -14,7 +14,13 @@ define('TESTING_PATH', __DIR__.'/environment');
 $candidate = TESTING_PATH.'/app/Main.php';
 if (file_exists($candidate))
     unlink($candidate);
-file_put_contents($candidate, '<?php namespace MyApp; use WPMVC\Bridge; class Main extends Bridge { public function init(){ } public function on_admin() { } }');
+file_put_contents($candidate, '<?php namespace MyApp; use WPMVC\Bridge;
+/**
+ * @author fill
+ * @package fill
+ * @version fill
+ */
+class Main extends Bridge { public function init(){ } public function on_admin() { } }');
 // composer.json
 $candidate = TESTING_PATH.'/composer.json';
 if (file_exists($candidate))

@@ -4,6 +4,7 @@ namespace WPMVC\Commands;
 
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
+use WPMVC\Commands\Traits\UpdateCommentTrait;
 
 /**
  * Setup command.
@@ -16,6 +17,7 @@ use Ayuco\Exceptions\NoticeException;
  */
 class SetupCommand extends Command
 {
+    use UpdateCommentTrait;
     /**
      * Command key.
      * @since 1.0.0
@@ -76,6 +78,10 @@ class SetupCommand extends Command
             // AUTHOR
             $setCommand->setAuthor();
             $this->config = include $this->configFilename;
+            // Update main
+            $this->updateComment('author', $this->config['author'], $this->getMainClassPath());
+            $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
+            $this->updateComment('package', $domain, $this->getMainClassPath());
             // DESCRIPTION
             $this->_print('------------------------------');
             $this->_lineBreak();
