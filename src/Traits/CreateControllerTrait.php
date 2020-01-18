@@ -79,13 +79,13 @@ trait CreateControllerTrait
      */
     protected function createControllerMethod($controller, $method, $params = [], $comment = '')
     {
+        $this->updateBuffer();
         $filename = $this->rootPath.'/app/Controllers/'.$controller.'.php';
         if (!$this->existsFunctionIn($filename, $method)) {
             try {
                 $builder = Builder::parser($filename);
                 $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
                 $builder->build();
-                $this->updateBuffer();
             } catch (Exception $e) {
                 file_put_contents(
                     $this->rootPath.'/error_log',
@@ -159,16 +159,24 @@ trait CreateControllerTrait
      */
     protected function createControllerProperty($controller, $property, $value = null, $type = 2, $comment = '')
     {
-        try {
-            $builder = Builder::parser($this->rootPath.'/app/Controllers/'.$controller.'.php');
-            $builder->addVisitor(new AddClassPropertyVisitor($this->config, $property, $value, $type, $comment));
-            $builder->build();
-        } catch (Exception $e) {
-            file_put_contents(
-                $this->rootPath.'/error_log',
-                $e->getMessage()
-            );
-            throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
+        $this->updateBuffer();
+        $filename = $this->rootPath.'/app/Controllers/'.$controller.'.php';
+        if (!$this->existsPropertyIn($filename, $property, $type)) {
+            try {
+                $builder = Builder::parser($filename);
+                $builder->addVisitor(new AddClassPropertyVisitor($this->config, $property, $value, $type, $comment));
+                $builder->build();
+            } catch (Exception $e) {
+                file_put_contents(
+                    $this->rootPath.'/error_log',
+                    $e->getMessage()
+                );
+                throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
+            }
+        } else {
+            // Print exists
+            $this->_print('Property exists!');
+            $this->_lineBreak();
         }
     }
 }

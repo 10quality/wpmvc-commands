@@ -180,12 +180,35 @@ class BaseCommand extends Command
      * 
      * @param string $filename   The filename to process.
      * @param string $function   Function name to look for.
-     * @param string $visibility Visibility (public, private, $protected).
+     * @param string $visibility Visibility (public, private, protected).
      * 
      * @return bool
      */
     public function existsFunctionIn($filename, $function, $visibility = null )
     {
         return $this->pregMatchIn($filename, '/'.($visibility ? $visibility . '(|\s)' : '').'function(|\s)'.$function.'(|\s)\(/') === 1;
+    }
+    /**
+     * Returns flag indicating if a property exists within a filename.
+     * @since 1.1.6
+     * 
+     * @param string $filename   The filename to process.
+     * @param string $property   Property name.
+     * @param string $type       Visibility type (public, private, protected).
+     * 
+     * @return bool
+     */
+    public function existsPropertyIn($filename, $property, $type = 1)
+    {
+        $visibility = 'public';
+        switch ($type) {
+            case 2:
+                $visibility = 'private';
+                break;
+            case 3:
+                $visibility = 'protected';
+                break;
+        }
+        return $this->pregMatchIn($filename, '/'.($visibility ? $visibility . '(|\s)' : '').'$'.$property.'/') === 1;
     }
 }

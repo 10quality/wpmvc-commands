@@ -82,16 +82,24 @@ trait CreateModelTrait
      */
     protected function createModelMethod($model, $method, $params = [], $comment = '')
     {
-        try {
-            $builder = Builder::parser($this->rootPath.'/app/Models/'.$model.'.php');
-            $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
-            $builder->build();
-        } catch (Exception $e) {
-            file_put_contents(
-                $this->rootPath.'/error_log',
-                $e->getMessage()
-            );
-            throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
+        $this->updateBuffer();
+        $filename = $this->rootPath.'/app/Models/'.$model.'.php';
+        if (!$this->existsFunctionIn($filename, $method)) {
+            try {
+                $builder = Builder::parser($filename);
+                $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
+                $builder->build();
+            } catch (Exception $e) {
+                file_put_contents(
+                    $this->rootPath.'/error_log',
+                    $e->getMessage()
+                );
+                throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
+            }
+        } else {
+            // Print exists
+            $this->_print('Method exists!');
+            $this->_lineBreak();
         }
     }
 
@@ -107,16 +115,24 @@ trait CreateModelTrait
      */
     protected function createModelProperty($model, $property, $value = null, $type = 2, $comment = '')
     {
-        try {
-            $builder = Builder::parser($this->rootPath.'/app/Models/'.$model.'.php');
-            $builder->addVisitor(new AddClassPropertyVisitor($this->config, $property, $value, $type, $comment));
-            $builder->build();
-        } catch (Exception $e) {
-            file_put_contents(
-                $this->rootPath.'/error_log',
-                $e->getMessage()
-            );
-            throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
+        $this->updateBuffer();
+        $filename = $this->rootPath.'/app/Models/'.$model.'.php';
+        if (!$this->existsPropertyIn($filename, $property, $type)) {
+            try {
+                $builder = Builder::parser($filename);
+                $builder->addVisitor(new AddClassPropertyVisitor($this->config, $property, $value, $type, $comment));
+                $builder->build();
+            } catch (Exception $e) {
+                file_put_contents(
+                    $this->rootPath.'/error_log',
+                    $e->getMessage()
+                );
+                throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
+            }
+        } else {
+            // Print exists
+            $this->_print('Property exists!');
+            $this->_lineBreak();
         }
     }
 }
