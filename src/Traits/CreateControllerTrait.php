@@ -79,16 +79,24 @@ trait CreateControllerTrait
      */
     protected function createControllerMethod($controller, $method, $params = [], $comment = '')
     {
-        try {
-            $builder = Builder::parser($this->rootPath.'/app/Controllers/'.$controller.'.php');
-            $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
-            $builder->build();
-        } catch (Exception $e) {
-            file_put_contents(
-                $this->rootPath.'/error_log',
-                $e->getMessage()
-            );
-            throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
+        $filename = $this->rootPath.'/app/Controllers/'.$controller.'.php';
+        if (!$this->existsFunctionIn($filename, $method)) {
+            try {
+                $builder = Builder::parser($filename);
+                $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
+                $builder->build();
+                $this->updateBuffer();
+            } catch (Exception $e) {
+                file_put_contents(
+                    $this->rootPath.'/error_log',
+                    $e->getMessage()
+                );
+                throw new NoticeException('Command "'.$this->key.'": Fatal error occurred.');
+            }
+        } else {
+            // Print exists
+            $this->_print('Method exists!');
+            $this->_lineBreak();
         }
     }
     /**

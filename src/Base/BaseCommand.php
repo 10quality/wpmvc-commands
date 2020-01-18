@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.6
  */
 class BaseCommand extends Command
 {
@@ -36,6 +36,13 @@ class BaseCommand extends Command
      * @var string
      */
     protected $rootPath;
+
+    /**
+     * Stores the file contents that are being processed for quick access.
+     * @since 1.1.6
+     * @var array
+     */
+    protected $file_buffer = [];
 
     /**
      * Default controller.
@@ -140,5 +147,45 @@ class BaseCommand extends Command
             }
         }
         return $result;
+    }
+    /**
+     * Returns the results of preg_match_all() applied to file contents.
+     * @since 1.1.6
+     * 
+     * @param string $filename The filename to process.
+     * @param string $regex    The regular expression to match.
+     * @param array  &$matches Found matches.
+     * 
+     * @return int
+     */
+    protected function pregMatchIn($filename, $regex, &$matches = null)
+    {
+        if (!array_key_exists($filename, $this->file_buffer))
+            $this->file_buffer[$filename] = file_get_contents($filename);
+        return preg_match_all($regex, $this->file_buffer[$filename], $matches);
+    }
+    /**
+     * Updates the buffer file contents.
+     * @since 1.1.6
+     */
+    public function updateBuffer()
+    {
+        foreach (array_keys($this->file_buffer) as $filename) {
+            $this->file_buffer[$filename] = file_get_contents($filename);
+        }
+    }
+    /**
+     * Returns flag indicating if a function exists within a filename.
+     * @since 1.1.6
+     * 
+     * @param string $filename   The filename to process.
+     * @param string $function   Function name to look for.
+     * @param string $visibility Visibility (public, private, $protected).
+     * 
+     * @return bool
+     */
+    public function existsFunctionIn($filename, $function, $visibility = null )
+    {
+        return $this->pregMatchIn($filename, '/'.($visibility ? $visibility . '(|\s)' : '').'function(|\s)'.$function.'(|\s)\(/') === 1;
     }
 }

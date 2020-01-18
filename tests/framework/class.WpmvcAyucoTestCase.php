@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\AssertionFailedError;
+
 /**
  * Improved ayuco test case for WordPress MVC.
  *
@@ -7,7 +9,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.5
+ * @version 1.1.6
  */
 class WpmvcAyucoTestCase extends AyucoTestCase
 {
@@ -61,16 +63,38 @@ class WpmvcAyucoTestCase extends AyucoTestCase
      * @param string $filename Fulename
      * @param string $message  PHPUNIT message.
      *
-     * @throws PHPUnit_Framework_AssertionFailedError
+     * @throws \PHPUnit\Framework\AssertionFailedError
      */
     public function assertPregMatchContents($regex, $filename, $message = 'Failed asserting matching contents.')
     {
         if (!is_file($filename))
-            throw new PHPUnit_Framework_AssertionFailedError('Filename doesn\'t exists');
+            throw new AssertionFailedError('Filename doesn\'t exists');
         $contents = file_get_contents($filename);
         self::assertThat(
             preg_match($regex, $contents) == 1,
             self::isTrue(),
+            $message
+        );
+    }
+    /**
+     * Asserts the number of matches found in regular expresion search.
+     * @since 1.1.6
+     *
+     * @param int    $count    Count to eval.
+     * @param string $regex    Regular expression.
+     * @param string $filename Fulename
+     * @param string $message  PHPUNIT message.
+     *
+     * @throws \PHPUnit\Framework\AssertionFailedError
+     */
+    public function assertPregMatchCount($count, $regex, $filename, $message = 'Failed asserting matching counts.')
+    {
+        if (!is_file($filename))
+            throw new AssertionFailedError('Filename doesn\'t exists');
+        preg_match_all($regex, file_get_contents($filename), $matches);
+        self::assertThat(
+            count( $matches ) ? count( $matches[0] ) : 0,
+            $this->equalTo($count),
             $message
         );
     }
