@@ -56,7 +56,7 @@ class SetNameCommand extends Command
         if (empty($name))
             throw new NoticeException('Command "'.$this->key.'": No name given.');
 
-        // Checkfor MVC configuration file
+        // Check for MVC configuration file
         if (empty($this->configFilename))
             throw new NoticeException('Command "'.$this->key.'": No configuration file found.');
         $currentname = $this->config['namespace'];
