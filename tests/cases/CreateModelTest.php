@@ -21,7 +21,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/app/Models/App.php';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create optionmodel:App app');
         // Assert
         $this->assertEquals('Model created!', $execution);
@@ -35,7 +35,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/app/Models/User.php';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create usermodel:User');
         // Assert
         $this->assertEquals('Model created!', $execution);
@@ -48,7 +48,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/app/Models/AppCategoryModel.php';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create categorymodel:AppCategoryModel');
         // Assert
         $this->assertEquals('Model created!', $execution);
@@ -62,20 +62,20 @@ class CreateModelTest extends WpmvcAyucoTestCase
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/app/Models/AppTermModel.php';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create termmodel:AppTermModel');
         // Assert
         $this->assertEquals('Model created!', $execution);
         $this->assertFileExists($filename);
     }
     /**
-     * Test term model.
+     * Test term model w/ taxonomy.
      */
     public function testTermModelWithTax()
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/app/Models/AppTermModel.php';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create termmodel:AppTermModel custom_tax');
         // Assert
         $this->assertEquals('Model created!', $execution);
