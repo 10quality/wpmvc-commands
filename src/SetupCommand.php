@@ -40,6 +40,10 @@ class SetupCommand extends Command
      */
     public function call($args = [])
     {
+        // Check for MVC configuration file
+        if (empty($this->configFilename))
+            throw new NoticeException('Command "'.$this->key.'": No configuration file found.');
+        
         $command = $this->listener->get('setname');
         $setCommand = $this->listener->get('set');
         if (!$command)
