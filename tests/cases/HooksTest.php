@@ -15,7 +15,7 @@ class HooksTest extends WpmvcAyucoTestCase
      */
     protected $path = FRAMEWORK_PATH.'/environment/app/Controllers';
     /**
-     * Test.
+     * Tests adding predefined hook.
      */
     public function testPredefinedHook()
     {
@@ -29,7 +29,7 @@ class HooksTest extends WpmvcAyucoTestCase
         $this->assertPregMatchContents('/function\sadmin_bar_menu\((|\s)\$wp_admin_bar/', $controllerfile);
     }
     /**
-     * Test.
+     * Tests adding custom hook.
      */
     public function testHookControllerMethodName()
     {
