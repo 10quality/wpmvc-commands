@@ -15,7 +15,7 @@ class RegisterWidgetTest extends WpmvcAyucoTestCase
      */
     protected $path = FRAMEWORK_PATH.'/environment/app/Widgets/';
     /**
-     * Tests missing setname command error.
+     * Tests Widget registration.
      */
     public function test()
     {
@@ -28,7 +28,7 @@ class RegisterWidgetTest extends WpmvcAyucoTestCase
         $this->assertFileExists($filename);
     }
     /**
-     * Test.
+     * Tests Widget Duplication is avoided.
      */
     public function testPreventDuplicate()
     {
