@@ -15,7 +15,7 @@ class CreateViewTest extends WpmvcAyucoTestCase
      */
     protected $path = FRAMEWORK_PATH.'/environment/assets/views/test';
     /**
-     * Test.
+     * Tests View creation.
      */
     public function test()
     {
