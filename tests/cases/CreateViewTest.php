@@ -21,7 +21,7 @@ class CreateViewTest extends WpmvcAyucoTestCase
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/assets/views/test/test.php';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create view:test.test');
         // Assert
         $this->assertEquals('View created!', $execution);
