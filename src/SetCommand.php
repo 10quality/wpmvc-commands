@@ -43,6 +43,10 @@ class SetCommand extends Command
      */
     public function call($args = [])
     {
+        // Check for MVC configuration file
+        if (empty($this->configFilename))
+            throw new NoticeException('Command "'.$this->key.'": No configuration file found.');
+        
         if (count($args) == 0 || empty($args[2]))
             throw new NoticeException('Command "'.$this->key.'": Expecting a setting (version|domain|author).');
 
