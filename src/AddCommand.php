@@ -36,7 +36,7 @@ class AddCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'Adds WordPress hooks. i.e. ayuco add action:init AppController@init';
+    protected $description = 'Adds WordPress hooks, filters and shortcodes. Supported hooks are action|filter|shortcode. (e.g. ayuco add action:init AppController@init).';
 
     /**
      * Calls to command action.
