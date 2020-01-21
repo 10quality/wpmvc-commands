@@ -43,27 +43,29 @@ trait SetNamespaceTrait
             );
 
             // Update Namespace in Model files
-            foreach (scandir($this->rootPath.'/app/Models') as $filename) {
-                $this->replaceInFile( 
-                    'namespace ' . $currentnamespace,
-                    'namespace ' . $namespace,
-                    $this->rootPath.'/app/Models/' . $filename
-                );
-            }
+            if (is_dir($this->rootPath.'/app/Models')) 
+                foreach (scandir($this->rootPath.'/app/Models') as $filename) {
+                    $this->replaceInFile( 
+                        'namespace ' . $currentnamespace,
+                        'namespace ' . $namespace,
+                        $this->rootPath.'/app/Models/' . $filename
+                    );
+                }
 
             // Update Namespace in Controller files
-            foreach (scandir($this->config['paths']['controllers']) as $filename) {
-                $this->replaceInFile( 
-                    'namespace ' . $currentnamespace,
-                    'namespace ' . $namespace,
-                    $this->config['paths']['controllers'] . $filename
-                );
-                $this->replaceInFile( 
-                    'use ' . $currentnamespace,
-                    'use ' . $namespace,
-                    $this->config['paths']['controllers'] . $filename
-                );
-            }
+            if (is_dir($this->config['paths']['controllers'])) 
+                foreach (scandir($this->config['paths']['controllers']) as $filename) {
+                    $this->replaceInFile( 
+                        'namespace ' . $currentnamespace,
+                        'namespace ' . $namespace,
+                        $this->config['paths']['controllers'] . $filename
+                    );
+                    $this->replaceInFile( 
+                        'use ' . $currentnamespace,
+                        'use ' . $namespace,
+                        $this->config['paths']['controllers'] . $filename
+                    );
+                }
 
             // Print end
             $this->_print('Namespace updated!');
