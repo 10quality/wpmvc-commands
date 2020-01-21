@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.8
  */
 class SetNameCommand extends Command
 {
@@ -33,6 +33,7 @@ class SetNameCommand extends Command
     /**
      * Calls to command action.
      * @since 1.0.0
+     * @since 1.1.8 Use SetCommand in place of SetNameCommand.
      *
      * @param array $args Action arguments.
      */
@@ -41,13 +42,19 @@ class SetNameCommand extends Command
         if (count($args) == 0 || empty($args[2]))
             throw new NoticeException('Command "'.$this->key.'": Expecting a name.');
 
-        $this->setName($args[2]);
+        $command = $this->listener->get('set');
+        if (!$command)
+            throw new NoticeException('SetNameCommand: "set" command is not registered in ayuco.');
+
+        $namespace = empty($args[2]) ? 'MyApp' : str_replace(' ', '', ucwords($args[2]));
+        $command->setNamespace($namespace);
     }
 
     /**
      * Sets project name.
      * @since 1.0.0
      * @since 1.0.1 Added strtolower.
+     * @since 1.1.8 Deprecate setName.
      *
      * @param string $name Project name.
      */
@@ -56,45 +63,11 @@ class SetNameCommand extends Command
         if (empty($name))
             throw new NoticeException('Command "'.$this->key.'": No name given.');
 
-        // Checkfor MVC configuration file
-        if (empty($this->configFilename))
-            throw new NoticeException('Command "'.$this->key.'": No configuration file found.');
-        $currentname = $this->config['namespace'];
+        $command = $this->listener->get('set');
+        if (!$command)
+            throw new NoticeException('SetNameCommand: "set" command is not registered in ayuco.');
 
-        $this->replaceInFile($currentname, $name, $this->configFilename);
-        $this->config = include $this->configFilename;
-        if (file_exists($this->rootPath . '/app/Main.php'))
-            $this->replaceInFile( 
-                'namespace ' . $currentname,
-                'namespace ' . $name
-                , $this->rootPath.'/app/Main.php'
-            );
-
-        foreach (scandir($this->rootPath.'/app/Models') as $filename) {
-            $this->replaceInFile( 
-                'namespace ' . $currentname,
-                'namespace ' . $name,
-                $this->rootPath.'/app/Models/' . $filename
-            );
-        }
-
-        foreach (scandir($this->config['paths']['controllers']) as $filename) {
-            $this->replaceInFile( 
-                'namespace ' . $currentname,
-                'namespace ' . $name,
-                $this->config['paths']['controllers'] . $filename
-            );
-            $this->replaceInFile( 
-                'use ' . $currentname,
-                'use ' . $name,
-                $this->config['paths']['controllers'] . $filename
-            );
-        }
-
-        $this->_print('Namespace changed!');
-        $this->_lineBreak();
-
-        if (file_exists($this->rootPath . '/composer.json'))
-            exec( 'composer dump-autoload --no-plugins' );
+        $namespace = empty($name) ? 'MyApp' : str_replace(' ', '', ucwords($name));
+        $command->setNamespace($namespace);
     }
 }

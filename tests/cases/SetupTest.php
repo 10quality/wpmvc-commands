@@ -11,12 +11,12 @@
 class SetupTest extends AyucoTestCase
 {
     /**
-     * Tests missing setname command error.
+     * Tests missing set command error.
      */
     public function test()
     {
         $execution = exec('php '.WPMVC_AYUCO.' setup');
 
-        $this->assertEquals('SetupCommand: "setname" command is not registered in ayuco.', $execution);
+        $this->assertEquals('SetupCommand: "set" command is not registered in ayuco.', $execution);
     }
 }
