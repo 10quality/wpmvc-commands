@@ -33,7 +33,7 @@ class SetCommand extends Command
      * @since 1.0.4
      * @var string
      */
-    protected $description = 'Sets configuration and values in WordPress MVC.';
+    protected $description = 'Sets configuration and values in WordPress MVC. Supported settings are namespace|version|domain|author. (e.g. ayuco set version:1.0.0).';
 
     /**
      * Calls to command action.
