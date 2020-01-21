@@ -15,7 +15,7 @@ class PrinterTest extends WpmvcAyucoTestCase
      */
     protected $path = FRAMEWORK_PATH.'/environment/app/Controllers';
     /**
-     * Test.
+     * Tests action methods printed.
      */
     public function testPrintedMethods()
     {
@@ -33,7 +33,7 @@ class PrinterTest extends WpmvcAyucoTestCase
         $this->assertStringMatchContents('function added_user( $user_id, $result )', $controllerfile);
     }
     /**
-     * Test.
+     * Tests printed if while and for methods.
      */
     public function testPrintedIfWhileFor()
     {
@@ -51,7 +51,7 @@ class PrinterTest extends WpmvcAyucoTestCase
         $this->assertStringMatchContents('for ( $i; $i > 0; --$i )', $filename);
     }
     /**
-     * Test.
+     * Tests printed arrays.
      */
     public function testPrintedArrays()
     {
@@ -67,7 +67,7 @@ class PrinterTest extends WpmvcAyucoTestCase
         $this->assertStringMatchContents('$array2 = [ 5, 6, \'7\' ];', $filename);
     }
     /**
-     * Test.
+     * Tests printed empty arrays.
      */
     public function testPrintedEmptyArrays()
     {
