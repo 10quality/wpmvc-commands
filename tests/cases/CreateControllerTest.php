@@ -15,13 +15,13 @@ class CreateControllerTest extends WpmvcAyucoTestCase
      */
     protected $path = FRAMEWORK_PATH.'/environment/app/Controllers/';
     /**
-     * Test.
+     * Tests create controller command.
      */
     public function testCreateCommand()
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/app/Controllers/CreateController.php';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create controller:CreateController@yolo');
         // Assert
         $this->assertEquals('Controller created!', $execution);
@@ -29,13 +29,13 @@ class CreateControllerTest extends WpmvcAyucoTestCase
         $this->assertFileFunctionExists('yolo', $filename);
     }
     /**
-     * Test.
+     * Tests add action hook creates controller.
      */
     public function testAddHookCommand()
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/app/Controllers/ActionController.php';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' add action:init ActionController@init');
         // Assert
         $this->assertEquals('Controller created!', $execution);
@@ -43,13 +43,13 @@ class CreateControllerTest extends WpmvcAyucoTestCase
         $this->assertFileFunctionExists('init', $filename);
     }
     /**
-     * Test.
+     * Tests create controller w/ multiple methods.
      */
     public function testCreateCommandMultipleMethods()
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/app/Controllers/CreateController.php';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create controller:CreateController@yolo@init@twice');
         // Assert
         $this->assertEquals('Controller created!', $execution);
