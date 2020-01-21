@@ -11,6 +11,15 @@
 class SetNamespaceTest extends WpmvcAyucoTestCase
 {
     /**
+     * Retore to default namespace.
+     * @since 1.1.8
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        exec('php '.WPMVC_AYUCO.' set namespace:MyApp');
+    }
+    /**
      * Test resulting message.
      */
     public function testResultMessage()
@@ -19,8 +28,6 @@ class SetNamespaceTest extends WpmvcAyucoTestCase
         $execution = exec('php '.WPMVC_AYUCO.' set namespace:PHPUnit');
         // Assert
         $this->assertEquals($execution, 'Namespace updated!');
-        // Teardown
-        exec('php '.WPMVC_AYUCO.' set namespace:MyApp');
     }
     /**
      * Test Main app file updated.
@@ -33,7 +40,17 @@ class SetNamespaceTest extends WpmvcAyucoTestCase
         $execution = exec('php '.WPMVC_AYUCO.' set namespace:MainValue');
         // Assert
         $this->assertPregMatchContents('/namespace\sMainValue/', $filename);
-        // Teardown
-        exec('php '.WPMVC_AYUCO.' set namespace:MyApp');
+    }
+    /**
+     * Test composer file updated.
+     */
+    public function testComposerJson()
+    {
+        // Prepare
+        $filename = FRAMEWORK_PATH.'/environment/composer.json';
+        // Execute
+        $execution = exec('php '.WPMVC_AYUCO.' set namespace:ComposerValue');
+        // Assert
+        $this->assertPregMatchContents('/\"ComposerValue\\\\\\\"(|\s)\:(|\s)\"app/', $filename);
     }
 }

@@ -33,15 +33,15 @@ trait SetNamespaceTrait
             $currentnamespace = $this->config['namespace'];
             $this->replaceInFile($currentnamespace, $namespace, $this->configFilename);
             $this->config = include $this->configFilename;
-
+            // Update Namespace in composer.json
+            $this->replaceInFile($currentnamespace, $namespace, $this->rootPath.'/composer.json');
             // Update Namespace in Main app file
             if (file_exists($this->rootPath . '/app/Main.php'))
-            $this->replaceInFile( 
-                'namespace ' . $currentnamespace,
-                'namespace ' . $namespace,
-                $this->rootPath.'/app/Main.php'
-            );
-
+                $this->replaceInFile( 
+                    'namespace ' . $currentnamespace,
+                    'namespace ' . $namespace,
+                    $this->rootPath.'/app/Main.php'
+                );
             // Update Namespace in Model files
             if (is_dir($this->rootPath.'/app/Models')) 
                 foreach (scandir($this->rootPath.'/app/Models') as $filename) {
@@ -51,7 +51,6 @@ trait SetNamespaceTrait
                         $this->rootPath.'/app/Models/' . $filename
                     );
                 }
-
             // Update Namespace in Controller files
             if (is_dir($this->config['paths']['controllers'])) 
                 foreach (scandir($this->config['paths']['controllers']) as $filename) {
@@ -66,7 +65,6 @@ trait SetNamespaceTrait
                         $this->config['paths']['controllers'] . $filename
                     );
                 }
-
             // Print end
             $this->_print('Namespace updated!');
             $this->_lineBreak();
