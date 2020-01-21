@@ -2,13 +2,13 @@
 /**
  * Tests set namespace command.
  *
- * @author Alejandro Mostajo <http://about.me/amostajo>
- * @copyright 10Quality <http://www.10quality.com>
+ * @author Garrett Hyder <https://github.com/garretthyder>
+ * @copyright 10 Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.0
+ * @version 1.1.8
  */
-class SetNamespaceTest extends AyucoTestCase
+class SetNamespaceTest extends WpmvcAyucoTestCase
 {
     /**
      * Test resulting message.
@@ -32,7 +32,7 @@ class SetNamespaceTest extends AyucoTestCase
         // Execute
         $execution = exec('php '.WPMVC_AYUCO.' set namespace:MainValue');
         // Assert
-        $this->assertPregMatchContents('/namespace\sMainValue;/', $filename);
+        $this->assertPregMatchContents('/namespace\sMainValue/', $filename);
         // Teardown
         exec('php '.WPMVC_AYUCO.' set namespace:MyApp');
     }

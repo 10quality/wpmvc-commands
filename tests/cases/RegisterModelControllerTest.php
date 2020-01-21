@@ -20,6 +20,8 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
         FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/car/',
         FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/',
         FRAMEWORK_PATH.'/environment/assets/views/admin/',
+        FRAMEWORK_PATH.'/environment/assets/views/',
+        FRAMEWORK_PATH.'/environment/assets/',
     ];
     /**
      * Tests Posttype Model Registration with Autonaming.

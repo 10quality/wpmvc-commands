@@ -6,14 +6,18 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.8
  */
 class CreateViewTest extends WpmvcAyucoTestCase
 {
     /**
      * Tests path.
      */
-    protected $path = FRAMEWORK_PATH.'/environment/assets/views/test';
+    protected $path = [
+        FRAMEWORK_PATH.'/environment/assets/views/test/',
+        FRAMEWORK_PATH.'/environment/assets/views/',
+        FRAMEWORK_PATH.'/environment/assets',
+    ];
     /**
      * Tests View creation.
      */

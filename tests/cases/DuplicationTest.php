@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.8
  */
 class DuplicationTest extends WpmvcAyucoTestCase
 {
@@ -83,7 +83,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
         $filename = TESTING_PATH . '/app/Main.php';
         $dir = TESTING_PATH . '/assets/js/';
         // Execure
-        if (!is_dir($dir)) mkdir($dir);
+        if (!is_dir($dir)) mkdir($dir, 0777, true);
         file_put_contents(TESTING_PATH . '/assets/js/test.js', '// None');
         exec('php '.WPMVC_AYUCO.' register asset:js/test.js');
         $execution = exec('php '.WPMVC_AYUCO.' register asset:js/test.js');

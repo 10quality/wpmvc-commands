@@ -59,7 +59,7 @@ trait CreateViewTrait
                     // Directory check
                     $path .= '/'.$views[$i];
                     if (!is_dir($path))
-                        mkdir($path);
+                        mkdir($path, 0777, true);
                 }
             }
         } catch (Exception $e) {

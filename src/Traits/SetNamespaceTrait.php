@@ -71,7 +71,7 @@ trait SetNamespaceTrait
 
             // Dump Composer Autoload
             if (file_exists($this->rootPath . '/composer.json'))
-                exec( 'composer dump-autoload' );
+                exec( 'composer dump-autoload --no-plugins' );
         } catch (Exception $e) {
             file_put_contents(
                 $this->rootPath.'/error_log',

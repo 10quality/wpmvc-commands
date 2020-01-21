@@ -11,7 +11,7 @@ use Exception;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.8
  */
 trait CreateAssetTrait
 {
@@ -29,7 +29,7 @@ trait CreateAssetTrait
             // Prepare assets
             $path = $this->rootPath.'/assets/raw';
             if (!is_dir($path))
-                mkdir($path);
+                mkdir($path, 0777, true);
             // Check type
             switch ($type) {
                 case 'js':
