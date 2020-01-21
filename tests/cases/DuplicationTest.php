@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.8
  */
 class DuplicationTest extends WpmvcAyucoTestCase
 {
@@ -19,7 +19,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
         TESTING_PATH.'/assets/js/',
     ];
     /**
-     * Test.
+     * Tests duplicating controllers.
      */
     public function testControllers()
     {
@@ -33,7 +33,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
         $this->assertPregMatchCount(1, '/function(|\s)yolo(|\s)\(/', $filename);
     }
     /**
-     * Test.
+     * Tests duplicating Main.php add hook.
      */
     public function testMainAddCommand()
     {
@@ -47,7 +47,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
         $this->assertPregMatchCount(1, '/add_action\((|\s)\'init\'\,\s\'DuplicateController@init\'/', $filename);
     }
     /**
-     * Test.
+     * Tests duplicating Main.php register posttype.
      */
     public function testMainRegisterTypeCommand()
     {
@@ -61,7 +61,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
         $this->assertPregMatchCount(1, '/add_model\((|\s)\'Book\'/', $filename);
     }
     /**
-     * Test.
+     * Tests duplicating Main.php register Model.
      */
     public function testMainRegisterModelCommand()
     {
@@ -75,7 +75,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
         $this->assertPregMatchCount(1, '/add_model\((|\s)\'Rocket\'/', $filename);
     }
     /**
-     * Test.
+     * Tests duplicating Main.php register Asset.
      */
     public function testMainRegisterAssetCommand()
     {
@@ -83,7 +83,7 @@ class DuplicationTest extends WpmvcAyucoTestCase
         $filename = TESTING_PATH . '/app/Main.php';
         $dir = TESTING_PATH . '/assets/js/';
         // Execure
-        if (!is_dir($dir)) mkdir($dir);
+        if (!is_dir($dir)) mkdir($dir, 0777, true);
         file_put_contents(TESTING_PATH . '/assets/js/test.js', '// None');
         exec('php '.WPMVC_AYUCO.' register asset:js/test.js');
         $execution = exec('php '.WPMVC_AYUCO.' register asset:js/test.js');

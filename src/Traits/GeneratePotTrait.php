@@ -14,7 +14,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.8
  */
 trait GeneratePotTrait
 {
@@ -63,7 +63,7 @@ trait GeneratePotTrait
             // Write pot file
             $filename = $this->config['localize']['path'].$textdomain.'.pot';
             if (!is_dir($this->config['localize']['path']))
-                mkdir($this->config['localize']['path']);
+                mkdir($this->config['localize']['path'], 0777, true);
             if (file_exists($filename))
                 unlink($filename);
             file_put_contents($filename,implode("\n", $pot));

@@ -21,26 +21,26 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         FRAMEWORK_PATH.'/environment/assets/raw',
     ];
     /**
-     * Test.
+     * Tests javascript asset creation.
      */
     public function testJs()
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/assets/raw/js/yolo.js';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create js:yolo');
         // Assert
         $this->assertEquals('js asset created!', $execution);
         $this->assertFileExists($filename);
     }
     /**
-     * Test.
+     * Tests jquery asset creation.
      */
     public function testJsJquery()
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/assets/raw/js/jquery.yolo.js';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create js:jquery.yolo jquery');
         // Assert
         $this->assertEquals('js asset created!', $execution);
@@ -48,26 +48,26 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertPregMatchContents('/jQuery/', $filename);
     }
     /**
-     * Test.
+     * Tests css asset creation.
      */
     public function testCss()
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/assets/raw/css/yolo.css';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create css:yolo');
         // Assert
         $this->assertEquals('css asset created!', $execution);
         $this->assertFileExists($filename);
     }
     /**
-     * Test.
+     * Tests sass master asset creation.
      */
     public function testSassMaster()
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/assets/raw/sass/styles.scss';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create sass:styles');
         // Assert
         $this->assertEquals('scss asset created!', $execution);
@@ -75,14 +75,14 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertPregMatchContents('/master/', $filename);
     }
     /**
-     * Test.
+     * Tests sass partial asset creation.
      */
     public function testSassPart()
     {
         // Prepare
         $masterfile = FRAMEWORK_PATH.'/environment/assets/raw/sass/main.scss';
         $partfile = FRAMEWORK_PATH.'/environment/assets/raw/sass/parts/_theme.scss';
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' create sass:theme main');
         // Assert
         $this->assertEquals('scss asset created!', $execution);
@@ -92,7 +92,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertPregMatchContents('/\@import(|\s)\\\'parts\/theme\\\'\;/', $masterfile);
     }
     /**
-     * Test.
+     * Tests sass master and partials asset creation.
      */
     public function testSassMasterAndParts()
     {
@@ -100,7 +100,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $masterfile = FRAMEWORK_PATH.'/environment/assets/raw/sass/theme.scss';
         $part1file = FRAMEWORK_PATH.'/environment/assets/raw/sass/parts/_header.scss';
         $part2file = FRAMEWORK_PATH.'/environment/assets/raw/sass/parts/_footer.scss';
-        // Execure
+        // Execute
         exec('php '.WPMVC_AYUCO.' create sass:theme');
         exec('php '.WPMVC_AYUCO.' create sass:header theme');
         $execution = exec('php '.WPMVC_AYUCO.' create sass:footer theme');
@@ -113,13 +113,13 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertPregMatchContents('/\@import(|\s)\\\'parts\/footer\\\'\;/', $masterfile);
     }
     /**
-     * Test.
+     * Tests sass gitignore update.
      */
     public function testSassGitignore()
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/.gitignore';
-        // Execure
+        // Execute
         exec('php '.WPMVC_AYUCO.' create sass:theme');
         // Assert
         $this->assertFileExists($filename);
@@ -127,11 +127,11 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         unlink($filename);
     }
     /**
-     * Test.
+     * Tests asset registration prevention.
      */
     public function testPreventAssetRegistration()
     {
-        // Execure
+        // Execute
         $execution = exec('php '.WPMVC_AYUCO.' register asset:css/test.css');
         // Assert
         $this->assertEquals('Asset doesn\'t exist!', $execution);

@@ -2,6 +2,7 @@
 
 namespace WPMVC\Commands;
 
+use WPMVC\Commands\Traits\SetNamespaceTrait;
 use WPMVC\Commands\Traits\SetVersionTrait;
 use WPMVC\Commands\Traits\SetTextDomainTrait;
 use WPMVC\Commands\Traits\SetAuthorTrait;
@@ -19,7 +20,7 @@ use Ayuco\Exceptions\NoticeException;
  */
 class SetCommand extends Command
 {
-    use SetVersionTrait, SetTextDomainTrait, SetAuthorTrait;
+    use SetNamespaceTrait, SetVersionTrait, SetTextDomainTrait, SetAuthorTrait;
 
     /**
      * Command key.
@@ -48,15 +49,21 @@ class SetCommand extends Command
             throw new NoticeException('Command "'.$this->key.'": No configuration file found.');
         
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting a setting (version|domain|author).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting a setting (namespace|version|domain|author).');
 
         $object = explode(':', $args[2]);
 
         // Validations
-        if (!in_array($object[0], ['version','domain','author']))
-            throw new NoticeException('Command "'.$this->key.'": Invalid setting. Expecting (version|domain|author).');
+        if (!in_array($object[0], ['namespace','version','domain','author']))
+            throw new NoticeException('Command "'.$this->key.'": Invalid setting. Expecting (namespace|version|domain|author).');
 
         switch ($object[0]) {
+            case 'namespace':
+                // Validate second parameter
+                if ($object[0] === 'domain' && !isset($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": Expecting a namespace.');
+                $this->setNamespace($object[1]);
+                break;
             case 'version':
                 // Validate second parameter
                 if ($object[0] === 'version' && !isset($object[1]))

@@ -11,6 +11,8 @@ define('ENV_PATH', __DIR__.'/environments');
 define('WPMVC_AYUCO', FRAMEWORK_PATH.'/environment/ayuco');
 define('TESTING_PATH', __DIR__.'/environment');
 // Delete existing main
+if (!is_dir(TESTING_PATH.'/app/'))
+  mkdir(TESTING_PATH.'/app/');
 $candidate = TESTING_PATH.'/app/Main.php';
 if (file_exists($candidate))
     unlink($candidate);
@@ -28,6 +30,9 @@ if (file_exists($candidate))
 file_put_contents($candidate, '{
   "name": "wpmvc/my-app",
   "autoload":{
+    "psr-4": {
+      "MyApp\\\\": "app"
+    }
   }
 }');
 // package.json
@@ -42,3 +47,25 @@ file_put_contents($candidate, '{
     "gulp-wpmvc": "^1.0.*"
   }
 }');
+// package.json
+if (!is_dir(TESTING_PATH.'/app/Config/'))
+  mkdir(TESTING_PATH.'/app/Config/');
+$candidate = TESTING_PATH.'/app/Config/app.php';
+if (file_exists($candidate))
+    unlink($candidate);
+file_put_contents($candidate, '<?php
+return [
+    \'namespace\' => \'MyApp\',
+    \'type\' => \'theme\',
+    \'version\' => \'1.0.0\',
+    \'author\' => \'Developer <developer@wpmvc>\',
+    \'paths\' => [
+        \'base\'          => __DIR__ . \'/../\',
+        \'controllers\'   => __DIR__ . \'/../Controllers/\',
+        \'views\'         => __DIR__ . \'/../../assets/views/\',
+    ],
+    \'localize\' => [
+        \'textdomain\'    => \'my-app\',
+        \'path\'          => __DIR__ . \'/../../assets/lang/\',
+    ],
+];');

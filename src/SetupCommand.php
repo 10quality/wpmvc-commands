@@ -13,7 +13,7 @@ use WPMVC\Commands\Traits\UpdateCommentTrait;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.8
  */
 class SetupCommand extends Command
 {
@@ -35,6 +35,7 @@ class SetupCommand extends Command
     /**
      * Calls to command action.
      * @since 1.0.0
+     * @since 1.1.8 Replace 'setname' command with 'set name' command.
      *
      * @param array $args Action arguments.
      */
@@ -44,13 +45,10 @@ class SetupCommand extends Command
         if (empty($this->configFilename))
             throw new NoticeException('Command "'.$this->key.'": No configuration file found.');
         
-        $command = $this->listener->get('setname');
-        $setCommand = $this->listener->get('set');
+        $command = $this->listener->get('set');
         if (!$command)
-            throw new NoticeException('SetupCommand: "setname" command is not registered in ayuco.');
-        if (!$setCommand)
             throw new NoticeException('SetupCommand: "set" command is not registered in ayuco.');
-            
+
         try {
             $this->_print('------------------------------');
             $this->_lineBreak();
@@ -63,7 +61,7 @@ class SetupCommand extends Command
             $this->_lineBreak();
             $namespace = $this->listener->getInput();
             $namespace = empty($namespace) ? 'MyApp' : str_replace(' ', '', ucwords($namespace));
-            $command->setName($namespace);
+            $command->setNamespace($namespace);
             // TYPE
             $this->_print('------------------------------');
             $this->_lineBreak();
@@ -78,9 +76,9 @@ class SetupCommand extends Command
             $this->_lineBreak();
             $domain = $this->listener->getInput();
             $domain = empty($domain) ? 'my-app' : $domain;
-            $setCommand->setTextDomain(empty($domain) ? 'my-app' : $domain);
+            $command->setTextDomain(empty($domain) ? 'my-app' : $domain);
             // AUTHOR
-            $setCommand->setAuthor();
+            $command->setAuthor();
             $this->config = include $this->configFilename;
             // Update main
             $this->updateComment('author', $this->config['author'], $this->getMainClassPath());

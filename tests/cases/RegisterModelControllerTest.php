@@ -20,9 +20,11 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
         FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/car/',
         FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/',
         FRAMEWORK_PATH.'/environment/assets/views/admin/',
+        FRAMEWORK_PATH.'/environment/assets/views/',
+        FRAMEWORK_PATH.'/environment/assets/',
     ];
     /**
-     * Test.
+     * Tests Posttype Model Registration with Autonaming.
      */
     public function testRegisterAutoModelName()
     {
@@ -37,7 +39,7 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
         $this->assertFileVariableExists('aliases', $filename);
     }
     /**
-     * Test.
+     * Tests Posttype Model Registration with custom name.
      */
     public function testRegisterCustomModel()
     {
@@ -51,7 +53,7 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
         $this->assertFileVariableExists('type', $filename, 'book');
     }
     /**
-     * Test.
+     * Tests Posttype Model Registration with Controller.
      */
     public function testRegisterWithController()
     {
@@ -71,7 +73,7 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
         $this->assertFileVariableExists('model', $controllerfile);
     }
     /**
-     * Test.
+     * Tests Model registration.
      */
     public function testRegisterModel()
     {
