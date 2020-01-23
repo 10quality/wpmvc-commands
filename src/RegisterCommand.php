@@ -38,7 +38,7 @@ class RegisterCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'Registers snippets and post types. i.e. ayuco register widget:MyWidget.';
+    protected $description = 'Registers objects and assets. Supported objects are widget|type|model|asset. (e.g. ayuco register widget:MyWidget).';
 
     /**
      * Calls to command action.

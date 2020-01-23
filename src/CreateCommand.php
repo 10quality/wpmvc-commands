@@ -36,7 +36,7 @@ class CreateCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'Creates models, views and controllers. i.e. ayuco create view:posts.metabox';
+    protected $description = 'Creates models, views, controllers and assets. Supported object types are view|controller|model|postmodel|optionmodel|usermodel|termmodel|js|css|sass. (e.g. ayuco create view:posts.metabox).';
 
     /**
      * Calls to command action.
