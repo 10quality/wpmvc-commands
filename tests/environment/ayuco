@@ -4,7 +4,6 @@
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use Ayuco\Listener;
-use WPMVC\Commands\SetNameCommand;
 use WPMVC\Commands\SetupCommand;
 use WPMVC\Commands\RegisterCommand;
 use WPMVC\Commands\CreateCommand;
