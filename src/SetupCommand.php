@@ -41,6 +41,10 @@ class SetupCommand extends Command
      */
     public function call($args = [])
     {
+        // Check for MVC configuration file
+        if (empty($this->configFilename))
+            throw new NoticeException('Command "'.$this->key.'": No configuration file found.');
+        
         $command = $this->listener->get('set');
         if (!$command)
             throw new NoticeException('SetupCommand: "set" command is not registered in ayuco.');
