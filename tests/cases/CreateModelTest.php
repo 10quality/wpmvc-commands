@@ -82,4 +82,29 @@ class CreateModelTest extends WpmvcAyucoTestCase
         $this->assertFileExists($filename);
         $this->assertFileVariableExists('model_taxonomy', $filename, 'custom_tax');
     }
+    /**
+     * Tests default coments.
+     */
+    public function testDefaultComments()
+    {
+        // Prepare
+        $filename = FRAMEWORK_PATH.'/environment/app/Models/DefaultComment.php';
+        // Execure
+        exec('php '.WPMVC_AYUCO.' create model:DefaultComment');
+        // Assert
+        $this->assertPregMatchContents('/\*\sDefaultComment\smodel\./', $filename);
+    }
+    /**
+     * Tests coments.
+     */
+    public function testComments()
+    {
+        // Prepare
+        $filename = FRAMEWORK_PATH.'/environment/app/Models/Comment.php';
+        // Execure
+        exec('php '.WPMVC_AYUCO.' create model:Comment --comment="Model comment phpunit"');
+        // Assert
+        $this->assertPregMatchContents('/\*\sModel\scomment\sphpunit/', $filename);
+        $this->assertNotPregMatchContents('/\*\sComment\smodel\./', $filename);
+    }
 }

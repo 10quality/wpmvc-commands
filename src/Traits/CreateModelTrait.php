@@ -41,7 +41,7 @@ trait CreateModelTrait
                 file_put_contents(
                     $filename,
                     preg_replace(
-                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/', '/\{4\}/', '/\{5\}/', '/\{6\}/'],
+                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/', '/\{4\}/', '/\{5\}/', '/\{6\}/', '/\{7\}/'],
                         [
                             $this->config['namespace'],
                             $type,
@@ -50,6 +50,7 @@ trait CreateModelTrait
                             array_key_exists('author', $this->config) ? $this->config['author'] : '',
                             $this->config['localize']['textdomain'],
                             $this->config['version'],
+                            array_key_exists('comment', $this->options) ? $this->options['comment'] : $name . ' model.',
                         ],
                         $this->getTemplate('model.php')
                     )
@@ -86,6 +87,7 @@ trait CreateModelTrait
         $filename = $this->rootPath.'/app/Models/'.$model.'.php';
         if (!$this->existsFunctionIn($filename, $method)) {
             try {
+                $this->config['_options'] = $this->options;
                 $builder = Builder::parser($filename);
                 $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
                 $builder->build();
@@ -121,6 +123,7 @@ trait CreateModelTrait
         $filename = $this->rootPath.'/app/Models/'.$model.'.php';
         if (!$this->existsPropertyIn($filename, $property, $type)) {
             try {
+                $this->config['_options'] = $this->options;
                 $builder = Builder::parser($filename);
                 $builder->addVisitor(new AddClassPropertyVisitor($this->config, $property, $value, $type, $comment));
                 $builder->build();

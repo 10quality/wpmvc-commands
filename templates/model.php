@@ -6,7 +6,7 @@ use WPMVC\MVC\Traits\{3};
 use WPMVC\MVC\Models\{1} as Model;
 
 /**
- * {2} model.
+ * {7}
  * WordPress MVC model.
  *
  * @author {4}
