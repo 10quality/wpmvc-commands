@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.9
  */
 class PrinterTest extends WpmvcAyucoTestCase
 {
@@ -81,5 +81,92 @@ class PrinterTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertStringMatchContents('$array = array();', $filename);
         $this->assertStringMatchContents('$array2 = [];', $filename);
+    }
+    /**
+     * Tests printed not lengthy arrays.
+     */
+    public function testPrintedNotLengthyArrays()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { public $artu=['
+            .'\'id\'=>5,\'name\'=>\'Artu\','
+            .']; }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertStringMatchContents('$artu = [ \'id\' => 5, \'name\' => \'Artu\' ]', $filename);
+    }
+    /**
+     * Tests printed lengthy arrays.
+     */
+    public function testPrintedLengthyArrays()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { public $artu=['
+            .'\'id\'=>5,'
+            .'\'name\'=>\'Artu\','
+            .'\'fullname\'=>\'Amazing artu the printed test.\','
+            .'\'lastnae\'=>\'Amazing artu the printed test.\','
+            .'\'address\'=>\'Amazing artu the printed test.\','
+            .'\'location\'=>\'Amazing artu the printed test.\','
+            .']; }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertNotStringMatchContents('$artu = [ \'id\' => 5, \'name\'', $filename);
+    }
+    /**
+     * Tests printed not lengthy arrays.
+     */
+    public function testPrintedNotLengthySubArrays()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { public $artu=['
+            .'\'id\'=>5,'
+            .'\'name\'=>\'Artu\','
+            .'\'fullname\'=>\'Amazing artu the printed test.\','
+            .'\'lastnae\'=>\'Amazing artu the printed test.\','
+            .'\'address\'=>\'Amazing artu the printed test.\','
+            .'\'sub\'=>[\'id\'=>7,\'name\'=>\'James\'],'
+            .']; }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertStringMatchContents('\'sub\' => [ \'id\' => 7, \'name\' => \'James\' ]', $filename);
+    }
+    /**
+     * Tests printed lengthy arrays.
+     */
+    public function testPrintedLengthySubArrays()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { public $artu=['
+            .'\'id\'=>5,'
+            .'\'name\'=>\'Artu\','
+            .'\'fullname\'=>\'Amazing artu the printed test.\','
+            .'\'lastnae\'=>\'Amazing artu the printed test.\','
+            .'\'address\'=>\'Amazing artu the printed test.\','
+            .'\'sub\'=>[\'id\'=>7,\'name\'=>\'James\','
+                .'\'fullname\'=>\'Amazing artu the printed test.\','
+                .'\'lastnae\'=>\'Amazing artu the printed test.\','
+                .'\'address\'=>\'Amazing artu the printed test.\','
+                .'],'
+            .']; }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertNotStringMatchContents('\'sub\' => [ \'id\' => 7, \'name\' => \'James\' ]', $filename);
     }
 }

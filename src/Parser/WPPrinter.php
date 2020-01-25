@@ -19,7 +19,7 @@ use PhpParser\Node\Stmt;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.9
  */
 class WPPrinter extends Printer
 {
@@ -113,7 +113,7 @@ class WPPrinter extends Printer
      */
     protected function pStmt_ElseIf(Stmt\ElseIf_ $node)
     {
-        return 'elseif ( ' . $this->p($node->cond) . ' ) {'
+        return 'else if ( ' . $this->p($node->cond) . ' ) {'
              . $this->pStmts($node->stmts) . $this->nl . '}';
     }
     /**
@@ -250,12 +250,18 @@ class WPPrinter extends Printer
      */
     protected function pExpr_Array(Expr\Array_ $node)
     {
+        //return (string)$this->hasReachedLineLength($node->items);
+        
         $syntax = $node->getAttribute('kind',
             $this->options['shortArraySyntax'] ? Expr\Array_::KIND_SHORT : Expr\Array_::KIND_LONG);
         if ($syntax === Expr\Array_::KIND_SHORT) {
-            return '[' . (count($node->items) ? ' ' : '') . $this->pMaybeMultiline($node->items, true) . (count($node->items) ? ' ' : '') . ']';
+            return '[' . (count($node->items) === 0 || $this->hasReachedLineLength($node->items) ? '' : ' ')
+                . $this->pMaybeMultiline($node->items, true)
+                . (count($node->items) === 0 || $this->hasReachedLineLength($node->items) ? '' : ' ') . ']';
         } else {
-            return 'array(' . (count($node->items) ? ' ' : '') . $this->pMaybeMultiline($node->items, true) . (count($node->items) ? ' ' : '') . ')';
+            return 'array(' . (count($node->items) === 0 || $this->hasReachedLineLength($node->items) ? '' : ' ')
+                . $this->pMaybeMultiline($node->items, true)
+                . (count($node->items) === 0 || $this->hasReachedLineLength($node->items) ? '' : ' ') . ')';
         }
     }
     /**
@@ -452,7 +458,8 @@ class WPPrinter extends Printer
      * 
      * @see \PhpParser\PrettyPrinter\Standard@hasNodeWithComments
      */
-    private function hasNodeWithComments(array $nodes) {
+    private function hasNodeWithComments(array $nodes)
+    {
         foreach ($nodes as $node) {
             if ($node && $node->getComments()) {
                 return true;
@@ -468,10 +475,32 @@ class WPPrinter extends Printer
      */
     private function pMaybeMultiline(array $nodes, $trailingComma = false)
     {
-        if (!$this->hasNodeWithComments($nodes)) {
+        if (!$this->hasReachedLineLength($nodes) && !$this->hasNodeWithComments($nodes)) {
             return $this->pCommaSeparated($nodes);
         } else {
             return $this->pCommaSeparatedMultiline($nodes, $trailingComma) . $this->nl;
         }
+    }
+    /**
+     * Returns flag indicating an array of nodes concatenated reachs the line length permitted.
+     * @since 1.1.9
+     * 
+     * @param array $nodes
+     * @param int   $allowed Allowed line length.
+     * 
+     * @return bool
+     */
+    private function hasReachedLineLength(array $nodes, $allowed = 60)
+    {
+        if (count($nodes) <= 2)
+            return false;
+        $string = '';
+        foreach ($nodes as $node) {
+            $string .= $this->p($node);
+            if (strlen($string) > $allowed) {
+                return true;
+            }
+        }
+        return false;
     }
 }

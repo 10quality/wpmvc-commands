@@ -169,4 +169,24 @@ class WpmvcAyucoTestCase extends AyucoTestCase
             $message
         );
     }
+    /**
+     * Asserts if a string DO NOT matches inside file contents.
+     * @since 1.1.9
+     *
+     * @param string $string   String to search for.
+     * @param string $filename Fulename
+     * @param string $message  PHPUNIT message.
+     *
+     * @throws \PHPUnit\Framework\AssertionFailedError
+     */
+    public function assertNotStringMatchContents($string, $filename, $message = 'Failed asserting matching contents.')
+    {
+        if (!is_file($filename))
+            throw new AssertionFailedError('Filename doesn\'t exists');
+        self::assertThat(
+            strpos(file_get_contents($filename), $string) === false,
+            self::isTrue(),
+            $message
+        );
+    }
 }
