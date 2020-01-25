@@ -274,4 +274,25 @@ class PrinterTest extends WpmvcAyucoTestCase
         $this->assertStringMatchContents('while (', $filename);
         $this->assertNotStringMatchContents('( $id1 === true && $id_name_2 === true', $filename);
     }
+    /**
+     * Tests printed lengthy nested conditions.
+     */
+    public function testPrintedLengthyNestedCon()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { function test() { if ('
+            .'$id1 === true'
+            .'&& ($id_name_2 === true'
+            .'&& $id_name_3 === true'
+            .'&& $id_name_4 === true'
+            .'&& $id_name_5 === $id_name_2'
+            .')) return; } }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertNotStringMatchContents('( $id_name_2 === true && $id_name_3 === true', $filename);
+    }
 }

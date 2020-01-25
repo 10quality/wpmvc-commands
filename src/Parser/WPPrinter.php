@@ -444,7 +444,7 @@ class WPPrinter extends Printer
      * 
      * @param mixed $mod Modification parameter.
      */
-    protected function pPrec(\PhpParser\Node $node, int $parentPrecedence, int $parentAssociativity, int $childPosition, $mod = false) : string
+    protected function pPrec(\PhpParser\Node $node, int $parentPrecedence, int $parentAssociativity, int $childPosition, $mod = false, $level = 1) : string
     {
         $class = \get_class($node);
         if (isset($this->precedenceMap[$class])) {
@@ -452,10 +452,15 @@ class WPPrinter extends Printer
             if ($childPrecedence > $parentPrecedence
                 || ($parentPrecedence === $childPrecedence && $parentAssociativity !== $childPosition)
             ) {
-                return '( ' . $this->p($node) . ' )';
+                $indent = '';
+                for ($i = $level-1; $i >= 0; --$i) {
+                    $indent .= '    ';
+                }
+                $level++;
+                return '( ' . $this->p($node, false, $mod, $level) . ($mod === 'nl' ? $this->nl.$indent : ' ') . ')';
             }
         }
-        return $this->p($node, false, $mod);
+        return $this->p($node, false, $mod, $level);
     }
     /**
      * Overrride parent method.
@@ -465,10 +470,10 @@ class WPPrinter extends Printer
      * 
      * @param mixed $mod Modification parameter.
      */
-    protected function p(Node $node, $parentFormatPreserved = false, $mod = false) : string
+    protected function p(Node $node, $parentFormatPreserved = false, $mod = false, $level = 1) : string
     {
         if (!$this->origTokens && $mod !== false) {
-            return $this->{'p' . $node->getType()}($node, $mod);
+            return $this->{'p' . $node->getType()}($node, $mod, $level);
         }
         return parent::p($node, $parentFormatPreserved);
     }
@@ -480,12 +485,12 @@ class WPPrinter extends Printer
      * 
      * @param mixed $mod Modification parameter.
      */
-    protected function pInfixOp(string $class, Node $leftNode, string $operatorString, Node $rightNode, $mod = false) : string {
+    protected function pInfixOp(string $class, Node $leftNode, string $operatorString, Node $rightNode, $mod = false, $level = 1) : string {
         list($precedence, $associativity) = $this->precedenceMap[$class];
 
-        return $this->pPrec($leftNode, $precedence, $associativity, -1, $mod)
+        return $this->pPrec($leftNode, $precedence, $associativity, -1, $mod, $level)
              . $operatorString
-             . $this->pPrec($rightNode, $precedence, $associativity, 1, $mod);
+             . $this->pPrec($rightNode, $precedence, $associativity, 1, $mod, $level);
     }
     /**
      * Overrride parent method.
@@ -495,9 +500,13 @@ class WPPrinter extends Printer
      * 
      * @param mixed $mod Modification parameter.
      */
-    protected function pExpr_BinaryOp_BooleanAnd(BinaryOp\BooleanAnd $node, $mod = false)
+    protected function pExpr_BinaryOp_BooleanAnd(BinaryOp\BooleanAnd $node, $mod = false, $level = 1)
     {
-        return $this->pInfixOp(BinaryOp\BooleanAnd::class, $node->left, ($mod === 'nl' ? $this->nl.'    ' : ' ').'&& ', $node->right, $mod);
+        $indent = '';
+        for ($i = $level-1; $i >= 0; --$i) {
+            $indent .= '    ';
+        }
+        return $this->pInfixOp(BinaryOp\BooleanAnd::class, $node->left, ($mod === 'nl' ? $this->nl.$indent : ' ').'&& ', $node->right, $mod, $level);
     }
     /**
      * Overrride parent method.
@@ -507,9 +516,13 @@ class WPPrinter extends Printer
      * 
      * @param mixed $mod Modification parameter.
      */
-    protected function pExpr_BinaryOp_BooleanOr(BinaryOp\BooleanOr $node, $mod = false)
+    protected function pExpr_BinaryOp_BooleanOr(BinaryOp\BooleanOr $node, $mod = false, $level = 1)
     {
-        return $this->pInfixOp(BinaryOp\BooleanOr::class, $node->left, ($mod === 'nl' ? $this->nl.'    ' : ' ').'|| ', $node->right, $mod);
+        $indent = '';
+        for ($i = $level-1; $i >= 0; --$i) {
+            $indent .= '    ';
+        }
+        return $this->pInfixOp(BinaryOp\BooleanOr::class, $node->left, ($mod === 'nl' ? $this->nl.$indent : ' ').'|| ', $node->right, $mod, $level);
     }
     /**
      * Overrride parent method.
