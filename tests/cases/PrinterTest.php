@@ -169,4 +169,43 @@ class PrinterTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertNotStringMatchContents('\'sub\' => [ \'id\' => 7, \'name\' => \'James\' ]', $filename);
     }
+    /**
+     * Tests printed not lengthy if conditions.
+     */
+    public function testPrintedNotLengthyIfCon()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { function test() { if ('
+            .'$id1 === true'
+            .'&& $id_name_2 === true'
+            .') return; } }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertStringMatchContents('( $id1 === true && $id_name_2 === true )', $filename);
+    }
+    /**
+     * Tests printed lengthy if conditions.
+     */
+    public function testPrintedLengthyIfCon()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { function test() { if ('
+            .'$id1 === true'
+            .'&& $id_name_2 === true'
+            .'&& $id_name_3 === true'
+            .'&& $id_name_4 === true'
+            .'&& $id_name_5 === $id_name_2'
+            .') return; } }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertNotStringMatchContents('( $id1 === true && $id_name_2 === true', $filename);
+    }
 }

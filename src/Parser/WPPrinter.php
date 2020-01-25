@@ -6,6 +6,7 @@ use PhpParser\PrettyPrinter\Standard as Printer;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Cast;
+use PhpParser\Node\Expr\BinaryOp;
 use PhpParser\Node\Stmt;
 
 /**
@@ -124,7 +125,8 @@ class WPPrinter extends Printer
      */
     protected function pStmt_If(Stmt\If_ $node)
     {
-        return 'if ( ' . $this->p($node->cond) . ' ) {'
+        $multiline = $this->hasNodeReachedLineLength($node->cond);
+        return 'if ( ' . $this->p($node->cond, false, $multiline ? 'nl' : '') . ($multiline ? $this->nl : ' ') . ') {'
              . $this->pStmts($node->stmts) . $this->nl . '}'
              . ($node->elseifs ? ' ' . $this->pImplode($node->elseifs, ' ') : '')
              . (null !== $node->else ? ' ' . $this->p($node->else) : '');
@@ -250,8 +252,6 @@ class WPPrinter extends Printer
      */
     protected function pExpr_Array(Expr\Array_ $node)
     {
-        //return (string)$this->hasReachedLineLength($node->items);
-        
         $syntax = $node->getAttribute('kind',
             $this->options['shortArraySyntax'] ? Expr\Array_::KIND_SHORT : Expr\Array_::KIND_LONG);
         if ($syntax === Expr\Array_::KIND_SHORT) {
@@ -438,8 +438,10 @@ class WPPrinter extends Printer
      * @since 1.1.7
      * 
      * @see \PhpParser\PrettyPrinterAbstract@pPrec
+     * 
+     * @param mixed $mod Modification parameter.
      */
-    protected function pPrec(\PhpParser\Node $node, int $parentPrecedence, int $parentAssociativity, int $childPosition) : string
+    protected function pPrec(\PhpParser\Node $node, int $parentPrecedence, int $parentAssociativity, int $childPosition, $mod = false) : string
     {
         $class = \get_class($node);
         if (isset($this->precedenceMap[$class])) {
@@ -450,7 +452,61 @@ class WPPrinter extends Printer
                 return '( ' . $this->p($node) . ' )';
             }
         }
-        return $this->p($node);
+        return $this->p($node, false, $mod);
+    }
+    /**
+     * Overrride parent method.
+     * @since 1.1.9
+     * 
+     * @see \PhpParser\PrettyPrinterAbstract@p
+     * 
+     * @param mixed $mod Modification parameter.
+     */
+    protected function p(Node $node, $parentFormatPreserved = false, $mod = false) : string
+    {
+        if (!$this->origTokens && $mod !== false) {
+            return $this->{'p' . $node->getType()}($node, $mod);
+        }
+        return parent::p($node, $parentFormatPreserved);
+    }
+    /**
+     * Overrride parent method.
+     * @since 1.1.9
+     * 
+     * @see \PhpParser\PrettyPrinterAbstract@pInfixOp
+     * 
+     * @param mixed $mod Modification parameter.
+     */
+    protected function pInfixOp(string $class, Node $leftNode, string $operatorString, Node $rightNode, $mod = false) : string {
+        list($precedence, $associativity) = $this->precedenceMap[$class];
+
+        return $this->pPrec($leftNode, $precedence, $associativity, -1, $mod)
+             . $operatorString
+             . $this->pPrec($rightNode, $precedence, $associativity, 1, $mod);
+    }
+    /**
+     * Overrride parent method.
+     * @since 1.1.9
+     * 
+     * @see \PhpParser\PrettyPrinter/Standard@pExpr_BinaryOp_BooleanAnd
+     * 
+     * @param mixed $mod Modification parameter.
+     */
+    protected function pExpr_BinaryOp_BooleanAnd(BinaryOp\BooleanAnd $node, $mod = false)
+    {
+        return $this->pInfixOp(BinaryOp\BooleanAnd::class, $node->left, ($mod === 'nl' ? $this->nl.'    ' : ' ').'&& ', $node->right, $mod);
+    }
+    /**
+     * Overrride parent method.
+     * @since 1.1.9
+     * 
+     * @see \PhpParser\PrettyPrinter/Standard@pExpr_BinaryOp_BooleanAnd
+     * 
+     * @param mixed $mod Modification parameter.
+     */
+    protected function pExpr_BinaryOp_BooleanOr(BinaryOp\BooleanOr $node, $mod = false)
+    {
+        return $this->pInfixOp(BinaryOp\BooleanOr::class, $node->left, ($mod === 'nl' ? $this->nl.'    ' : ' ').'|| ', $node->right, $mod);
     }
     /**
      * Overrride parent method.
@@ -502,5 +558,19 @@ class WPPrinter extends Printer
             }
         }
         return false;
+    }
+    /**
+     * Returns flag indicating an array of nodes concatenated reachs the line length permitted.
+     * @since 1.1.9
+     * 
+     * @param array $nodes
+     * @param int   $allowed Allowed line length.
+     * 
+     * @return bool
+     */
+    private function hasNodeReachedLineLength(Node $node, $allowed = 60)
+    {
+        $string = $this->p($node);
+        return strlen($string) > $allowed;
     }
 }
