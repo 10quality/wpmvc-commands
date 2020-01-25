@@ -49,6 +49,7 @@ class RegisterWidgetTest extends WpmvcAyucoTestCase
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' register widget:Comment --comment="Widget comment phpunit"');
         // Assert
-        $this->assertPregMatchContents('/\/\/\sTest\s\#1\scomment\sphpunit/', $mainfile);
+        $this->assertPregMatchContents('/\/\/\sWidget\scomment\sphpunit/', $mainfile);
+        $this->assertPregMatchContents('/\*\sWidget\scomment\sphpunit/', $filename);
     }
 }

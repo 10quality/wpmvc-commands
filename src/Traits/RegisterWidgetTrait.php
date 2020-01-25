@@ -44,6 +44,7 @@ trait RegisterWidgetTrait
                         '/\{2\}/',
                         '/\{3\}/',
                         '/\{4\}/',
+                        '/\{5\}/',
                     ],
                     [
                         $name,
@@ -51,6 +52,7 @@ trait RegisterWidgetTrait
                         array_key_exists('author', $this->config) ? $this->config['author'] : '',
                         $this->config['localize']['textdomain'],
                         $this->config['version'],
+                        array_key_exists('comment', $this->options) ? $this->options['comment'] : $name,
                     ],
                     $template
                 );

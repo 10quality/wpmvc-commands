@@ -1,8 +1,8 @@
 <?php
 
 /**
- * {0} Widget.
- * Generated with ayuco.
+ * {5}
+ * WordPress Widget.
  *
  * @author {2}
  * @package {3}
