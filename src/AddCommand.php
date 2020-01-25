@@ -77,7 +77,7 @@ class AddCommand extends Command
                     $vc[0],
                     $vc[1],
                     $this->getHookParams($object[1]),
-                    ('@hook '.$object[1]."\n".'     *')
+                    ('@hook '.$object[1])
                 );
                 break;
         }

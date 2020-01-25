@@ -26,7 +26,6 @@ class SetNameCommand extends Command
     /**
      * Command description.
      * @since 1.0.0
-     * @since 1.1.8 Indicate "setname" command is deprecated and replaced by "set" command.
      * @var string
      */
     protected $description = 'DEPRECATED. The "setname" command will no longer be maintained; use the "set" command instead.';
@@ -34,7 +33,6 @@ class SetNameCommand extends Command
     /**
      * Calls to command action.
      * @since 1.0.0
-     * @since 1.1.8 Use SetCommand in place of SetNameCommand.
      *
      * @param array $args Action arguments.
      */
@@ -54,8 +52,6 @@ class SetNameCommand extends Command
     /**
      * Sets project name.
      * @since 1.0.0
-     * @since 1.0.1 Added strtolower.
-     * @since 1.1.8 Deprecate setName.
      *
      * @param string $name Project name.
      */

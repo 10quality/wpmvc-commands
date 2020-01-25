@@ -95,16 +95,25 @@ class AddClassMethodVisitor extends NodeVisitor
                     'params'    => $params,
                 ],
                 [
-                    'comments'  => [new Comment(sprintf(
+                    'comments'  => [new Comment(
                         '/**'."\n"
-                            .'     * Ayuco: %s'."\n"
+                            . (array_key_exists('_options', $this->config) && array_key_exists('comment', $this->config['_options'])
+                                ? '     * '.$this->config['_options']['comment']."\n"
+                                : ''
+                            )
+                            . (array_key_exists('_options', $this->config) && array_key_exists('audit', $this->config['_options'])
+                                ? '     * Ayuco: addition '.date('Y-m-d h:i a')."\n"
+                                : ''
+                            )
                             .'     * @since '.$this->config['version']."\n"
                             .'     *'."\n"
                             . (empty($this->comment) ? '' : '    * '.$this->comment."\n")
                             .$paramComments
-                            .'     * @return'."\n"
-                            .'     */',
-                        date('Y-m-d h:i a'))
+                            . (array_key_exists('_options', $this->config) && array_key_exists('void', $this->config['_options'])
+                                ? ''
+                                : '     *'."\n".'     * @return'."\n"
+                            )
+                            .'     */'
                     )]
                 ]
             );

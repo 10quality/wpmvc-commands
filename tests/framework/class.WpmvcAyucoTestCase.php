@@ -9,7 +9,7 @@ use PHPUnit\Framework\AssertionFailedError;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.9
  */
 class WpmvcAyucoTestCase extends AyucoTestCase
 {
@@ -72,6 +72,27 @@ class WpmvcAyucoTestCase extends AyucoTestCase
         $contents = file_get_contents($filename);
         self::assertThat(
             preg_match($regex, $contents) == 1,
+            self::isTrue(),
+            $message
+        );
+    }
+    /**
+     * Asserts if a regular expresion DO NOT matches inside file contents.
+     * @since 1.1.9
+     *
+     * @param string $regex    Regular expression.
+     * @param string $filename Fulename
+     * @param string $message  PHPUNIT message.
+     *
+     * @throws \PHPUnit\Framework\AssertionFailedError
+     */
+    public function assertNotPregMatchContents($regex, $filename, $message = 'Failed asserting matching contents.')
+    {
+        if (!is_file($filename))
+            throw new AssertionFailedError('Filename doesn\'t exists');
+        $contents = file_get_contents($filename);
+        self::assertThat(
+            preg_match($regex, $contents) == 0,
             self::isTrue(),
             $message
         );

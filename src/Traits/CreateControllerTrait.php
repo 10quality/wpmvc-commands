@@ -15,7 +15,7 @@ use WPMVC\Commands\Visitors\AddClassPropertyVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.9
  */
 trait CreateControllerTrait
 {
@@ -40,13 +40,14 @@ trait CreateControllerTrait
                 file_put_contents(
                     $filename,
                     preg_replace(
-                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/', '/\{4\}/'],
+                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/', '/\{4\}/', '/\{5\}/'],
                         [
                             $this->config['namespace'],
                             $name,
                             array_key_exists('author', $this->config) ? $this->config['author'] : '',
                             $this->config['localize']['textdomain'],
                             $this->config['version'],
+                            array_key_exists('comment', $this->options) ? $this->options['comment'] : $name,
                         ],
                         $this->getTemplate('controller.php')
                     )
@@ -83,6 +84,7 @@ trait CreateControllerTrait
         $filename = $this->rootPath.'/app/Controllers/'.$controller.'.php';
         if (!$this->existsFunctionIn($filename, $method)) {
             try {
+                $this->config['_options'] = $this->options;
                 $builder = Builder::parser($filename);
                 $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
                 $builder->build();
@@ -121,13 +123,14 @@ trait CreateControllerTrait
                 file_put_contents(
                     $filename,
                     preg_replace(
-                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/', '/\{4\}/'],
+                        ['/\{0\}/', '/\{1\}/', '/\{2\}/', '/\{3\}/', '/\{4\}/', '/\{5\}/'],
                         [
                             $this->config['namespace'],
                             $name,
                             array_key_exists('author', $this->config) ? $this->config['author'] : '',
                             $this->config['localize']['textdomain'],
                             $this->config['version'],
+                            array_key_exists('comment', $this->options) ? $this->options['comment'] : $name,
                         ],
                         $this->getTemplate('modelcontroller.php')
                     )
@@ -165,6 +168,7 @@ trait CreateControllerTrait
         $filename = $this->rootPath.'/app/Controllers/'.$controller.'.php';
         if (!$this->existsPropertyIn($filename, $property, $type)) {
             try {
+                $this->config['_options'] = $this->options;
                 $builder = Builder::parser($filename);
                 $builder->addVisitor(new AddClassPropertyVisitor($this->config, $property, $value, $type, $comment));
                 $builder->build();

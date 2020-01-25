@@ -92,7 +92,10 @@ class AddClassPropertyVisitor extends NodeVisitor
                         '/**'."\n"
                             .'     * Property %s.'."\n"
                             . (empty($this->comment) ? '' : '    * '.$this->comment."\n")
-                            .'     * Ayuco: addition %s'."\n"
+                            . (array_key_exists('_options', $this->config) && array_key_exists('audit', $this->config['_options'])
+                                ? '     * Ayuco: addition '.date('Y-m-d h:i a')."\n"
+                                : ''
+                            )
                             .'     * @since '.$this->config['version']."\n"
                             .'     *'."\n"
                             .'     * @var '.$this->getValueType($this->value)."\n"

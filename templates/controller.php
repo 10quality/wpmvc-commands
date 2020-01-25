@@ -5,8 +5,8 @@ namespace {0}\Controllers;
 use WPMVC\MVC\Controller;
 
 /**
- * {1} controller.
- * Generated with ayuco.
+ * {5}
+ * WordPress MVC controller.
  *
  * @author {2}
  * @package {3}
