@@ -22,7 +22,7 @@ class GeneratePotTest extends WpmvcAyucoTestCase
     /**
      * Run before tests.
      */
-    public function setUp()
+    public function setUp(): void
     {
         if (!is_dir(TESTING_PATH.'/assets/views/'))
             mkdir(TESTING_PATH.'/assets/views/', 0777, true);
