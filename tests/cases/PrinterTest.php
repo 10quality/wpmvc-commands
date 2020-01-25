@@ -208,4 +208,70 @@ class PrinterTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertNotStringMatchContents('( $id1 === true && $id_name_2 === true', $filename);
     }
+    /**
+     * Tests printed lengthy elseif conditions.
+     */
+    public function testPrintedLengthyElseIfCon()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { function test() { if (true) { return; } elseif ('
+            .'$id1 === true'
+            .'&& $id_name_2 === true'
+            .'&& $id_name_3 === true'
+            .'&& $id_name_4 === true'
+            .'&& $id_name_5 === $id_name_2'
+            .') return; } }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertStringMatchContents('} else if (', $filename);
+        $this->assertNotStringMatchContents('( $id1 === true && $id_name_2 === true', $filename);
+    }
+    /**
+     * Tests printed lengthy while conditions.
+     */
+    public function testPrintedLengthyWhileCon()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { function test() { while('
+            .'$id1 === true'
+            .'&& $id_name_2 === true'
+            .'&& $id_name_3 === true'
+            .'&& $id_name_4 === true'
+            .'&& $id_name_5 === $id_name_2'
+            .') return; } }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertStringMatchContents('while (', $filename);
+        $this->assertNotStringMatchContents('( $id1 === true && $id_name_2 === true', $filename);
+    }
+    /**
+     * Tests printed lengthy do while conditions.
+     */
+    public function testPrintedLengthyDoWhileCon()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { function test() { do { return; } while('
+            .'$id1 === true'
+            .'&& $id_name_2 === true'
+            .'&& $id_name_3 === true'
+            .'&& $id_name_4 === true'
+            .'&& $id_name_5 === $id_name_2'
+            .'); } }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertStringMatchContents('while (', $filename);
+        $this->assertNotStringMatchContents('( $id1 === true && $id_name_2 === true', $filename);
+    }
 }

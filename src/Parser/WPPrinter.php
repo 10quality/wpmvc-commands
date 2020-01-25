@@ -65,8 +65,9 @@ class WPPrinter extends Printer
      */
     protected function pStmt_Do(Stmt\Do_ $node)
     {
+        $multiline = $this->hasNodeReachedLineLength($node->cond);
         return 'do {' . $this->pStmts($node->stmts) . $this->nl
-             . '} while ( ' . $this->p($node->cond) . ' );';
+             . '} while ( ' . $this->p($node->cond, false, $multiline ? 'nl' : '') . ($multiline ? $this->nl : ' ') . ');';
     }
     /**
      * Overrride parent method.
@@ -76,7 +77,8 @@ class WPPrinter extends Printer
      */
     protected function pStmt_While(Stmt\While_ $node)
     {
-        return 'while ( ' . $this->p($node->cond) . ' ) {'
+        $multiline = $this->hasNodeReachedLineLength($node->cond);
+        return 'while ( ' . $this->p($node->cond, false, $multiline ? 'nl' : '') . ($multiline ? $this->nl : ' ') . ') {'
              . $this->pStmts($node->stmts) . $this->nl . '}';
     }
     /**
@@ -114,7 +116,8 @@ class WPPrinter extends Printer
      */
     protected function pStmt_ElseIf(Stmt\ElseIf_ $node)
     {
-        return 'else if ( ' . $this->p($node->cond) . ' ) {'
+        $multiline = $this->hasNodeReachedLineLength($node->cond);
+        return 'else if ( ' . $this->p($node->cond, false, $multiline ? 'nl' : '') . ($multiline ? $this->nl : ' ') . ') {'
              . $this->pStmts($node->stmts) . $this->nl . '}';
     }
     /**
