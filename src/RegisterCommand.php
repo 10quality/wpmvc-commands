@@ -20,7 +20,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.9
  */
 class RegisterCommand extends Command
 {
@@ -89,6 +89,7 @@ class RegisterCommand extends Command
                 // Register model at bridge
                 $filename = $this->getMainClassPath();
                 if (!$this->existsMethodCallIn($filename, 'add_model', $model)) {
+                    $this->config['_options'] = $this->options;
                     $builder = Builder::parser($filename);
                     $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
                     $builder->build();
@@ -111,6 +112,7 @@ class RegisterCommand extends Command
                 // Register model at bridge
                 $filename = $this->getMainClassPath();
                 if (!$this->existsMethodCallIn($filename, 'add_model', $model)) {
+                    $this->config['_options'] = $this->options;
                     $builder = Builder::parser($filename);
                     $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
                     $builder->build();
@@ -132,7 +134,7 @@ class RegisterCommand extends Command
                 if (is_file($this->rootPath.'/assets/'.$object[1])) {
                     $filename = $this->getMainClassPath();
                     if (!$this->existsMethodCallIn($filename, 'add_asset', $object[1])) {
-                        // Register asset at bridge
+                        $this->config['_options'] = $this->options;
                         $builder = Builder::parser($filename);
                         $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_asset', [$object[1]]));
                         $builder->build();

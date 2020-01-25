@@ -96,11 +96,18 @@ class AddMethodCallVisitor extends NodeVisitor
                 );
             }
             // ADD comment
-            $nop = new Nop;
-            $nop->setAttribute('comments', [
-                new Comment(sprintf('// Ayuco: addition %s', date('Y-m-d h:i a')))
-            ]);
-            $node->stmts[] = $nop;
+            if (array_key_exists('_options', $this->config)) {
+                $comments = [];
+                if (array_key_exists('comment', $this->config['_options']))
+                    $comments[] = new Comment('// ' . $this->config['_options']['comment']);
+                if (array_key_exists('audit', $this->config['_options']))
+                    $comments[] = new Comment('// Ayuco: addition ' . date('Y-m-d h:i a'));
+                if (!empty($comments)) {
+                    $nop = new Nop;
+                    $nop->setAttribute('comments', $comments);
+                    $node->stmts[] = $nop;
+                }
+            }
             // ADD statement
             $node->stmts[] = new Expression(
                 new MethodCall(

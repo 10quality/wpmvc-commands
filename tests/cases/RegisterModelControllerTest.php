@@ -1,12 +1,12 @@
 <?php
 /**
- * Tests register type  command.
+ * Tests register type command.
  *
  * @author Ale Mostajo <http://about.me/amostajo>
  * @copyright 10 Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.9
  */
 class RegisterModelControllerTest extends WpmvcAyucoTestCase
 {
@@ -16,7 +16,9 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
     protected $path = [
         FRAMEWORK_PATH.'/environment/app/Controllers/',
         FRAMEWORK_PATH.'/environment/app/Models/',
+        FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/comment/meta/',
         FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/car/meta/',
+        FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/comment/',
         FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/car/',
         FRAMEWORK_PATH.'/environment/assets/views/admin/metaboxes/',
         FRAMEWORK_PATH.'/environment/assets/views/admin/',
@@ -84,5 +86,30 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertEquals('Model registered!', $execution);
         $this->assertPregMatchContents('/add_model\((|\s)\'MacGyver\'/', $filename);
+    }
+    /**
+     * Tests the comments created during register type command.
+     */
+    public function testRegisterComments()
+    {
+        // Prepare
+        $mainfile = TESTING_PATH.'/app/Main.php';
+        $controllerfile = TESTING_PATH.'/app/Controllers/CommentController.php';
+        // Execute
+        exec('php '.WPMVC_AYUCO.' register type:comment Comment CommentController --comment="Test #3 comment phpunit"');
+        // Assert
+        $this->assertPregMatchContents('/\/\/\sTest\s\#3\scomment\sphpunit/', $mainfile);
+    }
+    /**
+     * Tests the comments created during register model command.
+     */
+    public function testRegisterModelComments()
+    {
+        // Prepare
+        $mainfile = TESTING_PATH.'/app/Main.php';
+        // Execute
+        exec('php '.WPMVC_AYUCO.' register model:Comment2 --comment="Test #4 comment phpunit"');
+        // Assert
+        $this->assertPregMatchContents('/\/\/\sTest\s\#4\scomment\sphpunit/', $mainfile);
     }
 }

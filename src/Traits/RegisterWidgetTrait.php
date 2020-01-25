@@ -87,6 +87,7 @@ trait RegisterWidgetTrait
                     );
                 }
                 // Add to main
+                $this->config['_options'] = $this->options;
                 $builder = Builder::parser($this->getMainClassPath());
                 $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_widget', [$name]));
                 $builder->build();

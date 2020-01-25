@@ -18,7 +18,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.9
  */
 class AddCommand extends Command
 {
@@ -85,6 +85,7 @@ class AddCommand extends Command
         // Add hook to bridge
         $filename = $this->getMainClassPath();
         if (!$this->existsMethodCallIn($filename, 'add_'.$object[0], $object[1], $args[3])) {
+            $this->config['_options'] = $this->options;
             $builder = Builder::parser($filename);
             $builder->addVisitor(new AddMethodCallVisitor($this->config, $this->getHookScope($object[1]), 'add_'.$object[0], [$object[1], $args[3]]));
             $builder->build();

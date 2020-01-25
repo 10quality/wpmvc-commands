@@ -38,4 +38,17 @@ class RegisterWidgetTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertEquals('Widget exists!', $execution);
     }
+    /**
+     * Tests Widget registration.
+     */
+    public function testComments()
+    {
+        // Prepare
+        $mainfile = TESTING_PATH.'/app/Main.php';
+        $filename = FRAMEWORK_PATH.'/environment/app/Widgets/Comment.php';
+        // Execure
+        $execution = exec('php '.WPMVC_AYUCO.' register widget:Comment --comment="Widget comment phpunit"');
+        // Assert
+        $this->assertPregMatchContents('/\/\/\sTest\s\#1\scomment\sphpunit/', $mainfile);
+    }
 }
