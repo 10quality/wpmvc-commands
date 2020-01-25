@@ -2,7 +2,6 @@
 /**
  * Post type {0} meta fields form.
  * Automated metabox.
- * Generated with ayuco.
  *
  * @author {1}
  * @package {2}

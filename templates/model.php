@@ -7,7 +7,7 @@ use WPMVC\MVC\Models\{1} as Model;
 
 /**
  * {2} model.
- * Generated with ayuco.
+ * WordPress MVC model.
  *
  * @author {4}
  * @package {5}

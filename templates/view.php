@@ -1,7 +1,7 @@
 <?php
 /**
  * {0} view.
- * Generated with ayuco.
+ * WordPress MVC view.
  *
  * @author {1}
  * @package {2}
