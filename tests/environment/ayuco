@@ -10,6 +10,7 @@ use WPMVC\Commands\CreateCommand;
 use WPMVC\Commands\AddCommand;
 use WPMVC\Commands\SetCommand;
 use WPMVC\Commands\GenerateCommand;
+use WPMVC\Commands\PrettifyCommand;
 
 
 $ayuco = new Listener();
@@ -20,5 +21,6 @@ $ayuco->register(new CreateCommand(__DIR__));
 $ayuco->register(new AddCommand(__DIR__));
 $ayuco->register(new SetCommand(__DIR__));
 $ayuco->register(new GenerateCommand(__DIR__));
+$ayuco->register(new PrettifyCommand(__DIR__));
 
 $ayuco->interpret();

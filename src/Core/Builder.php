@@ -17,7 +17,7 @@ use WPMVC\Commands\Parser\WPPrinter as Printer;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.9
  */
 class Builder
 {
@@ -57,14 +57,23 @@ class Builder
     protected $stmts = [];
 
     /**
+     * Flag that indicates if build process is in debug mode or not.
+     * @since 1.1.9
+     * @var bool
+     */
+    protected $is_debug_mode = false;
+
+    /**
      * Constructor.
      * @since 1.0.0
      *
      * @param string $filename
+     * @param bool   $debug
      */
-    public function __construct($filename)
+    public function __construct($filename, $debug = false)
     {
         $this->filename = $filename;
+        $this->is_debug_mode = $debug;
         $this->traverser = new NodeTraverser;
     }
 
@@ -73,10 +82,11 @@ class Builder
      * @since 1.0.0
      *
      * @param string $filename
+     * @param bool   $debug
      */
-    public static function builder($filename)
+    public static function builder($filename, $debug = false)
     {
-        $builder = new self($filename);
+        $builder = new self($filename, $debug);
         $builder->engine = new BuilderFactory;
         return $builder;
     }
@@ -86,10 +96,11 @@ class Builder
      * @since 1.0.0
      *
      * @param string $filename
+     * @param bool   $debug
      */
-    public static function parser($filename)
+    public static function parser($filename, $debug = false)
     {
-        $builder = new self($filename);
+        $builder = new self($filename, $debug);
         $builder->engine = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         // Parse
         $builder->parse();
@@ -152,7 +163,8 @@ class Builder
     {
         $printer = new Printer;
         $this->stmts = $this->traverser->traverse($this->stmts);
-        //$this->debug();
+        if ( $this->is_debug_mode )
+            $this->debug();
         // Save into file
         file_put_contents(
             $this->filename,
