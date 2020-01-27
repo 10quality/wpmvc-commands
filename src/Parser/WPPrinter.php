@@ -117,7 +117,7 @@ class WPPrinter extends Printer
     protected function pStmt_ElseIf(Stmt\ElseIf_ $node)
     {
         $multiline = $this->hasNodeReachedLineLength($node->cond);
-        return 'else if ( ' . $this->p($node->cond, false, $multiline ? 'nl' : '') . ($multiline ? $this->nl : ' ') . ') {'
+        return 'elseif ( ' . $this->p($node->cond, false, $multiline ? 'nl' : '') . ($multiline ? $this->nl : ' ') . ') {'
              . $this->pStmts($node->stmts) . $this->nl . '}';
     }
     /**
