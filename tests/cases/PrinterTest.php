@@ -314,4 +314,23 @@ class PrinterTest extends WpmvcAyucoTestCase
         $this->assertStringMatchContents('new Abc()', $filename);
         $this->assertStringMatchContents('new Cba( $var )', $filename);
     }
+    /**
+     * Tests printed multiline string concat.
+     */
+    public function testPrintedMultilineString()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { function test() { '
+            .'$var = \'long string\' . $variable . \'very long string here\' . $long_variable . \'long string\' . $long_long_longest_variable;'
+            .'$var2 = \'long string\' . $variable;'
+            .' } }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertStringMatchContents('$var2 = \'long string\' . $variable;', $filename);
+        $this->assertNotStringMatchContents('$var = \'long string\' . $variable . \'very long string here\'', $filename);
+    }
 }

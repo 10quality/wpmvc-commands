@@ -498,7 +498,8 @@ class WPPrinter extends Printer
      * 
      * @see \PhpParser\PrettyPrinter/Standard@pExpr_BinaryOp_BooleanAnd
      * 
-     * @param mixed $mod Modification parameter.
+     * @param mixed $mod   Modification parameter.
+     * @param int   $level Indentation level.
      */
     protected function pExpr_BinaryOp_BooleanAnd(BinaryOp\BooleanAnd $node, $mod = false, $level = 1)
     {
@@ -514,7 +515,8 @@ class WPPrinter extends Printer
      * 
      * @see \PhpParser\PrettyPrinter/Standard@pExpr_BinaryOp_BooleanAnd
      * 
-     * @param mixed $mod Modification parameter.
+     * @param mixed $mod   Modification parameter.
+     * @param int   $level Indentation level.
      */
     protected function pExpr_BinaryOp_BooleanOr(BinaryOp\BooleanOr $node, $mod = false, $level = 1)
     {
@@ -523,6 +525,36 @@ class WPPrinter extends Printer
             $indent .= '    ';
         }
         return $this->pInfixOp(BinaryOp\BooleanOr::class, $node->left, ($mod === 'nl' ? $this->nl.$indent : ' ').'|| ', $node->right, $mod, $level);
+    }
+    /**
+     * Overrride parent method.
+     * @since 1.1.9.1
+     * 
+     * @see \PhpParser\PrettyPrinter/Standard@pExpr_Assign
+     * 
+     * @param mixed $mod Modification parameter.
+     */
+    protected function pExpr_Assign(Expr\Assign $node)
+    {
+        $lengthy = $this->hasNodeReachedLineLength($node->expr);
+        return $this->pInfixOp(Expr\Assign::class, $node->var, ' = ', $node->expr, $lengthy ? 'nl' : false);
+    }
+    /**
+     * Overrride parent method.
+     * @since 1.1.9.1
+     * 
+     * @see \PhpParser\PrettyPrinter/Standard@pExpr_BinaryOp_Concat
+     * 
+     * @param mixed $mod   Modification parameter.
+     * @param int   $level Indentation level.
+     */
+    protected function pExpr_BinaryOp_Concat(BinaryOp\Concat $node, $mod = false, $level = 1)
+    {
+        $indent = '';
+        for ($i = $level-1; $i >= 0; --$i) {
+            $indent .= '    ';
+        }
+        return $this->pInfixOp(BinaryOp\Concat::class, $node->left, ' .'.($mod === 'nl' ? $this->nl.$indent : ' '), $node->right, $mod, $level);
     }
     /**
      * Overrride parent method.
