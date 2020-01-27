@@ -13,7 +13,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     /**
      * Tests path.
      */
-    protected $path = FRAMEWORK_PATH.'/environment/app/Controllers';
+    //protected $path = FRAMEWORK_PATH.'/environment/app/Controllers';
     /**
      * Tests action methods printed.
      */
@@ -332,5 +332,24 @@ class PrinterTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertStringMatchContents('$var2 = \'long string\' . $variable;', $filename);
         $this->assertNotStringMatchContents('$var = \'long string\' . $variable . \'very long string here\'', $filename);
+    }
+    /**
+     * Tests printed multiline and/or variable assignment.
+     */
+    public function testPrintedMultilineAndOr()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { function test() { '
+            .'$var = 1564879 > 65268 && $variable === true && empty( $second_variable ) && 1231546879 > 156489 || ! intval( $variable ) > 0;'
+            .'$var2 = $variable === true && strlen( $var );'
+            .' } }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertStringMatchContents('$var2 = $variable === true && strlen( $var )', $filename);
+        $this->assertNotStringMatchContents('$var = 1564879 > 65268 && $variable === true', $filename);
     }
 }
