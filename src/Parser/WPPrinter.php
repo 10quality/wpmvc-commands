@@ -20,7 +20,7 @@ use PhpParser\Node\Stmt;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9
+ * @version 1.1.9.1
  */
 class WPPrinter extends Printer
 {
@@ -212,10 +212,10 @@ class WPPrinter extends Printer
     protected function pExpr_New(Expr\New_ $node)
     {
         if ($node->class instanceof Stmt\Class_) {
-            $args = $node->args ? '( ' . $this->pMaybeMultiline($node->args) . ' )' : '';
+            $args = $node->args ? '(' . (count($node->args) ? ' ' : '') . $this->pMaybeMultiline($node->args) . (count($node->args) ? ' ' : '') . ')' : '';
             return 'new ' . $this->pClassCommon($node->class, $args);
         }
-        return 'new ' . $this->p($node->class) . '( ' . $this->pMaybeMultiline($node->args) . ' )';
+        return 'new ' . $this->p($node->class) . '(' . (count($node->args) ? ' ' : '') . $this->pMaybeMultiline($node->args) . (count($node->args) ? ' ' : '') . ')';
     }
     /**
      * Overrride parent method.

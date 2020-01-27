@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9
+ * @version 1.1.9.1
  */
 class PrinterTest extends WpmvcAyucoTestCase
 {
@@ -227,7 +227,7 @@ class PrinterTest extends WpmvcAyucoTestCase
             .') return; } }');
         exec('php '.WPMVC_AYUCO.' add action:init PrintController');
         // Assert
-        $this->assertStringMatchContents('} else if (', $filename);
+        $this->assertStringMatchContents('} elseif (', $filename);
         $this->assertNotStringMatchContents('( $id1 === true && $id_name_2 === true', $filename);
     }
     /**
@@ -294,5 +294,24 @@ class PrinterTest extends WpmvcAyucoTestCase
         exec('php '.WPMVC_AYUCO.' add action:init PrintController');
         // Assert
         $this->assertNotStringMatchContents('( $id_name_2 === true && $id_name_3 === true', $filename);
+    }
+    /**
+     * Tests printed new statement.
+     */
+    public function testPrintedNew()
+    {
+        // Prepare
+        $dir = FRAMEWORK_PATH.'/environment/app/Controllers/';
+        $filename = FRAMEWORK_PATH.'/environment/app/Controllers/PrintController.php';
+        // Execure
+        if (!is_dir($dir)) mkdir($dir);
+        file_put_contents($filename, '<?php class PrintController { function test() { '
+            .'$var = new Abc ( );'
+            .'$var2 =  new Cba($var);'
+            .' } }');
+        exec('php '.WPMVC_AYUCO.' add action:init PrintController');
+        // Assert
+        $this->assertStringMatchContents('new Abc()', $filename);
+        $this->assertStringMatchContents('new Cba( $var )', $filename);
     }
 }
