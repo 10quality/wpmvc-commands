@@ -6,12 +6,13 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.10
  */
 class SetVersionTest extends AyucoTestCase
 {
     /**
      * Test resulting message.
+     * @group version
      */
     public function testResultMessage()
     {
@@ -21,6 +22,7 @@ class SetVersionTest extends AyucoTestCase
     }
     /**
      * Test if version value has been changed.
+     * @group version
      */
     public function testVersionValue()
     {
@@ -34,6 +36,7 @@ class SetVersionTest extends AyucoTestCase
     }
     /**
      * Test if theme version has been changed.
+     * @group version
      */
     public function testThemeVersionValue()
     {
@@ -48,5 +51,16 @@ class SetVersionTest extends AyucoTestCase
 
         // Down test
         exec('php '.WPMVC_AYUCO.' set version:1.0.0');
+    }
+    /**
+     * Test missing version.
+     * @group version
+     */
+    public function testMissingVersion()
+    {
+        // Prepare & run
+        $execution = exec('php '.WPMVC_AYUCO.' set version');
+        // Run
+        $this->assertEquals('Command "set": Expecting a version.', $execution);
     }
 }

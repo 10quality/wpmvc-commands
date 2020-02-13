@@ -6,12 +6,13 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.0
+ * @version 1.1.10
  */
 class SetDomainTest extends AyucoTestCase
 {
     /**
      * Test resulting message.
+     * @group domain
      */
     public function testResultMessage()
     {
@@ -23,6 +24,7 @@ class SetDomainTest extends AyucoTestCase
     }
     /**
      * Test package.json.
+     * @group domain
      */
     public function testPackageDomainValue()
     {
@@ -36,6 +38,7 @@ class SetDomainTest extends AyucoTestCase
     }
     /**
      * Test composer.json.
+     * @group domain
      */
     public function testComposerDomainValue()
     {
@@ -49,6 +52,7 @@ class SetDomainTest extends AyucoTestCase
     }
     /**
      * Test style.css.
+     * @group domain
      */
     public function testThemeDomainValue()
     {
@@ -62,5 +66,16 @@ class SetDomainTest extends AyucoTestCase
         $this->assertEquals(1, preg_match('/special\-domain/', $matches[0]));
         // Down test
         exec('php '.WPMVC_AYUCO.' set domain:my-app');
+    }
+    /**
+     * Test missing domain.
+     * @group domain
+     */
+    public function testMissingDomain()
+    {
+        // Prepare & run
+        $execution = exec('php '.WPMVC_AYUCO.' set domain');
+        // Run
+        $this->assertEquals('Command "set": Expecting a text domain.', $execution);
     }
 }

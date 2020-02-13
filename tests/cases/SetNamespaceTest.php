@@ -6,7 +6,7 @@
  * @copyright 10 Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.8
+ * @version 1.1.10
  */
 class SetNamespaceTest extends WpmvcAyucoTestCase
 {
@@ -21,6 +21,7 @@ class SetNamespaceTest extends WpmvcAyucoTestCase
     }
     /**
      * Test resulting message.
+     * @group namespace
      */
     public function testResultMessage()
     {
@@ -31,6 +32,7 @@ class SetNamespaceTest extends WpmvcAyucoTestCase
     }
     /**
      * Test Main app file updated.
+     * @group namespace
      */
     public function testMainNamespaceValue()
     {
@@ -43,6 +45,7 @@ class SetNamespaceTest extends WpmvcAyucoTestCase
     }
     /**
      * Test composer file updated.
+     * @group namespace
      */
     public function testComposerJson()
     {
@@ -52,5 +55,16 @@ class SetNamespaceTest extends WpmvcAyucoTestCase
         $execution = exec('php '.WPMVC_AYUCO.' set namespace:ComposerValue');
         // Assert
         $this->assertPregMatchContents('/\"ComposerValue\\\\\\\"(|\s)\:(|\s)\"app/', $filename);
+    }
+    /**
+     * Test missing namespace.
+     * @group namespace
+     */
+    public function testMissingNamespace()
+    {
+        // Prepare & run
+        $execution = exec('php '.WPMVC_AYUCO.' set namespace');
+        // Run
+        $this->assertEquals('Command "set": Expecting a namespace.', $execution);
     }
 }
