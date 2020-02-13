@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.10
  */
 class CreateControllerTest extends WpmvcAyucoTestCase
 {
@@ -16,6 +16,7 @@ class CreateControllerTest extends WpmvcAyucoTestCase
     protected $path = FRAMEWORK_PATH.'/environment/app/Controllers/';
     /**
      * Tests create controller command.
+     * @group controllers
      */
     public function testCreateCommand()
     {
@@ -30,6 +31,8 @@ class CreateControllerTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests add action hook creates controller.
+     * @group controllers
+     * @group hooks
      */
     public function testAddHookCommand()
     {
@@ -44,6 +47,7 @@ class CreateControllerTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests create controller w/ multiple methods.
+     * @group controllers
      */
     public function testCreateCommandMultipleMethods()
     {

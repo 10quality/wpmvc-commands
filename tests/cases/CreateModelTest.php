@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.10
  */
 class CreateModelTest extends WpmvcAyucoTestCase
 {
@@ -16,6 +16,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
     protected $path = FRAMEWORK_PATH.'/environment/app/Models/';
     /**
      * Test option model.
+     * @group models
      */
     public function testOptionModel()
     {
@@ -30,6 +31,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
     }
     /**
      * Test user model.
+     * @group models
      */
     public function testUserModel()
     {
@@ -43,6 +45,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
     }
     /**
      * Test category model.
+     * @group models
      */
     public function testCategoryModel()
     {
@@ -57,6 +60,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
     }
     /**
      * Test term model.
+     * @group models
      */
     public function testTermModel()
     {
@@ -70,6 +74,7 @@ class CreateModelTest extends WpmvcAyucoTestCase
     }
     /**
      * Test term model w/ taxonomy.
+     * @group models
      */
     public function testTermModelWithTax()
     {
@@ -84,6 +89,8 @@ class CreateModelTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests default coments.
+     * @group models
+     * @group comments
      */
     public function testDefaultComments()
     {
@@ -96,6 +103,8 @@ class CreateModelTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests coments.
+     * @group models
+     * @group comments
      */
     public function testComments()
     {

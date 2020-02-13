@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.8
+ * @version 1.1.10
  */
 class CreateViewTest extends WpmvcAyucoTestCase
 {
@@ -20,6 +20,7 @@ class CreateViewTest extends WpmvcAyucoTestCase
     ];
     /**
      * Tests View creation.
+     * @group views
      */
     public function test()
     {

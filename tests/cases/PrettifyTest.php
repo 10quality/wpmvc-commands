@@ -6,7 +6,7 @@
  * @copyright 10 Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9
+ * @version 1.1.10
  */
 class PrettifyTest extends WpmvcAyucoTestCase
 {
@@ -21,6 +21,8 @@ class PrettifyTest extends WpmvcAyucoTestCase
     ];
     /**
      * Tests prettify on framework folders.
+     * @group prettify
+     * @group models
      */
     public function testPrettifyModels()
     {
@@ -37,6 +39,7 @@ class PrettifyTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests prettify on custom folders and files.
+     * @group prettify
      */
     public function testPrettifyCustomClass()
     {
@@ -53,6 +56,8 @@ class PrettifyTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests prettify on function files.
+     * @group prettify
+     * @group functions
      */
     public function testPrettifyFunctionFile()
     {
@@ -69,6 +74,8 @@ class PrettifyTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests preserved configuretion files.
+     * @group prettify
+     * @group config
      */
     public function testNoPrettifyConfigFiles()
     {
@@ -87,6 +94,7 @@ class PrettifyTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests preserved boot file.
+     * @group prettify
      */
     public function testNoPrettifyBootFile()
     {
@@ -103,6 +111,7 @@ class PrettifyTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests prettify on root file.
+     * @group prettify
      */
     public function testPrettifyRootFile()
     {

@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9
+ * @version 1.1.10
  */
 class RegisterWidgetTest extends WpmvcAyucoTestCase
 {
@@ -16,6 +16,7 @@ class RegisterWidgetTest extends WpmvcAyucoTestCase
     protected $path = FRAMEWORK_PATH.'/environment/app/Widgets/';
     /**
      * Tests Widget registration.
+     * @group widgets
      */
     public function test()
     {
@@ -29,6 +30,8 @@ class RegisterWidgetTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests Widget Duplication is avoided.
+     * @group widgets
+     * @group duplication
      */
     public function testPreventDuplicate()
     {
@@ -40,6 +43,8 @@ class RegisterWidgetTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests Widget registration.
+     * @group widgets
+     * @group comments
      */
     public function testComments()
     {

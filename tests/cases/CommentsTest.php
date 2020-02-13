@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9
+ * @version 1.1.10
  */
 class CommentsTest extends WpmvcAyucoTestCase
 {
@@ -21,6 +21,7 @@ class CommentsTest extends WpmvcAyucoTestCase
     ];
     /**
      * Tests the comments created during hook addition (controller).
+     * @group comments
      */
     public function testAddHookCommentsController()
     {
@@ -35,6 +36,7 @@ class CommentsTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests the comments created during hook addition (controller). With the audit flag.
+     * @group comments
      */
     public function testAddHookCommentsControllerAudit()
     {
@@ -51,6 +53,7 @@ class CommentsTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests the comments created during hook addition (controller). With void return.
+     * @group comments
      */
     public function testAddHookCommentsControllerVoid()
     {
@@ -63,6 +66,7 @@ class CommentsTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests the comments created during register model command.
+     * @group comments
      */
     public function testRegisterAssetComments()
     {

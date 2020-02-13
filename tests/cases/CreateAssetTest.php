@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.10
  */
 class CreateAssetTest extends WpmvcAyucoTestCase
 {
@@ -22,6 +22,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
     ];
     /**
      * Tests javascript asset creation.
+     * @group assets
      */
     public function testJs()
     {
@@ -35,6 +36,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests jquery asset creation.
+     * @group assets
      */
     public function testJsJquery()
     {
@@ -49,6 +51,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests css asset creation.
+     * @group assets
      */
     public function testCss()
     {
@@ -62,6 +65,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests sass master asset creation.
+     * @group assets
      */
     public function testSassMaster()
     {
@@ -76,6 +80,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests sass partial asset creation.
+     * @group assets
      */
     public function testSassPart()
     {
@@ -93,6 +98,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests sass master and partials asset creation.
+     * @group assets
      */
     public function testSassMasterAndParts()
     {
@@ -114,6 +120,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests sass gitignore update.
+     * @group assets
      */
     public function testSassGitignore()
     {
@@ -128,6 +135,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests asset registration prevention.
+     * @group assets
      */
     public function testPreventAssetRegistration()
     {

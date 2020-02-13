@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.10
  */
 class HooksTest extends WpmvcAyucoTestCase
 {
@@ -16,6 +16,7 @@ class HooksTest extends WpmvcAyucoTestCase
     protected $path = FRAMEWORK_PATH.'/environment/app/Controllers';
     /**
      * Tests adding predefined hook.
+     * @group hooks
      */
     public function testPredefinedHook()
     {
@@ -30,6 +31,7 @@ class HooksTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests adding custom hook.
+     * @group hooks
      */
     public function testHookControllerMethodName()
     {

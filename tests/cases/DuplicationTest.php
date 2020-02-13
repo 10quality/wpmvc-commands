@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.8
+ * @version 1.1.10
  */
 class DuplicationTest extends WpmvcAyucoTestCase
 {
@@ -20,6 +20,8 @@ class DuplicationTest extends WpmvcAyucoTestCase
     ];
     /**
      * Tests duplicating controllers.
+     * @group duplication
+     * @group controllers
      */
     public function testControllers()
     {
@@ -34,6 +36,8 @@ class DuplicationTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests duplicating Main.php add hook.
+     * @group duplication
+     * @group hooks
      */
     public function testMainAddCommand()
     {
@@ -48,6 +52,8 @@ class DuplicationTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests duplicating Main.php register posttype.
+     * @group duplication
+     * @group models
      */
     public function testMainRegisterTypeCommand()
     {
@@ -62,6 +68,8 @@ class DuplicationTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests duplicating Main.php register Model.
+     * @group duplication
+     * @group models
      */
     public function testMainRegisterModelCommand()
     {
@@ -76,6 +84,8 @@ class DuplicationTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests duplicating Main.php register Asset.
+     * @group duplication
+     * @group assets
      */
     public function testMainRegisterAssetCommand()
     {

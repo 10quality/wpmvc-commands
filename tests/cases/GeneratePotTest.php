@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.8
+ * @version 1.1.10
  */
 class GeneratePotTest extends WpmvcAyucoTestCase
 {
@@ -40,6 +40,7 @@ class GeneratePotTest extends WpmvcAyucoTestCase
     }
     /**
      * Test resulting message.
+     * @group pot
      */
     public function testResultMessage()
     {
@@ -53,6 +54,7 @@ class GeneratePotTest extends WpmvcAyucoTestCase
     }
     /**
      * Test resulting message.
+     * @group pot
      */
     public function testMultidomainGeneration()
     {

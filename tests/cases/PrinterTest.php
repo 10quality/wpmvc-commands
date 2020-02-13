@@ -6,16 +6,17 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9.1
+ * @version 1.1.10
  */
 class PrinterTest extends WpmvcAyucoTestCase
 {
     /**
      * Tests path.
      */
-    //protected $path = FRAMEWORK_PATH.'/environment/app/Controllers';
+    protected $path = FRAMEWORK_PATH.'/environment/app/Controllers';
     /**
      * Tests action methods printed.
+     * @group printer
      */
     public function testPrintedMethods()
     {
@@ -34,6 +35,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed if while and for methods.
+     * @group printer
      */
     public function testPrintedIfWhileFor()
     {
@@ -52,6 +54,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed arrays.
+     * @group printer
      */
     public function testPrintedArrays()
     {
@@ -68,6 +71,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed empty arrays.
+     * @group printer
      */
     public function testPrintedEmptyArrays()
     {
@@ -84,6 +88,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed not lengthy arrays.
+     * @group printer
      */
     public function testPrintedNotLengthyArrays()
     {
@@ -101,6 +106,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed lengthy arrays.
+     * @group printer
      */
     public function testPrintedLengthyArrays()
     {
@@ -123,6 +129,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed not lengthy arrays.
+     * @group printer
      */
     public function testPrintedNotLengthySubArrays()
     {
@@ -145,6 +152,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed lengthy arrays.
+     * @group printer
      */
     public function testPrintedLengthySubArrays()
     {
@@ -171,6 +179,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed not lengthy if conditions.
+     * @group printer
      */
     public function testPrintedNotLengthyIfCon()
     {
@@ -189,6 +198,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed lengthy if conditions.
+     * @group printer
      */
     public function testPrintedLengthyIfCon()
     {
@@ -210,6 +220,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed lengthy elseif conditions.
+     * @group printer
      */
     public function testPrintedLengthyElseIfCon()
     {
@@ -232,6 +243,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed lengthy while conditions.
+     * @group printer
      */
     public function testPrintedLengthyWhileCon()
     {
@@ -254,6 +266,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed lengthy do while conditions.
+     * @group printer
      */
     public function testPrintedLengthyDoWhileCon()
     {
@@ -276,6 +289,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed lengthy nested conditions.
+     * @group printer
      */
     public function testPrintedLengthyNestedCon()
     {
@@ -297,6 +311,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed new statement.
+     * @group printer
      */
     public function testPrintedNew()
     {
@@ -316,6 +331,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed multiline string concat.
+     * @group printer
      */
     public function testPrintedMultilineString()
     {
@@ -335,6 +351,7 @@ class PrinterTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests printed multiline and/or variable assignment.
+     * @group printer
      */
     public function testPrintedMultilineAndOr()
     {

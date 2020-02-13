@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.7
+ * @version 1.1.10
  */
 class UpdateCommentTest extends WpmvcAyucoTestCase
 {
@@ -16,6 +16,7 @@ class UpdateCommentTest extends WpmvcAyucoTestCase
     protected $path = FRAMEWORK_PATH.'/environment/app/Controllers/';
     /**
      * Tests.
+     * @group comments
      */
     public function testInController()
     {

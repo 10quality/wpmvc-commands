@@ -6,7 +6,7 @@
  * @copyright 10 Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9
+ * @version 1.1.10
  */
 class RegisterModelControllerTest extends WpmvcAyucoTestCase
 {
@@ -27,6 +27,7 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
     ];
     /**
      * Tests Posttype Model Registration with Autonaming.
+     * @group models
      */
     public function testRegisterAutoModelName()
     {
@@ -42,6 +43,7 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests Posttype Model Registration with custom name.
+     * @group models
      */
     public function testRegisterCustomModel()
     {
@@ -56,6 +58,8 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests Posttype Model Registration with Controller.
+     * @group models
+     * @group controllers
      */
     public function testRegisterWithController()
     {
@@ -76,6 +80,7 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests Model registration.
+     * @group models
      */
     public function testRegisterModel()
     {
@@ -89,6 +94,8 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests the comments created during register type command.
+     * @group models
+     * @group comments
      */
     public function testRegisterComments()
     {
@@ -102,6 +109,8 @@ class RegisterModelControllerTest extends WpmvcAyucoTestCase
     }
     /**
      * Tests the comments created during register model command.
+     * @group models
+     * @group comments
      */
     public function testRegisterModelComments()
     {
