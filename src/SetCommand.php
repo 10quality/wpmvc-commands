@@ -16,7 +16,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.10
  */
 class SetCommand extends Command
 {
@@ -60,19 +60,19 @@ class SetCommand extends Command
         switch ($object[0]) {
             case 'namespace':
                 // Validate second parameter
-                if ($object[0] === 'domain' && !isset($object[1]))
+                if ($object[0] === 'namespace' && empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting a namespace.');
                 $this->setNamespace($object[1]);
                 break;
             case 'version':
                 // Validate second parameter
-                if ($object[0] === 'version' && !isset($object[1]))
+                if ($object[0] === 'version' && empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting a version.');
                 $this->setVersion($object[1]);
                 break;
             case 'domain':
                 // Validate second parameter
-                if ($object[0] === 'domain' && !isset($object[1]))
+                if ($object[0] === 'domain' && empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": Expecting a text domain.');
                 $this->setTextDomain($object[1]);
                 break;
