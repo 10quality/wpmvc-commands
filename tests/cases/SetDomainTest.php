@@ -11,16 +11,23 @@
 class SetDomainTest extends WpmvcAyucoTestCase
 {
     /**
+     * Retore to default namespace.
+     * @since 1.1.10
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        exec('php '.WPMVC_AYUCO.' set domain:my-app');
+    }
+    /**
      * Test resulting message.
      * @group domain
      */
     public function testResultMessage()
     {
         $execution = exec('php '.WPMVC_AYUCO.' set domain:phpunit');
-
+        // Assert
         $this->assertEquals($execution, 'Text domain updated!');
-        // Down test
-        exec('php '.WPMVC_AYUCO.' set domain:my-app');
     }
     /**
      * Test package.json.
@@ -31,10 +38,8 @@ class SetDomainTest extends WpmvcAyucoTestCase
         // Run
         $execution = exec('php '.WPMVC_AYUCO.' set domain:domain-value');
         $json = json_decode(file_get_contents(FRAMEWORK_PATH.'/environment/package.json'));
-        // Asset
+        // Assert
         $this->assertEquals('domain-value', $json->name);
-        // Down test
-        exec('php '.WPMVC_AYUCO.' set domain:my-app');
     }
     /**
      * Test composer.json.
@@ -45,10 +50,8 @@ class SetDomainTest extends WpmvcAyucoTestCase
         // Run
         $execution = exec('php '.WPMVC_AYUCO.' set domain:domain-value');
         $json = json_decode(file_get_contents(FRAMEWORK_PATH.'/environment/composer.json'));
-        // Asset
+        // Assert
         $this->assertEquals('wpmvc/domain-value', $json->name);
-        // Down test
-        exec('php '.WPMVC_AYUCO.' set domain:my-app');
     }
     /**
      * Test style.css.
@@ -64,8 +67,6 @@ class SetDomainTest extends WpmvcAyucoTestCase
             $matches
         );
         $this->assertEquals(1, preg_match('/special\-domain/', $matches[0]));
-        // Down test
-        exec('php '.WPMVC_AYUCO.' set domain:my-app');
     }
     /**
      * Test missing domain.
@@ -93,7 +94,5 @@ class SetDomainTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertStringMatchContents('textdomain\' => \'namespace\'', $filename);
         $this->assertStringMatchContents('namespace\' => \'Preserve\'', $filename);
-        // Down test
-        exec('php '.WPMVC_AYUCO.' set domain:my-app');
     }
 }

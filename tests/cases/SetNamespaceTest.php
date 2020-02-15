@@ -11,6 +11,14 @@
 class SetNamespaceTest extends WpmvcAyucoTestCase
 {
     /**
+     * Tests path.
+     */
+    protected $path = [
+        TESTING_PATH.'/app/Controllers/',
+        TESTING_PATH.'/app/Models/',
+        TESTING_PATH.'/app/Utility/',
+    ];
+    /**
      * Retore to default namespace.
      * @since 1.1.8
      */
@@ -66,5 +74,31 @@ class SetNamespaceTest extends WpmvcAyucoTestCase
         $execution = exec('php '.WPMVC_AYUCO.' set namespace');
         // Run
         $this->assertEquals('Command "set": Expecting a namespace.', $execution);
+    }
+    /**
+     * Test composer file updated.
+     * @group namespace
+     */
+    public function testGlobalAppChange()
+    {
+        // Prepare
+        $controller = TESTING_PATH.'/app/Controllers/TestController.php';
+        $model = TESTING_PATH.'/app/Models/Model.php';
+        $utility = TESTING_PATH.'/app/Utility/Tool.php';
+        mkdir(TESTING_PATH.'/app/Controllers/', 0777, true);
+        mkdir(TESTING_PATH.'/app/Models/', 0777, true);
+        mkdir(TESTING_PATH.'/app/Utility/', 0777, true);
+        file_put_contents($controller, '<?php namespace MyApp\Controllers; use MyApp\Models\Model; class TestController { function artu() {return;} }');
+        file_put_contents($model, '<?php namespace MyApp\Models; use MyApp\Utility\Tool; class Model { function artu() {return;} }');
+        file_put_contents($utility, '<?php namespace MyApp\Utility; use MyApp\Controllers\TestController; class Tool { function artu() {return;} }');
+        // Execute
+        $execution = exec('php '.WPMVC_AYUCO.' set namespace:GlobalApp');
+        // Assert
+        $this->assertStringMatchContents('namespace GlobalApp\Controllers', $controller);
+        $this->assertStringMatchContents('use GlobalApp\Models\Model', $controller);
+        $this->assertStringMatchContents('namespace GlobalApp\Models', $model);
+        $this->assertStringMatchContents('use GlobalApp\Utility\Tool', $model);
+        $this->assertStringMatchContents('namespace GlobalApp\Utility', $utility);
+        $this->assertStringMatchContents('use GlobalApp\Controllers\TestController', $utility);
     }
 }

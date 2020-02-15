@@ -3,6 +3,8 @@
 namespace WPMVC\Commands\Traits;
 
 use Exception;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Ayuco\Exceptions\NoticeException;
 
 /**
@@ -12,7 +14,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.8
+ * @version 1.1.10
  */
 trait SetNamespaceTrait
 {
@@ -35,36 +37,22 @@ trait SetNamespaceTrait
             $this->config = include $this->configFilename;
             // Update Namespace in composer.json
             $this->replaceInFile($currentnamespace, $namespace, $this->rootPath.'/composer.json');
-            // Update Namespace in Main app file
-            if (file_exists($this->rootPath . '/app/Main.php'))
+
+            $dir = new RecursiveDirectoryIterator($this->rootPath . '/app', RecursiveDirectoryIterator::SKIP_DOTS);
+            foreach (new RecursiveIteratorIterator($dir, RecursiveIteratorIterator::SELF_FIRST) as $filename => $item) {
+                if ($item->isDir())
+                    continue;
                 $this->replaceInFile( 
                     'namespace ' . $currentnamespace,
                     'namespace ' . $namespace,
-                    $this->rootPath.'/app/Main.php'
+                    $filename
                 );
-            // Update Namespace in Model files
-            if (is_dir($this->rootPath.'/app/Models')) 
-                foreach (scandir($this->rootPath.'/app/Models') as $filename) {
-                    $this->replaceInFile( 
-                        'namespace ' . $currentnamespace,
-                        'namespace ' . $namespace,
-                        $this->rootPath.'/app/Models/' . $filename
-                    );
-                }
-            // Update Namespace in Controller files
-            if (is_dir($this->config['paths']['controllers'])) 
-                foreach (scandir($this->config['paths']['controllers']) as $filename) {
-                    $this->replaceInFile( 
-                        'namespace ' . $currentnamespace,
-                        'namespace ' . $namespace,
-                        $this->config['paths']['controllers'] . $filename
-                    );
-                    $this->replaceInFile( 
-                        'use ' . $currentnamespace,
-                        'use ' . $namespace,
-                        $this->config['paths']['controllers'] . $filename
-                    );
-                }
+                $this->replaceInFile( 
+                    'use ' . $currentnamespace,
+                    'use ' . $namespace,
+                    $filename
+                );
+            }
             // Print end
             $this->_print('Namespace updated!');
             $this->_lineBreak();

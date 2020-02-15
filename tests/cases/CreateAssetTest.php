@@ -22,6 +22,17 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         FRAMEWORK_PATH.'/environment/assets',
     ];
     /**
+     * Retore to default namespace.
+     * @since 1.1.8
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $filename = FRAMEWORK_PATH.'/environment/.gitignore';
+        if (file_exists($filename))
+            unlink($filename);
+    }
+    /**
      * Tests javascript asset creation.
      * @group assets
      * @group js
@@ -210,21 +221,5 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertFileExists($part2file);
         $this->assertPregMatchContents('/\@import(|\s)\\\'parts\/header\\\'\;/', $masterfile);
         $this->assertPregMatchContents('/\@import(|\s)\\\'parts\/footer\\\'\;/', $masterfile);
-    }
-    /**
-     * Tests sass gitignore update.
-     * @group assets
-     * @group scss
-     */
-    public function testScssGitignore()
-    {
-        // Prepare
-        $filename = FRAMEWORK_PATH.'/environment/.gitignore';
-        // Execute
-        exec('php '.WPMVC_AYUCO.' create scss:theme');
-        // Assert
-        $this->assertFileExists($filename);
-        $this->assertPregMatchContents('/\# SASS COMPILATION/', $filename);
-        unlink($filename);
     }
 }
