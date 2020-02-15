@@ -18,7 +18,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.5
+ * @version 1.1.10
  */
 class CreateCommand extends Command
 {
@@ -36,7 +36,7 @@ class CreateCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'Creates models, views, controllers and assets. Supported object types are view|controller|model|postmodel|optionmodel|usermodel|termmodel|js|css|sass. (e.g. ayuco create view:posts.metabox).';
+    protected $description = 'Creates models, views, controllers and assets. Supported object types are view|controller|model|postmodel|optionmodel|usermodel|termmodel|js|css|sass|scss. (e.g. ayuco create view:posts.metabox).';
 
     /**
      * Calls to command action.
@@ -47,7 +47,7 @@ class CreateCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|js|css|sass).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|js|css|sass|scss).');
 
         $object = explode(':', $args[2]);
 
@@ -108,13 +108,14 @@ class CreateCommand extends Command
                 $this->createAsset('css', $object[1], ['template' => isset($args[3]) ? $args[3] : 'asset']);
                 break;
             case 'sass':
+            case 'scss':
                 if (!isset($object[1]) || empty($object[1]))
                     throw new NoticeException('Command "'.$this->key.'": SASS filename is missing.');
                 $importin = isset($args[3]) ? $args[3] : null;
                 // Attempt to create master file first
                 if ($importin)
-                    $this->createAsset('sass', $importin);
-                $this->createAsset('sass', $object[1], ['importin' => $importin]);
+                    $this->createAsset($object[0], $importin);
+                $this->createAsset($object[0], $object[1], ['importin' => $importin]);
                 break;
         }
     }

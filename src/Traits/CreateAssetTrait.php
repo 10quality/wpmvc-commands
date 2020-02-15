@@ -11,7 +11,7 @@ use Exception;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.8
+ * @version 1.1.10
  */
 trait CreateAssetTrait
 {
@@ -67,15 +67,16 @@ trait CreateAssetTrait
                     if (!is_dir($path))
                         mkdir($path);
                     // Replace type with sass extension
-                    $type = 'scss';
                     $ispart = false;
                     if (array_key_exists('importin', $args) && $args['importin']) {
                         // Append @include on master
                         $master = $path.'/'.$args['importin'].'.'.$type;
                         if (!is_file($master))
-                            throw new Exception('SASS master file doesn\'t exists.');
+                            throw new Exception($type . ' master file doesn\'t exists.');
                         $contents = file_get_contents($master);
-                        $contents .= "\n".'@import \'parts/'.$filename.'\';';
+                        $contents .= $type === 'sass'
+                            ? "\n".'@import parts/'.$filename.';'
+                            : "\n".'@import \'parts/'.$filename.'\';';
                         file_put_contents($master, $contents);
                         // Prepare parts path
                         $path .= '/parts';
