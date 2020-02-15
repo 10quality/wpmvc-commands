@@ -16,7 +16,7 @@ use WPMVC\Commands\Core\Builder;
  * @copyright 10 Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9
+ * @version 1.1.10
  */
 class PrettifyCommand extends Command
 {
@@ -51,7 +51,7 @@ class PrettifyCommand extends Command
                     && !preg_match('/app(\/|\\\)(Boot|Config)(\/|\\\)/', $filename)
                     && $item->getExtension() === 'php'
                 ) {
-                    $builder = Builder::parser($filename);
+                    $builder = Builder::parser($filename, array_key_exists('nopretty', $this->options));
                     $builder->build();
                 }
             }

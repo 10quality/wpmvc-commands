@@ -3,10 +3,12 @@
 namespace WPMVC\Commands\Core;
 
 use PhpParser\Error;
+use PhpParser\Lexer\Emulative;
 use PhpParser\ParserFactory;
 use PhpParser\BuilderFactory;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
+use PhpParser\NodeVisitor\CloningVisitor;
 use WPMVC\Commands\Parser\WPPrinter as Printer;
 
 /**
@@ -17,7 +19,7 @@ use WPMVC\Commands\Parser\WPPrinter as Printer;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9
+ * @version 1.1.10
  */
 class Builder
 {
@@ -48,6 +50,12 @@ class Builder
      * @var string
      */
     protected $filename;
+    /**
+     * Engine lexer.
+     * @since 1.1.10
+     * @var mixed
+     */
+    protected $lexer;
 
     /**
      * File statements.
@@ -55,6 +63,13 @@ class Builder
      * @var array
      */
     protected $stmts = [];
+
+    /**
+     * Flag that indicates if code formatting should be preserved.
+     * @since 1.1.10
+     * @var bool
+     */
+    protected $is_preserving = false;
 
     /**
      * Flag that indicates if build process is in debug mode or not.
@@ -68,12 +83,14 @@ class Builder
      * @since 1.0.0
      *
      * @param string $filename
+     * @param bool   $preserve
      * @param bool   $debug
      */
-    public function __construct($filename, $debug = false)
+    public function __construct($filename, $preserve = false, $debug = false)
     {
         $this->filename = $filename;
         $this->is_debug_mode = $debug;
+        $this->is_preserving = $preserve;
         $this->traverser = new NodeTraverser;
     }
 
@@ -86,7 +103,7 @@ class Builder
      */
     public static function builder($filename, $debug = false)
     {
-        $builder = new self($filename, $debug);
+        $builder = new self($filename, false, $debug);
         $builder->engine = new BuilderFactory;
         return $builder;
     }
@@ -96,12 +113,22 @@ class Builder
      * @since 1.0.0
      *
      * @param string $filename
+     * @param bool   $preserve
      * @param bool   $debug
      */
-    public static function parser($filename, $debug = false)
+    public static function parser($filename, $preserve = false, $debug = false)
     {
-        $builder = new self($filename, $debug);
-        $builder->engine = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $builder = new self($filename, $preserve, $debug);
+        $builder->lexer = $preserve
+            ? new Emulative([
+                'usedAttributes' => [
+                    'comments',
+                    'startLine', 'endLine',
+                    'startTokenPos', 'endTokenPos',
+                ],
+            ])
+            : new Emulative;
+        $builder->engine = (new ParserFactory)->create(ParserFactory::PREFER_PHP7, $builder->lexer);
         // Parse
         $builder->parse();
         return $builder;
@@ -161,15 +188,28 @@ class Builder
      */
     public function build()
     {
-        $printer = new Printer;
-        $this->stmts = $this->traverser->traverse($this->stmts);
-        if ( $this->is_debug_mode )
+        if ($this->is_debug_mode)
             $this->debug();
-        // Save into file
-        file_put_contents(
-            $this->filename,
-            $printer->prettyPrintFile($this->stmts)
-        );
+        $printer = new Printer;
+        if ($this->is_preserving && $this->lexer && !empty($this->stmts)) {
+            $this->traverser->addVisitor(new CloningVisitor());
+            // Save into file
+            file_put_contents(
+                $this->filename,
+                $printer->printFormatPreserving(
+                    $this->traverser->traverse($this->stmts),
+                    $this->stmts,
+                    $this->lexer->getTokens()
+                )
+            );
+        } else {
+            $this->stmts = $this->traverser->traverse($this->stmts);
+            // Save into file
+            file_put_contents(
+                $this->filename,
+                $printer->prettyPrintFile($this->stmts)
+            );
+        }
     }
 
     /**

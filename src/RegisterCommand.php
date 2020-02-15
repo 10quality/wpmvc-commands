@@ -20,7 +20,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9
+ * @version 1.1.10
  */
 class RegisterCommand extends Command
 {
@@ -43,7 +43,6 @@ class RegisterCommand extends Command
     /**
      * Calls to command action.
      * @since 1.0.0
-     * @since 1.0.1 Added suppot for assets and models.
      *
      * @param array $args Action arguments.
      */
@@ -90,7 +89,7 @@ class RegisterCommand extends Command
                 $filename = $this->getMainClassPath();
                 if (!$this->existsMethodCallIn($filename, 'add_model', $model)) {
                     $this->config['_options'] = $this->options;
-                    $builder = Builder::parser($filename);
+                    $builder = Builder::parser($filename, array_key_exists('nopretty', $this->options));
                     $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
                     $builder->build();
                     // Update class version
@@ -113,7 +112,7 @@ class RegisterCommand extends Command
                 $filename = $this->getMainClassPath();
                 if (!$this->existsMethodCallIn($filename, 'add_model', $model)) {
                     $this->config['_options'] = $this->options;
-                    $builder = Builder::parser($filename);
+                    $builder = Builder::parser($filename, array_key_exists('nopretty', $this->options));
                     $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_model', [$model]));
                     $builder->build();
                     // Update class version
@@ -135,7 +134,7 @@ class RegisterCommand extends Command
                     $filename = $this->getMainClassPath();
                     if (!$this->existsMethodCallIn($filename, 'add_asset', $object[1])) {
                         $this->config['_options'] = $this->options;
-                        $builder = Builder::parser($filename);
+                        $builder = Builder::parser($filename, array_key_exists('nopretty', $this->options));
                         $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_asset', [$object[1]]));
                         $builder->build();
                         // Update class version

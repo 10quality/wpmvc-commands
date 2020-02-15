@@ -14,7 +14,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.9
+ * @version 1.1.10
  */
 trait RegisterWidgetTrait
 {
@@ -90,7 +90,7 @@ trait RegisterWidgetTrait
                 }
                 // Add to main
                 $this->config['_options'] = $this->options;
-                $builder = Builder::parser($this->getMainClassPath());
+                $builder = Builder::parser($this->getMainClassPath(), array_key_exists('nopretty', $this->options));
                 $builder->addVisitor(new AddMethodCallVisitor($this->config, 'init', 'add_widget', [$name]));
                 $builder->build();
                 // Update class version

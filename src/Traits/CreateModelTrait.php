@@ -15,7 +15,7 @@ use WPMVC\Commands\Visitors\AddClassPropertyVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.10
  */
 trait CreateModelTrait
 {
@@ -88,7 +88,7 @@ trait CreateModelTrait
         if (!$this->existsFunctionIn($filename, $method)) {
             try {
                 $this->config['_options'] = $this->options;
-                $builder = Builder::parser($filename);
+                $builder = Builder::parser($filename, array_key_exists('nopretty', $this->options));
                 $builder->addVisitor(new AddClassMethodVisitor($this->config, $method, $params, $comment));
                 $builder->build();
                 // Update class version
@@ -124,7 +124,7 @@ trait CreateModelTrait
         if (!$this->existsPropertyIn($filename, $property, $type)) {
             try {
                 $this->config['_options'] = $this->options;
-                $builder = Builder::parser($filename);
+                $builder = Builder::parser($filename, array_key_exists('nopretty', $this->options));
                 $builder->addVisitor(new AddClassPropertyVisitor($this->config, $property, $value, $type, $comment));
                 $builder->build();
                 // Update class version
