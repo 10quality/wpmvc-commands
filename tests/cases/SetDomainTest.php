@@ -8,7 +8,7 @@
  * @package WPMVC\Commands
  * @version 1.1.10
  */
-class SetDomainTest extends AyucoTestCase
+class SetDomainTest extends WpmvcAyucoTestCase
 {
     /**
      * Test resulting message.
@@ -56,13 +56,13 @@ class SetDomainTest extends AyucoTestCase
      */
     public function testThemeDomainValue()
     {
+        // Prepare
         $execution = exec('php '.WPMVC_AYUCO.' set domain:special-domain');
         preg_match(
             '/[Tt]ext\s[Dd]omain\:[|\s][a-z-A-Z-0-9\-\.\[\]]+.*/',
             file_get_contents(FRAMEWORK_PATH.'/environment/style.css'),
             $matches
         );
-
         $this->assertEquals(1, preg_match('/special\-domain/', $matches[0]));
         // Down test
         exec('php '.WPMVC_AYUCO.' set domain:my-app');
@@ -77,5 +77,23 @@ class SetDomainTest extends AyucoTestCase
         $execution = exec('php '.WPMVC_AYUCO.' set domain');
         // Run
         $this->assertEquals('Command "set": Expecting a text domain.', $execution);
+    }
+    /**
+     * Test that namespace is un changed during doman change.
+     * @group domain
+     * @group namespace
+     */
+    public function testNamespacePreservation()
+    {
+        // Prepare
+        $filename = TESTING_PATH.'/app/Config/app.php';
+        // Run
+        exec('php '.WPMVC_AYUCO.' set domain:namespace');
+        exec('php '.WPMVC_AYUCO.' set namespace:Preserve');
+        // Assert
+        $this->assertStringMatchContents('textdomain\' => \'namespace\'', $filename);
+        $this->assertStringMatchContents('namespace\' => \'Preserve\'', $filename);
+        // Down test
+        exec('php '.WPMVC_AYUCO.' set domain:my-app');
     }
 }

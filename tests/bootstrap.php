@@ -47,7 +47,7 @@ file_put_contents($candidate, '{
     "gulp-wpmvc": "^1.0.*"
   }
 }');
-// package.json
+// Config/app.php
 if (!is_dir(TESTING_PATH.'/app/Config/'))
   mkdir(TESTING_PATH.'/app/Config/');
 $candidate = TESTING_PATH.'/app/Config/app.php';
@@ -69,3 +69,20 @@ return [
         \'path\'          => __DIR__ . \'/../../assets/lang/\',
     ],
 ];');
+// style.css
+$candidate = TESTING_PATH.'/style.css';
+if (file_exists($candidate))
+    unlink($candidate);
+file_put_contents($candidate, '/*
+Theme Name: [MY THEME]
+Theme URI: [MY URL]
+Author: [MY NAME OR COMPANY NAME]
+Author URI: [MY URL]
+Description: [THEME DESCRIPTION]
+Version: 1.0.0
+License: [LICENSE]
+License URI: [LICENSE URL]
+Tags: [TAGS SEPARATED BY COMMAS i.e. bootstrap, red, responsive]
+Text Domain: my-app
+Add additional description here...
+*/');

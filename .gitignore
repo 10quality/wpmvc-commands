@@ -9,6 +9,7 @@
 /tests/environment/composer.json
 /tests/environment/package.json
 /tests/environment/composer.lock
+/tests/environment/style.css
 composer.lock
 debug.log
 

@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.10
  */
 trait SetTextDomainTrait
 {
@@ -28,7 +28,7 @@ trait SetTextDomainTrait
             $domain = preg_replace('/\s/', '-', strtolower(trim($domain)));
             $currentDomain = $this->config['localize']['textdomain'];
             // Replace in config file
-            $this->replaceInFile('\''.$currentDomain.'\'', '\''.$domain.'\'', $this->configFilename);
+            $this->replaceInFile('textdomain\\\'(|[\s]+)\=\>(|[\s]+)\\\''.$currentDomain.'\\\'', 'textdomain\' => \''.$domain.'\'', $this->configFilename);
             $this->config = include $this->configFilename;
             // Replace in package.json
             $packageJson = json_decode(file_get_contents($this->rootPath.'/package.json'));
