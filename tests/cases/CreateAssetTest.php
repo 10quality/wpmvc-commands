@@ -211,4 +211,20 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertPregMatchContents('/\@import(|\s)\\\'parts\/header\\\'\;/', $masterfile);
         $this->assertPregMatchContents('/\@import(|\s)\\\'parts\/footer\\\'\;/', $masterfile);
     }
+    /**
+     * Tests sass gitignore update.
+     * @group assets
+     * @group scss
+     */
+    public function testScssGitignore()
+    {
+        // Prepare
+        $filename = FRAMEWORK_PATH.'/environment/.gitignore';
+        // Execute
+        exec('php '.WPMVC_AYUCO.' create scss:theme');
+        // Assert
+        $this->assertFileExists($filename);
+        $this->assertPregMatchContents('/\# SASS COMPILATION/', $filename);
+        unlink($filename);
+    }
 }
