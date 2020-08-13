@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.11
  */
 class BaseCommand extends Command
 {
@@ -51,8 +51,8 @@ class BaseCommand extends Command
     {
         $this->rootPath = $rootPath;
         // Check for MVC configuration file
-        $this->configFilename = file_exists($this->rootPath . '/app/config/app.php')
-            ? $this->rootPath . '/app/config/app.php'
+        $this->configFilename = file_exists($this->rootPath . '/app/Config/app.php')
+            ? $this->rootPath . '/app/Config/app.php'
             : null;
          if (empty($this->configFilename))
             throw new NoticeException($this->key.'Command: No configuration file found.');
