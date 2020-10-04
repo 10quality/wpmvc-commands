@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.12
  */
 trait CreateViewTrait
 {
@@ -28,6 +28,8 @@ trait CreateViewTrait
         try {
             // Prepare
             $path = $this->rootPath.'/assets/views';
+            if (!is_dir($path))
+                mkdir($path, 0777, true);
             $views = explode('.', $key);
             // Loop creation
             for ($i = 0; $i < count($views); ++$i) {
