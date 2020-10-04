@@ -1,13 +1,16 @@
 <?php
 /*
-Plugin Name: [MY PLUGIN]
+Plugin Name: [MY APP]
 Plugin URI: [MY URL]
 Description: [MY DESCRIPTION]
 Version: 1.0.0
 Author: [MY NAME OR COMPANY]
-Author URI: [MY IR COMPANY URL]
+Author URI: [MY COMPANY URL]
+License: [LICENSE]
+License URI: [LICENSE URL]
 Text Domain: my-app
 Domain Path: /assets/lang
+Requires PHP: 5.4
 */
 //------------------------------------------------------------
 //

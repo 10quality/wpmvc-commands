@@ -6,6 +6,7 @@ use WPMVC\Commands\Traits\SetNamespaceTrait;
 use WPMVC\Commands\Traits\SetVersionTrait;
 use WPMVC\Commands\Traits\SetTextDomainTrait;
 use WPMVC\Commands\Traits\SetAuthorTrait;
+use WPMVC\Commands\Traits\SetLicenseTrait;
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 
@@ -16,11 +17,11 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.10
+ * @version 1.1.12
  */
 class SetCommand extends Command
 {
-    use SetNamespaceTrait, SetVersionTrait, SetTextDomainTrait, SetAuthorTrait;
+    use SetNamespaceTrait, SetVersionTrait, SetTextDomainTrait, SetAuthorTrait, SetLicenseTrait;
 
     /**
      * Command key.
@@ -34,7 +35,7 @@ class SetCommand extends Command
      * @since 1.0.4
      * @var string
      */
-    protected $description = 'Sets configuration and values in WordPress MVC. Supported settings are namespace|version|domain|author. (e.g. ayuco set version:1.0.0).';
+    protected $description = 'Sets configuration and values in WordPress MVC. Supported settings are namespace|version|domain|author|license. (e.g. ayuco set version:1.0.0).';
 
     /**
      * Calls to command action.
@@ -49,13 +50,13 @@ class SetCommand extends Command
             throw new NoticeException('Command "'.$this->key.'": No configuration file found.');
         
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting a setting (namespace|version|domain|author).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting a setting (namespace|version|domain|author|license).');
 
         $object = explode(':', $args[2]);
 
         // Validations
-        if (!in_array($object[0], ['namespace','version','domain','author']))
-            throw new NoticeException('Command "'.$this->key.'": Invalid setting. Expecting (namespace|version|domain|author).');
+        if (!in_array($object[0], ['namespace','version','domain','author','license']))
+            throw new NoticeException('Command "'.$this->key.'": Invalid setting. Expecting (namespace|version|domain|author|license).');
 
         switch ($object[0]) {
             case 'namespace':
@@ -79,6 +80,10 @@ class SetCommand extends Command
             case 'author':
                 // Calls wizard
                 $this->setAuthor();
+                break;
+            case 'license':
+                // Calls wizard
+                $this->setLicense();
                 break;
         }
     }

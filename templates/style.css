@@ -1,13 +1,14 @@
 /*
-Theme Name: [MY THEME]
+Theme Name: [MY APP]
 Theme URI: [MY URL]
-Author: [MY NAME OR COMPANY NAME]
-Author URI: [MY URL]
-Description: [THEME DESCRIPTION]
+Description: [MY DESCRIPTION]
 Version: 1.0.0
+Author: [MY NAME OR COMPANY]
+Author URI: [MY COMPANY URL]
 License: [LICENSE]
 License URI: [LICENSE URL]
-Tags: [TAGS SEPARATED BY COMMAS i.e. bootstrap, red, responsive]
+Tags: [TAGS]
 Text Domain: my-app
 Domain Path: /assets/lang
+Requires PHP: 5.4
 */

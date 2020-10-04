@@ -17,7 +17,7 @@ use Ayuco\Exceptions\NoticeException;
 trait SetAuthorTrait
 {
     /**
-     * Sets a projects text domain.
+     * Sets a projects author.
      * @since 1.1.0
      */
     public function setAuthor()

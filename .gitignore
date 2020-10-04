@@ -1,3 +1,4 @@
+# Dependencies and testing
 /vendor
 /tests/environment/vendor
 /tests/environment/app/Widgets
@@ -15,3 +16,6 @@ debug.log
 
 # PHPUnit
 .phpunit.result.cache
+
+# Tmp
+.DS_Store
