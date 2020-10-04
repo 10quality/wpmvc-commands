@@ -6,7 +6,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.10
+ * @version 1.1.12
  */
 class CreateModelTest extends WpmvcAyucoTestCase
 {
@@ -115,5 +115,19 @@ class CreateModelTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertPregMatchContents('/\*\sModel\scomment\sphpunit/', $filename);
         $this->assertNotPregMatchContents('/\*\sComment\smodel\./', $filename);
+    }
+    /**
+     * Test comment model.
+     * @group models
+     */
+    public function testCommentModel()
+    {
+        // Prepare
+        $filename = FRAMEWORK_PATH.'/environment/app/Models/TestComment.php';
+        // Execute
+        $execution = exec('php '.WPMVC_AYUCO.' create commentmodel:TestComment');
+        // Assert
+        $this->assertEquals('Model created!', $execution);
+        $this->assertFileExists($filename);
     }
 }

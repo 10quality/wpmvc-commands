@@ -18,7 +18,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.10
+ * @version 1.1.12
  */
 class CreateCommand extends Command
 {
@@ -36,7 +36,7 @@ class CreateCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'Creates models, views, controllers and assets. Supported object types are view|controller|model|postmodel|optionmodel|usermodel|termmodel|js|css|sass|scss. (e.g. ayuco create view:posts.metabox).';
+    protected $description = 'Creates models, views, controllers and assets. Supported object types are view|controller|model|postmodel|optionmodel|usermodel|termmodel|commentmodel|js|css|sass|scss. (e.g. ayuco create view:posts.metabox).';
 
     /**
      * Calls to command action.
@@ -47,7 +47,7 @@ class CreateCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|js|css|sass|scss).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|commentmodel|js|css|sass|scss).');
 
         $object = explode(':', $args[2]);
 
@@ -96,6 +96,11 @@ class CreateCommand extends Command
                 // Add taxonomy
                 if (isset($args[3]))
                     $this->createModelProperty($object[1], 'model_taxonomy', $args[3]);
+                break;
+            case 'commentmodel':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": Model definition is missing.');
+                $this->createModel($object[1], 'CommentModel');
                 break;
             case 'js':
                 if (!isset($object[1]) || empty($object[1]))
