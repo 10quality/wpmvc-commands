@@ -142,6 +142,8 @@ trait SetupTestsTrait
                 $this->_print('test/cases path created.');
                 $this->_lineBreak();
             }
+            // PHPUnit
+            exec('composer require phpunit/phpunit:7.5.* --dev --no-plugins');
             // Complete
             $this->_print('------------------------------');
             $this->_lineBreak();
