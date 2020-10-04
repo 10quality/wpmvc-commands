@@ -5,6 +5,8 @@ namespace WPMVC\Commands;
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 use WPMVC\Commands\Traits\UpdateCommentTrait;
+use WPMVC\Commands\Traits\SetupTestsTrait;
+use WPMVC\Commands\Traits\YesNoInputTrait;
 
 /**
  * Setup command.
@@ -17,7 +19,7 @@ use WPMVC\Commands\Traits\UpdateCommentTrait;
  */
 class SetupCommand extends Command
 {
-    use UpdateCommentTrait;
+    use UpdateCommentTrait, SetupTestsTrait, YesNoInputTrait;
     /**
      * Command key.
      * @since 1.0.0
@@ -30,7 +32,7 @@ class SetupCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'WordPress MVC setup wizard.';
+    protected $description = 'WordPress MVC setup wizard. (Other setups: tests)';
 
     /**
      * Calls to command action.
@@ -48,105 +50,120 @@ class SetupCommand extends Command
         if (!$command)
             throw new NoticeException('SetupCommand: "set" command is not registered in ayuco.');
 
-        try {
-            $this->_print('------------------------------');
-            $this->_lineBreak();
-            $this->_print('WordPress MVC (AYUCO) Setup');
-            $this->_lineBreak();
-            // TYPE
-            $this->_print('------------------------------');
-            $this->_lineBreak();
-            $this->_print('Enter your project\'s type (options: "theme" or "plugin"):');
-            $this->_lineBreak();
-            $type = $this->listener->getInput();
-            $this->setType($type);
-            // PROJECT NAME
-            $this->_print('------------------------------');
-            $this->_lineBreak();
-            $this->_print('Enter your project\'s name (example: My App):');
-            $this->_lineBreak();
-            $name = $this->listener->getInput();
-            if (empty($name))
-                $name = 'My App';
-            // NAMESPACE
-            $this->_print('------------------------------');
-            $this->_lineBreak();
-            $this->_print('Enter your project\'s namespace (PHP unique namespace, example: MyApp):');
-            $this->_lineBreak();
-            $namespace = $this->listener->getInput();
-            $namespace = empty($namespace) ? 'MyApp' : str_replace(' ', '', ucwords($namespace));
-            $command->setNamespace($namespace);
-            // DESCRIPTION
-            $this->_print('------------------------------');
-            $this->_lineBreak();
-            $this->_print('Enter your project\'s description:');
-            $this->_lineBreak();
-            $description = $this->listener->getInput();
-            // DOMAIN PATH
-            $this->_print('------------------------------');
-            $this->_lineBreak();
-            $this->_print('Enter your project\'s text domain (example: my-app), as WordPress standard, it should be the same as the project\'s root folder, this will be used for localization and builds:');
-            $this->_lineBreak();
-            $domain = $this->listener->getInput();
-            $domain = empty($domain) ? 'my-app' : $domain;
-            $command->setTextDomain(empty($domain) ? 'my-app' : $domain);
-            // AUTHOR
-            $command->setAuthor();
-            // LICENSE
-            $command->setLicense($license);
-            $this->config = include $this->configFilename;
-            // Update main
-            $this->updateComment('author', $this->config['author'], $this->getMainClassPath());
-            $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
-            $this->updateComment('package', $domain, $this->getMainClassPath());
-            $this->updateComment('license', $this->config['license'], $this->getMainClassPath());
-            // PLUGIN URL
-            $this->_print('------------------------------');
-            $this->_lineBreak();
-            $this->_print('Enter your project\'s URL (i.e. the repository URL or a web page):');
-            $this->_lineBreak();
-            $url = $this->listener->getInput();
-            $tags = '';
-            if ($this->config['type'] === 'theme') {
-                $this->_print('Enter your theme\'s tags (separated by commas, i.e. "tag1, tag2"):');
-                $this->_lineBreak();
-                $tags = $this->listener->getInput();
+        if (isset($args[2])) {
+            // Support ofor other setups
+            $object = explode(':', $args[2]);
+
+            // Validations
+            if (!in_array($object[0], ['tests']))
+                throw new NoticeException('Command "'.$this->key.'": Invalid setting. Expecting ({blank}|tests).');
+            switch ($object[0]) {
+                case 'tests':
+                    $this->setupTests();
+                    break;
             }
-            // Update plugin/theme file
-            $this->setInfo([
-                '\[MY APP\]' => $name,
-                '\[MY DESCRIPTION\]' => $description,
-                '\[MY NAME OR COMPANY\]' => $this->getAuthorName(),
-                '\[MY COMPANY URL\]' =>$this->getAuthorUrl(),
-                '\[MY URL\]' => $url,
-                '\[LICENSE\]' => $license['name'],
-                '\[LICENSE URL\]' => $license['url'],
-                '\[TAGS\]' => $tags,
-            ]);
-            // DESCRIPTION
-            $this->_print('------------------------------');
-            $this->_lineBreak();
-            $this->_print($this->description);
-            $this->_lineBreak();
-            // End
-            $this->_print('------------------------------');
-            $this->_lineBreak();
-            $this->_print('Your project\'s name is "%s"', $name);
-            $this->_lineBreak();
-            $this->_print('Your project\'s namespace is "%s"', $namespace);
-            $this->_lineBreak();
-            $this->_print('Your project\'s text domain is "%s"', $domain);
-            $this->_lineBreak();
-            $this->_print('Your project\'s author is "%s"', $this->config['author']);
-            $this->_lineBreak();
-            $this->_print('Your project\'s license is "%s"', $this->config['license']);
-            $this->_lineBreak();
-            $this->_print('Setup completed!');
-            $this->_lineBreak();
-            $this->_print('------------------------------');
-            $this->_lineBreak();
-        } catch (NoticeException $e) {
-            throw new NoticeException('Command "setup": Failed! ' . $e->getMessage());
+        } else {
+            // Framework setup
+            try {
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('WordPress MVC (AYUCO) Setup');
+                $this->_lineBreak();
+                // TYPE
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('Enter your project\'s type (options: "theme" or "plugin"):');
+                $this->_lineBreak();
+                $type = $this->listener->getInput();
+                $this->setType($type);
+                // PROJECT NAME
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('Enter your project\'s name (example: My App):');
+                $this->_lineBreak();
+                $name = $this->listener->getInput();
+                if (empty($name))
+                    $name = 'My App';
+                // NAMESPACE
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('Enter your project\'s namespace (PHP unique namespace, example: MyApp):');
+                $this->_lineBreak();
+                $namespace = $this->listener->getInput();
+                $namespace = empty($namespace) ? 'MyApp' : str_replace(' ', '', ucwords($namespace));
+                $command->setNamespace($namespace);
+                // DESCRIPTION
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('Enter your project\'s description:');
+                $this->_lineBreak();
+                $description = $this->listener->getInput();
+                // DOMAIN PATH
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('Enter your project\'s text domain (example: my-app), as WordPress standard, it should be the same as the project\'s root folder, this will be used for localization and builds:');
+                $this->_lineBreak();
+                $domain = $this->listener->getInput();
+                $domain = empty($domain) ? 'my-app' : $domain;
+                $command->setTextDomain(empty($domain) ? 'my-app' : $domain);
+                // AUTHOR
+                $command->setAuthor();
+                // LICENSE
+                $command->setLicense($license);
+                $this->config = include $this->configFilename;
+                // Update main
+                $this->updateComment('author', $this->config['author'], $this->getMainClassPath());
+                $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
+                $this->updateComment('package', $domain, $this->getMainClassPath());
+                $this->updateComment('license', $this->config['license'], $this->getMainClassPath());
+                // PLUGIN URL
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('Enter your project\'s URL (i.e. the repository URL or a web page):');
+                $this->_lineBreak();
+                $url = $this->listener->getInput();
+                $tags = '';
+                if ($this->config['type'] === 'theme') {
+                    $this->_print('Enter your theme\'s tags (separated by commas, i.e. "tag1, tag2"):');
+                    $this->_lineBreak();
+                    $tags = $this->listener->getInput();
+                }
+                // Update plugin/theme file
+                $this->setInfo([
+                    '\[MY APP\]' => $name,
+                    '\[MY DESCRIPTION\]' => $description,
+                    '\[MY NAME OR COMPANY\]' => $this->getAuthorName(),
+                    '\[MY COMPANY URL\]' =>$this->getAuthorUrl(),
+                    '\[MY URL\]' => $url,
+                    '\[LICENSE\]' => $license['name'],
+                    '\[LICENSE URL\]' => $license['url'],
+                    '\[TAGS\]' => $tags,
+                ]);
+                // DESCRIPTION
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print($this->description);
+                $this->_lineBreak();
+                // End
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('Your project\'s name is "%s"', $name);
+                $this->_lineBreak();
+                $this->_print('Your project\'s namespace is "%s"', $namespace);
+                $this->_lineBreak();
+                $this->_print('Your project\'s text domain is "%s"', $domain);
+                $this->_lineBreak();
+                $this->_print('Your project\'s author is "%s"', $this->config['author']);
+                $this->_lineBreak();
+                $this->_print('Your project\'s license is "%s"', $this->config['license']);
+                $this->_lineBreak();
+                $this->_print('Setup completed!');
+                $this->_lineBreak();
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+            } catch (NoticeException $e) {
+                throw new NoticeException('Command "setup": Failed! ' . $e->getMessage());
+            }
         }
     }
 

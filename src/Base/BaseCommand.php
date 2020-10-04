@@ -4,7 +4,7 @@ namespace WPMVC\Commands\Base;
 
 use Ayuco\Command;
 use Ayuco\Exceptions\NoticeException;
-
+use WPMVC\Commands\Traits\FilesystemTrait;
 /**
  * Base command.
  *
@@ -12,10 +12,11 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.11
+ * @version 1.1.12
  */
 class BaseCommand extends Command
 {
+    use FilesystemTrait;
     /**
      * Apps config file.
      * @since 1.0.0
