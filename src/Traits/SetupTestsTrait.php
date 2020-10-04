@@ -32,10 +32,13 @@ trait SetupTestsTrait
             // Request suit path
             $this->_print('------------------------------');
             $this->_lineBreak();
-            $this->_print('Enter the path, in your computer, where you want "WordPress Test Suit" to be cloned:');
+            $this->_print('Enter the path, in your computer, where you want "WordPress Test Suite" to be cloned:');
             $this->_lineBreak();
             $testSuitPath = $this->listener->getInput();
             if (!empty($testSuitPath)) {
+                if (!defined('ABSPATH')) {
+                    throw new NoticeException('Command "'.$this->key.'": "ABSPATH" const is not defined. Make sure your "ayuco" file is from WordPress MVC >= v1.0.7.');
+                }
                 if (is_dir($testSuitPath)) {
                     $this->_print('The directory already exist, please provide a non existen path to clone the test suit.');
                     $this->_lineBreak();
@@ -151,7 +154,8 @@ trait SetupTestsTrait
             $this->_lineBreak();
             $this->_print('------------------------------');
             $this->_lineBreak();
-
+        } catch (NoticeException $e) {
+            throw $e;
         } catch (Exception $e) {
             file_put_contents(
                 $this->rootPath.'/error_log',
