@@ -7,6 +7,7 @@ use WPMVC\Commands\Traits\CreateModelTrait;
 use WPMVC\Commands\Traits\CreateControllerTrait;
 use WPMVC\Commands\Traits\CreateAssetTrait;
 use WPMVC\Commands\Traits\UpdateCommentTrait;
+use WPMVC\Commands\Traits\CreateTestTrait;
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 
@@ -22,7 +23,7 @@ use Ayuco\Exceptions\NoticeException;
  */
 class CreateCommand extends Command
 {
-    use CreateModelTrait, CreateViewTrait, CreateControllerTrait, CreateAssetTrait, UpdateCommentTrait;
+    use CreateModelTrait, CreateViewTrait, CreateControllerTrait, CreateAssetTrait, UpdateCommentTrait, CreateTestTrait;
 
     /**
      * Command key.
@@ -36,7 +37,7 @@ class CreateCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'Creates models, views, controllers and assets. Supported object types are view|controller|model|postmodel|optionmodel|usermodel|termmodel|commentmodel|js|css|sass|scss. (e.g. ayuco create view:posts.metabox).';
+    protected $description = 'Creates models, views, controllers and assets. Supported object types are view|controller|model|postmodel|optionmodel|usermodel|termmodel|commentmodel|js|css|sass|scss|test. (e.g. ayuco create view:posts.metabox).';
 
     /**
      * Calls to command action.
@@ -47,7 +48,7 @@ class CreateCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|commentmodel|js|css|sass|scss).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|commentmodel|js|css|sass|scss|test).');
 
         $object = explode(':', $args[2]);
 
@@ -121,6 +122,16 @@ class CreateCommand extends Command
                 if ($importin)
                     $this->createAsset($object[0], $importin);
                 $this->createAsset($object[0], $object[1], ['importin' => $importin]);
+                break;
+            case 'test':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": test name is missing.');
+                $test = explode('@', $object[1]);
+                $this->createTest($test[0], $args);
+                // Create methods
+                if (count($test) > 1)
+                    foreach (array_slice($test, 1) as $test_method)
+                        $this->createTestMethod($test[0], $test_method);
                 break;
         }
     }
