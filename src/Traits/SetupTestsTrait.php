@@ -79,7 +79,8 @@ trait SetupTestsTrait
                         }
                         // Copy file
                         $config = file_get_contents( $filename );
-                        $config = str_replace('define( \'ABSPATH\', \'/\')', 'define( \'ABSPATH\', dirname( __FILE__ ) . \'/\')', $config );
+                        $config = str_replace('\'ABSPATH\', \'/\'', '\'ABSPATH\', dirname( __FILE__ ) . \'/\'', $config );
+                        $config = str_replace('\'ABSPATH\', \'/tmp/wordpress/\'', '\'ABSPATH\', dirname( __FILE__ ) . \'/\'', $config );
                         $this->_lineBreak();
                         if ($this->getYesInput('Would you like to configure the database connection?')) {
                             $this->_print('Enter the database host:');
