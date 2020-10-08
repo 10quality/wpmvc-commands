@@ -3,6 +3,7 @@
 namespace WPMVC\Commands\Traits;
 
 use Exception;
+use Ayuco\Exceptions\NoticeException;
 
 /**
  * Trait used to create models in a command.

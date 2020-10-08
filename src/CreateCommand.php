@@ -8,6 +8,7 @@ use WPMVC\Commands\Traits\CreateControllerTrait;
 use WPMVC\Commands\Traits\CreateAssetTrait;
 use WPMVC\Commands\Traits\UpdateCommentTrait;
 use WPMVC\Commands\Traits\CreateTestTrait;
+use WPMVC\Commands\Traits\CreateBlockTrait;
 use WPMVC\Commands\Base\BaseCommand as Command;
 use Ayuco\Exceptions\NoticeException;
 
@@ -19,11 +20,11 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.12
+ * @version 1.2.0
  */
 class CreateCommand extends Command
 {
-    use CreateModelTrait, CreateViewTrait, CreateControllerTrait, CreateAssetTrait, UpdateCommentTrait, CreateTestTrait;
+    use CreateModelTrait, CreateViewTrait, CreateControllerTrait, CreateAssetTrait, UpdateCommentTrait, CreateTestTrait, CreateBlockTrait;
 
     /**
      * Command key.
@@ -37,7 +38,7 @@ class CreateCommand extends Command
      * @since 1.0.0
      * @var string
      */
-    protected $description = 'Creates models, views, controllers and assets. Supported object types are view|controller|model|postmodel|optionmodel|usermodel|termmodel|commentmodel|js|css|sass|scss|test. (e.g. ayuco create view:posts.metabox).';
+    protected $description = 'Creates models, views, controllers and assets. Supported object types are view|controller|model|postmodel|optionmodel|usermodel|termmodel|commentmodel|js|css|sass|scss|block|test. (e.g. ayuco create view:posts.metabox).';
 
     /**
      * Calls to command action.
@@ -48,7 +49,7 @@ class CreateCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|commentmodel|js|css|sass|scss|test).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting an object to create (view|controller|model|postmodel|optionmodel|usermodel|termmodel|commentmodel|js|css|sass|scss|block|test).');
 
         $object = explode(':', $args[2]);
 
@@ -132,6 +133,11 @@ class CreateCommand extends Command
                 if (count($test) > 1)
                     foreach (array_slice($test, 1) as $test_method)
                         $this->createTestMethod($test[0], $test_method);
+                break;
+            case 'block':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": block name is missing.');
+                $this->createBlock($object[1]);
                 break;
         }
     }

@@ -13,6 +13,7 @@
 /tests/environment/style.css
 composer.lock
 debug.log
+error_log
 
 # PHPUnit
 .phpunit.result.cache
