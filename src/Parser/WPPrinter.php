@@ -562,7 +562,7 @@ class WPPrinter extends Printer
      * 
      * @see \PhpParser\PrettyPrinter\Standard@hasNodeWithComments
      */
-    private function hasNodeWithComments(array $nodes)
+    protected function hasNodeWithComments(array $nodes)
     {
         foreach ($nodes as $node) {
             if ($node && $node->getComments()) {
@@ -577,7 +577,7 @@ class WPPrinter extends Printer
      * 
      * @see \PhpParser\PrettyPrinter\Standard@pMaybeMultiline
      */
-    private function pMaybeMultiline(array $nodes, $trailingComma = false)
+    protected function pMaybeMultiline(array $nodes, $trailingComma = false)
     {
         if (!$this->hasReachedLineLength($nodes) && !$this->hasNodeWithComments($nodes)) {
             return $this->pCommaSeparated($nodes);
