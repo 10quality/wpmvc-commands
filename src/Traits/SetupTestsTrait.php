@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10 Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.12
+ * @version 1.1.14
  */
 trait SetupTestsTrait
 {
@@ -147,7 +147,8 @@ trait SetupTestsTrait
                 $this->_lineBreak();
             }
             // PHPUnit
-            exec('composer require phpunit/phpunit:7.5.* --dev --no-plugins');
+            exec('composer require phpunit/phpunit:9.* --dev --no-plugins');
+            exec('composer require yoast/phpunit-polyfills --dev --with-dependencies');
             // Complete
             $this->_print('------------------------------');
             $this->_lineBreak();

@@ -5,8 +5,10 @@
  * @author 10 Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.12
+ * @version 1.1.14
  */
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $phpunit_json = __DIR__ . '/../phpunit.json';
 if ( file_exists( $phpunit_json ) ) {
