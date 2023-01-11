@@ -55,8 +55,7 @@ function _manually_load_external_plugins() {
     //
     // ----------------------------
 }
+tests_add_filter( 'plugins_loaded', '_manually_load_external_plugins' );
 
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
-
-_manually_load_external_plugins();
