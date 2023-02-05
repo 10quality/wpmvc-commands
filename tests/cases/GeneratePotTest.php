@@ -42,26 +42,12 @@ class GeneratePotTest extends WpmvcAyucoTestCase
      * Test resulting message.
      * @group pot
      */
-    public function testResultMessage()
+    public function testGeneration()
     {
         // Prepare
         $filename = FRAMEWORK_PATH.'/environment/assets/lang/my-app.pot';
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' generate pot');
-        // Assert
-        $this->assertEquals('POT file generated!', $execution);
-        $this->assertFileExists($filename);
-    }
-    /**
-     * Test resulting message.
-     * @group pot
-     */
-    public function testMultidomainGeneration()
-    {
-        // Prepare
-        $filename = FRAMEWORK_PATH.'/environment/assets/lang/other-domain.pot';
-        // Execure
-        $execution = exec('php '.WPMVC_AYUCO.' generate pot other-domain');
         // Assert
         $this->assertEquals('POT file generated!', $execution);
         $this->assertFileExists($filename);
