@@ -1,4 +1,7 @@
 <?php
+
+use Gettext\Loader\PoLoader;
+
 /**
  * Tests generate pot command.
  *
@@ -6,7 +9,7 @@
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.10
+ * @version 1.1.17
  */
 class GeneratePotTest extends WpmvcAyucoTestCase
 {
@@ -41,29 +44,48 @@ class GeneratePotTest extends WpmvcAyucoTestCase
     /**
      * Test resulting message.
      * @group pot
+     * @group localization
      */
-    public function testResultMessage()
+    public function testGeneration()
     {
         // Prepare
+        $loader = new PoLoader;
         $filename = FRAMEWORK_PATH.'/environment/assets/lang/my-app.pot';
         // Execure
         $execution = exec('php '.WPMVC_AYUCO.' generate pot');
+        $translations = $loader->loadFile($filename);
         // Assert
         $this->assertEquals('POT file generated!', $execution);
         $this->assertFileExists($filename);
+        $this->assertCount(5, $translations);
+        $this->assertEquals('en', $translations->getHeaders()->get('Language'));
+        $this->assertEquals('my-app', $translations->getHeaders()->get('X-Domain'));
+        $this->assertEquals('1.0.0', $translations->getHeaders()->get('MIME-Version'));
     }
     /**
      * Test resulting message.
      * @group pot
+     * @group localization
      */
-    public function testMultidomainGeneration()
+    public function testExistingGeneration()
     {
         // Prepare
-        $filename = FRAMEWORK_PATH.'/environment/assets/lang/other-domain.pot';
+        $loader = new PoLoader;
+        $filename = FRAMEWORK_PATH.'/environment/assets/lang/my-app.pot';
+        exec('php '.WPMVC_AYUCO.' generate pot');
+        if (!is_file(TESTING_PATH.'/app/Localize/Test2.php'))
+            file_put_contents(TESTING_PATH.'/app/Localize/Test2.php', '<?php namespace MyApp\Localize;'
+                . ' class Test2 { public function __construct() { $assign = __( \'New string\', \'my-app\' );}}'
+            );
         // Execure
-        $execution = exec('php '.WPMVC_AYUCO.' generate pot other-domain');
+        $execution = exec('php '.WPMVC_AYUCO.' generate pot');
+        $translations = $loader->loadFile($filename);
         // Assert
-        $this->assertEquals('POT file generated!', $execution);
+        $this->assertEquals('POT file updated!', $execution);
         $this->assertFileExists($filename);
+        $this->assertCount(6, $translations);
+        $this->assertEquals('en', $translations->getHeaders()->get('Language'));
+        $this->assertEquals('my-app', $translations->getHeaders()->get('X-Domain'));
+        $this->assertEquals('1.0.0', $translations->getHeaders()->get('MIME-Version'));
     }
 }

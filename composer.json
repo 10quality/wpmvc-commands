@@ -12,7 +12,8 @@
     "require": {
         "php": ">=5.4.0",
         "10quality/ayuco": "^1.0",
-        "nikic/php-parser": "^4.2"
+        "nikic/php-parser": "^4.2",
+        "10quality/gettext-wp-scanner": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "9.*"
