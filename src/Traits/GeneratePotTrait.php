@@ -167,4 +167,92 @@ trait GeneratePotTrait
             throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
         }
     }
+
+    /**
+     * Generate translations.
+     * @since 1.1.0
+     * 
+     * @param string $locale PO locale.
+     */
+    protected function generateTranslations($locale)
+    {
+        try {
+            $domain = $this->config['localize']['textdomain'];
+            // Handle PO
+            $this->generatePo($locale);
+            $loader = new PoLoader;
+            $po_filename = $this->config['localize']['path'].$domain.'-'.$locale.'.po';
+            $translations = $loader->loadFile($po_filename);
+            // Handle PO
+            foreach ($translations as $translation) {
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('-- Original text');
+                $this->_lineBreak();
+                if ($translation->getContext()) {
+                    $this->_print('-- CONTEXT: '.$translation->getContext());
+                    $this->_lineBreak();
+                }
+                $this->_print($translation->getOriginal());
+                $this->_lineBreak();
+                $current_translation = $translation->getTranslation();
+                $translate = true;
+                $single_translate = null;
+                if (!empty($current_translation)) {
+                    $this->_print('-- Translated text');
+                    $this->_lineBreak();
+                    $this->_print($current_translation);
+                    $this->_lineBreak();
+                    $this->_print('-- Do you want to change the existing translation [Yes]?');
+                    $this->_lineBreak();
+                    $translate = $this->confirm();
+                }
+                if ($translate) {
+                    $this->_print('-- Type the translation and press ENTER:');
+                    $this->_lineBreak();
+                    $translation->translate($this->listener->getInput());
+                }
+                if ($translation->getPlural()) {
+                    $this->_print('-- Plural text');
+                    $this->_lineBreak();
+                    if ($translation->getContext()) {
+                        $this->_print('-- CONTEXT: '.$translation->getContext());
+                        $this->_lineBreak();
+                    }
+                    $this->_print($translation->getPlural());
+                    $this->_lineBreak();
+                    $current_translation = implode(' ', $translation->getPluralTranslations());
+                    $translate = true;
+                    if (!empty($current_translation)) {
+                        $this->_print('-- Translated text');
+                        $this->_lineBreak();
+                        $this->_print($current_translation);
+                        $this->_lineBreak();
+                        $this->_print('-- Do you want to change the existing plural translation [Yes]?');
+                        $this->_lineBreak();
+                        $translate = $this->confirm();
+                    }
+                    if ($translate) {
+                        $this->_print('-- Type the plural translation and press ENTER:');
+                        $this->_lineBreak();
+                        $translation->translatePlural($this->listener->getInput());
+                    }
+                }
+                $translations = $translations->add($translation);
+            }
+            $generator = new PoGenerator();
+            $generator->generateFile($translations, $po_filename);
+            // Print end
+            if (count($translations) > 0) {
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('Translations for PO:'.$locale.' have been generated!');
+                $this->_lineBreak();
+                $this->generateMo($locale);
+            }
+        } catch (Exception $e) {
+            error_log($e);
+            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+        }
+    }
 }

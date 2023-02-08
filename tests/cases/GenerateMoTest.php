@@ -39,6 +39,10 @@ class GenerateMoTest extends WpmvcAyucoTestCase
             file_put_contents(TESTING_PATH.'/app/Localize/Test.php', '<?php namespace MyApp\Localize;'
                 . ' class Test { public function __construct() { $assign = __( \'Test assign variable\', \'my-app\' );}}'
             );
+        if (!is_file(TESTING_PATH.'/app/Localize/Test2.php'))
+            file_put_contents(TESTING_PATH.'/app/Localize/Test2.php', '<?php namespace MyApp\Localize;'
+                . ' class Test { public function __construct() { $assign = _nx( \'Mug\', \'Mugs\', 2, \'Coffee mug.\', \'my-app\' );}}'
+            );
     }
     /**
      * Test resulting message.

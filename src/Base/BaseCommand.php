@@ -286,4 +286,15 @@ class BaseCommand extends Command
     {
         return $this->rootPath.'/assets/';
     }
+    /**
+     * Returns flag indicating if input was a confirmation.
+     * @since 1.1.17
+     * 
+     * @return bool
+     */
+    public function confirm()
+    {
+        $yes = strtolower( $this->listener->getInput() );
+        return empty($yes) || substr($yes, 0, 1) === 'y' || $yes === 1;
+    }
 }

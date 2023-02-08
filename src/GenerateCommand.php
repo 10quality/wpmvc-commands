@@ -43,7 +43,7 @@ class GenerateCommand extends Command
     public function call($args = [])
     {
         if (count($args) == 0 || empty($args[2]))
-            throw new NoticeException('Command "'.$this->key.'": Expecting something to generate (supported objects: pot|po|mo).');
+            throw new NoticeException('Command "'.$this->key.'": Expecting something to generate (supported objects: pot|po|mo|translations).');
         $object = explode(':', $args[2]);
         switch ($object[0]) {
             case 'pot':
@@ -56,8 +56,13 @@ class GenerateCommand extends Command
                 break;
             case 'mo':
                 if (!isset($object[1]) || empty($object[1]))
-                    throw new NoticeException('Command "'.$this->key.'": Locale ID missing, for example: po:en_US.');
+                    throw new NoticeException('Command "'.$this->key.'": Locale ID missing, for example: mo:en_US.');
                 $this->generateMo($object[1]);
+                break;
+            case 'translations':
+                if (!isset($object[1]) || empty($object[1]))
+                    throw new NoticeException('Command "'.$this->key.'": Locale ID missing, for example: translations:en_US.');
+                $this->generateTranslations($object[1]);
                 break;
         }
     }
