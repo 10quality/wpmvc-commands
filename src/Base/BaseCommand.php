@@ -242,4 +242,59 @@ class BaseCommand extends Command
     {
         return $this->rootPath.'/app/Main.php';
     }
+    /**
+     * Returns the value of an argument (by index).
+     * @since 1.1.17
+     * 
+     * @param array $args
+     * @param int   $index
+     * @param mixed $default
+     */
+    protected function getArgsValue($args, $index, $default = null)
+    {
+        return !isset($args[$index]) || empty($args[$index]) ? $default : $args[$index];
+    }
+    /**
+     * Returns path to /app folder.
+     * @since 1.1.17
+     * 
+     * @return string
+     */
+    public function getAppPath()
+    {
+        return $this->rootPath.'/app/';
+    }
+    /**
+     * Returns path to /app folder.
+     * @since 1.1.17
+     * 
+     * @return string
+     */
+    public function getViewsPath()
+    {
+        return str_replace('app\Config/../../', '', 
+            str_replace('app/Config/../../', '', $this->config['paths']['views'])
+        );
+    }
+    /**
+     * Returns path to /app folder.
+     * @since 1.1.17
+     * 
+     * @return string
+     */
+    public function getAssetsPath()
+    {
+        return $this->rootPath.'/assets/';
+    }
+    /**
+     * Returns flag indicating if input was a confirmation.
+     * @since 1.1.17
+     * 
+     * @return bool
+     */
+    public function confirm()
+    {
+        $yes = strtolower( $this->listener->getInput() );
+        return empty($yes) || substr($yes, 0, 1) === 'y' || $yes === 1;
+    }
 }

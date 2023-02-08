@@ -3,9 +3,13 @@
 namespace WPMVC\Commands\Traits;
 
 use Exception;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 use Ayuco\Exceptions\NoticeException;
+use Gettext\Translations;
+use Gettext\Generator\MoGenerator;
+use Gettext\Generator\PoGenerator;
+use Gettext\Loader\PoLoader;
+use TenQuality\Gettext\Scanner\WPJsScanner;
+use TenQuality\Gettext\Scanner\WPPhpScanner;
 
 /**
  * Generates POT file.
@@ -14,7 +18,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.8
+ * @version 1.1.17
  */
 trait GeneratePotTrait
 {
@@ -22,130 +26,236 @@ trait GeneratePotTrait
      * Generate pot file.
      * @since 1.1.0
      * 
-     * @param string $textdomain Domain name.
-     * @param string $lang       Pot default language.
+     * @param string $lang Pot default language.
      */
-    protected function generatePot($textdomain = null, $lang = 'en')
+    protected function generatePot($lang = 'en')
     {
         try {
-            // Search project
-            if (empty($textdomain))
-                $textdomain = $this->config['localize']['textdomain'];
-            $pot = $this->getPotHeader($lang, $textdomain);
-            $lang_regex = '/_[_enx]\([|\s][\\\'\"][\s\S]+?(?=[\\\'|\"]'.$textdomain.'[\\\'|\"])/';
-            $string_regex = '/[\\\'|\"]([^\\\'|\"]+)[\\\'|\"]/';
-            // App folder
-            $dir = new RecursiveDirectoryIterator($this->config['paths']['base'], RecursiveDirectoryIterator::SKIP_DOTS);
-            foreach (new RecursiveIteratorIterator($dir, RecursiveIteratorIterator::SELF_FIRST) as $filename => $item) {
-                if($item->isDir())
-                    continue;
-                $content = file_get_contents($filename);
-                preg_match_all($lang_regex, $content, $matches );
-                if (empty($matches))
-                    continue;
-                foreach ($matches[0] as $match) {
-                    $this->evalPotMatch($pot, $match, $string_regex);
-                }
+            $domain = $this->config['localize']['textdomain'];
+            $translations = Translations::create($domain, $lang);
+            $filename = $this->config['localize']['path'].$domain.'.pot';
+            $is_update = file_exists($filename);
+            // Prepare headers
+            $translations->getHeaders()->set('Project-Id-Version', $this->config['namespace']);
+            $translations->getHeaders()->set('POT-Creation-Date', date('Y-m-d H:i:s'));
+            $translations->getHeaders()->set('MIME-Version', $this->config['version']);
+            $translations->getHeaders()->set('Content-Type', 'text/plain; charset=UTF-8');
+            $translations->getHeaders()->set('Last-Translator', $this->config['author']);
+            $translations->getHeaders()->set('X-Generator', 'WordPress MVC Commands 1.1');
+            // Php files
+            $scanner = new WPPhpScanner(
+                Translations::create($domain)
+            );
+            foreach (glob($this->rootPath.'*.php') as $file) {
+                $scanner->scanFile($file);
             }
-            // Views folder
-            $dir = new RecursiveDirectoryIterator($this->config['paths']['views'], RecursiveDirectoryIterator::SKIP_DOTS);
-            foreach (new RecursiveIteratorIterator($dir, RecursiveIteratorIterator::SELF_FIRST) as $filename => $item) {
-                if($item->isDir())
-                    continue;
-                $content = file_get_contents($filename);
-                preg_match_all($lang_regex, $content, $matches );
-                if (empty($matches))
-                    continue;
-                foreach ($matches[0] as $match) {
-                    $this->evalPotMatch($pot, $match, $string_regex);
-                }
+            foreach (glob($this->getAppPath().'*.php') as $file) {
+                $scanner->scanFile($file);
             }
-            // Write pot file
-            $filename = $this->config['localize']['path'].$textdomain.'.pot';
+            foreach (glob($this->getAppPath().'**/*.php') as $file) {
+                $scanner->scanFile($file);
+            }
+            foreach (glob($this->getViewsPath().'*.php') as $file) {
+                $scanner->scanFile($file);
+            }
+            foreach (glob($this->getViewsPath().'**/*.php') as $file) {
+                $scanner->scanFile($file);
+            }
+            $scannedTranslations = $scanner->getTranslations();
+            if (array_key_exists($domain, $scannedTranslations))
+                $translations = $translations->mergeWith($scannedTranslations[$domain]);
+            // Js files
+            $scanner = new WPJsScanner(
+                Translations::create($domain)
+            );
+            foreach (glob($this->getAssetsPath().'js/*.js') as $file) {
+                $scanner->scanFile($file);
+            }
+            foreach (glob($this->getAssetsPath().'js/**/*.js') as $file) {
+                $scanner->scanFile($file);
+            }
+            $scannedTranslations = $scanner->getTranslations();
+            if (array_key_exists($domain, $scannedTranslations))
+                $translations = $translations->mergeWith($scannedTranslations[$domain]);
+            // Prepare
             if (!is_dir($this->config['localize']['path']))
                 mkdir($this->config['localize']['path'], 0777, true);
-            if (file_exists($filename))
+            // Write pot file
+            $generator = new PoGenerator();
+            $output = $generator->generateString($translations, $filename);
+            $output = str_replace($this->rootPath, '', $output);
+            $output = str_replace('#: \assets', '#: /assets', $output);
+            if ($is_update)
                 unlink($filename);
-            file_put_contents($filename,implode("\n", $pot));
+            file_put_contents($filename, $output);
             // Print end
-            $this->_print('POT file generated!');
+            $this->_print($is_update ? 'POT file updated!' : 'POT file generated!');
             $this->_lineBreak();
         } catch (Exception $e) {
             error_log($e);
             throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
         }
     }
+
     /**
-     * Returns POT basic header.
+     * Generate PO file.
      * @since 1.1.0
      * 
-     * @param string $lang       Pot default language.
-     * @param string $textdomain
-     * 
-     * @return array
+     * @param string $locale PO locale.
+     * @param string $lang   Pot default language.
      */
-    private function getPotHeader($lang, $textdomain)
+    protected function generatePo($locale, $lang = 'en')
     {
-        return [
-            '# Copyright (C) '.date('Y').' 10 Quality <info@10quality.com>',
-            'msgid ""',
-            'msgstr ""',
-            '"Project-Id-Version: '.$textdomain.'\n"',
-            '"POT-Creation-Date: '.date('Y-m-d H:i:s').'\n"',
-            '"PO-Creation-Date: '.date('Y-m-d H:i:s').'\n"',
-            '"MIME-Version: 1.0\n"',
-            '"Content-Type: text/plain; charset=UTF-8\n"',
-            '"Content-Transfer-Encoding: 8bit\n"',
-            '"X-Generator: WordPress MVC Commands 1.1.0\n"',
-            '"Language: '.$lang.'\n"',
-        ];
-    }
-    /**
-     * Appends a new text translation line to a po file.
-     * @since 1.1.0
-     * 
-     * @param array  &$po         Po or Pot file.
-     * @param string $text        Text to append.
-     * @param string $translation Text translation append.
-     */
-    private function appendPotText(&$po, $text, $translation = '')
-    {
-        if (!in_array($text, $po)) {
-            $po[] = '';
-            $po[] = 'msgid "'.$text.'"';
-            $po[] = 'msgstr "'.$translation.'"';
-        }
-    }
-    /**
-     * Evaluates match and appends string to Po/Pot file.
-     * @since 1.1.0
-     * 
-     * @param array  &$po          Po or Pot file.
-     * @param string $match        String match.
-     * @param string $string_regex String regex rule.
-     */
-    private function evalPotMatch(&$po, &$match, &$string_regex)
-    {
-        if (strpos($match, '_n') !== false) {
-            preg_match_all($string_regex, $match, $strings );
-            for ($i = 0; $i < count($strings[1]); $i++) {
-                $this->appendPotText($po, $this->parsePotString($strings[1][$i]));
+        try {
+            $domain = $this->config['localize']['textdomain'];
+            // Do we have a POT file?
+            $pot_filename = $this->config['localize']['path'].$domain.'.pot';
+            $this->generatePot($lang);
+            // Does PO file already exist?
+            $po_filename = $this->config['localize']['path'].$domain.'-'.$locale.'.po';
+            $translations = null;
+            $to_update = false;
+            $loader = new PoLoader;
+            $clear = array_key_exists('clear', $this->options);
+            if (!$clear && file_exists($po_filename)) {
+                $translations = $loader->loadFile($po_filename);
+                $translations = $translations->mergeWith($loader->loadFile($pot_filename));
+                $to_update = true;
+                $translations->getHeaders()->set('PO-Update-Date', date('Y-m-d H:i:s'));
+            } else {
+                $translations = $loader->loadFile($pot_filename);
+                $translations->getHeaders()->set('PO-Creation-Date', date('Y-m-d H:i:s'));
             }
-        } else {
-            preg_match($string_regex, $match, $strings );
-            $this->appendPotText($po, $this->parsePotString($strings[1]));
+            $translations->getHeaders()->setLanguage($locale);
+            // Prepare
+            if (!is_dir($this->config['localize']['path']))
+                mkdir($this->config['localize']['path'], 0777, true);
+            // Write pot file
+            $generator = new PoGenerator();
+            $generator->generateFile($translations, $po_filename);
+            // Print end
+            $this->_print('PO:'.$locale.($to_update ? ' file updated!' : ' file generated!'));
+            $this->_lineBreak();
+        } catch (Exception $e) {
+            error_log($e);
+            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
         }
     }
+
     /**
-     * Returns parsed pot string.
+     * Generate MO file.
      * @since 1.1.0
      * 
-     * @param string $string
-     * 
-     * @return string
+     * @param string $locale PO locale.
      */
-    private function parsePotString($string)
+    protected function generateMo($locale)
     {
-        return str_replace('"', '\"', $string);
+        try {
+            $domain = $this->config['localize']['textdomain'];
+            // Filenames
+            $po_filename = $this->config['localize']['path'].$domain.'-'.$locale.'.po';
+            // Handle PO
+            if (!file_exists($po_filename))
+                throw new NoticeException('PO:'.$locale.' file doesn\'t exists, nothing to generate.');
+            $loader = new PoLoader;
+            $translations = $loader->loadFile($po_filename);
+            // Write pot file
+            $generator = new MoGenerator();
+            $generator->generateFile($translations, $this->config['localize']['path'].$domain.'-'.$locale.'.mo');
+            // Print end
+            $this->_print('MO:'.$locale.' file generated!');
+            $this->_lineBreak();
+        } catch (Exception $e) {
+            error_log($e);
+            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+        }
+    }
+
+    /**
+     * Generate translations.
+     * @since 1.1.0
+     * 
+     * @param string $locale PO locale.
+     */
+    protected function generateTranslations($locale)
+    {
+        try {
+            $domain = $this->config['localize']['textdomain'];
+            // Handle PO
+            $this->generatePo($locale);
+            $loader = new PoLoader;
+            $po_filename = $this->config['localize']['path'].$domain.'-'.$locale.'.po';
+            $translations = $loader->loadFile($po_filename);
+            // Handle PO
+            foreach ($translations as $translation) {
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('-- Original text');
+                $this->_lineBreak();
+                if ($translation->getContext()) {
+                    $this->_print('-- CONTEXT: '.$translation->getContext());
+                    $this->_lineBreak();
+                }
+                $this->_print($translation->getOriginal());
+                $this->_lineBreak();
+                $current_translation = $translation->getTranslation();
+                $translate = true;
+                $single_translate = null;
+                if (!empty($current_translation)) {
+                    $this->_print('-- Translated text');
+                    $this->_lineBreak();
+                    $this->_print($current_translation);
+                    $this->_lineBreak();
+                    $this->_print('-- Do you want to change the existing translation [Yes]?');
+                    $this->_lineBreak();
+                    $translate = $this->confirm();
+                }
+                if ($translate) {
+                    $this->_print('-- Type the translation and press ENTER:');
+                    $this->_lineBreak();
+                    $translation->translate($this->listener->getInput());
+                }
+                if ($translation->getPlural()) {
+                    $this->_print('-- Plural text');
+                    $this->_lineBreak();
+                    if ($translation->getContext()) {
+                        $this->_print('-- CONTEXT: '.$translation->getContext());
+                        $this->_lineBreak();
+                    }
+                    $this->_print($translation->getPlural());
+                    $this->_lineBreak();
+                    $current_translation = implode(' ', $translation->getPluralTranslations());
+                    $translate = true;
+                    if (!empty($current_translation)) {
+                        $this->_print('-- Translated text');
+                        $this->_lineBreak();
+                        $this->_print($current_translation);
+                        $this->_lineBreak();
+                        $this->_print('-- Do you want to change the existing plural translation [Yes]?');
+                        $this->_lineBreak();
+                        $translate = $this->confirm();
+                    }
+                    if ($translate) {
+                        $this->_print('-- Type the plural translation and press ENTER:');
+                        $this->_lineBreak();
+                        $translation->translatePlural($this->listener->getInput());
+                    }
+                }
+                $translations = $translations->add($translation);
+            }
+            $generator = new PoGenerator();
+            $generator->generateFile($translations, $po_filename);
+            // Print end
+            if (count($translations) > 0) {
+                $this->_print('------------------------------');
+                $this->_lineBreak();
+                $this->_print('Translations for PO:'.$locale.' have been generated!');
+                $this->_lineBreak();
+                $this->generateMo($locale);
+            }
+        } catch (Exception $e) {
+            error_log($e);
+            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+        }
     }
 }
