@@ -1,6 +1,7 @@
 # Ayuco Commands (For WordPress MVC)
 
 [![Latest Stable Version](https://poser.pugx.org/10quality/wpmvc-commands/v/stable)](https://packagist.org/packages/10quality/wpmvc-commands)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/10quality/wpmvc-commands/test.yml)
 [![Total Downloads](https://poser.pugx.org/10quality/wpmvc-commands/downloads)](https://packagist.org/packages/10quality/wpmvc-commands)
 [![License](https://poser.pugx.org/10quality/wpmvc-commands/license)](https://packagist.org/packages/10quality/wpmvc-commands)
 
