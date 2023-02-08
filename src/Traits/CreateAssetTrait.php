@@ -11,7 +11,7 @@ use Exception;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.10
+ * @version 1.1.17
  */
 trait CreateAssetTrait
 {
@@ -52,11 +52,11 @@ trait CreateAssetTrait
                             $this->getTemplate((array_key_exists('template', $args) ? $args['template'] : 'asset').'.'.$type)
                         ));
                         // Print created
-                        $this->_print($type.' asset created!');
+                        $this->_print_success($type.' asset created!');
                         $this->_lineBreak();
                     } else {
                         // Print exists
-                        $this->_print('Asset exists!');
+                        $this->_print_info('Asset exists!');
                         $this->_lineBreak();
                     }
                     break;
@@ -98,11 +98,11 @@ trait CreateAssetTrait
                             $this->getTemplate(($ispart ? 'asset' : 'master').'.'.$type)
                         ));
                         // Print created
-                        $this->_print($type.' asset created!');
+                        $this->_print_success($type.' asset created!');
                         $this->_lineBreak();
                     } else {
                         // Print exists
-                        $this->_print($ispart ? 'Asset exists!' : 'Master asset exists!');
+                        $this->_print_info($ispart ? 'Asset exists!' : 'Master asset exists!');
                         $this->_lineBreak();
                     }
                     // Add compiled file to .gitignore

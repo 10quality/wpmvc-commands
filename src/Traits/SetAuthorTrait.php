@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10 Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.6
+ * @version 1.1.17
  */
 trait SetAuthorTrait
 {
@@ -46,7 +46,7 @@ trait SetAuthorTrait
                 $this->replaceInFile('author\'(|\s)=>(|\s)\''.$current.'\'', 'author\' => \''.$author.'\'', $this->configFilename);
                 $this->config = include $this->configFilename;
                 // Print end
-                $this->_print('Author updated!');
+                $this->_print_success('Author updated!');
                 $this->_lineBreak();
             } else {
                 throw new NoticeException('Author key missing at "app/Config/app.php". Add the "author" setting in the configuration file to use this command.');

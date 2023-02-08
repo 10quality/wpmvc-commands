@@ -14,7 +14,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.10
+ * @version 1.1.17
  */
 trait RegisterWidgetTrait
 {
@@ -96,12 +96,12 @@ trait RegisterWidgetTrait
                 // Update class version
                 $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
                 // Dump autoload
-                $this->_print('Widget registered!');
+                $this->_print_success('Widget registered!');
                 $this->_lineBreak();
                 exec( 'composer dump-autoload --no-plugins' );
             } else {
                 // Dump autoload
-                $this->_print('Widget exists!');
+                $this->_print_info('Widget exists!');
                 $this->_lineBreak();
             }
         } catch (Exception $e) {

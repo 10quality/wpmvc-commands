@@ -18,7 +18,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.10
+ * @version 1.1.17
  */
 class AddCommand extends Command
 {
@@ -93,7 +93,7 @@ class AddCommand extends Command
             $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
         } else {
             // Print exists
-            $this->_print('Hook call exists!');
+            $this->_print_info('Hook call exists!');
             $this->_lineBreak();
         }
     }

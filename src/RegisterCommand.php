@@ -20,7 +20,7 @@ use WPMVC\Commands\Visitors\AddMethodCallVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.10
+ * @version 1.1.17
  */
 class RegisterCommand extends Command
 {
@@ -96,7 +96,7 @@ class RegisterCommand extends Command
                     $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
                 } else {
                     // Print exists
-                    $this->_print('Hook call exists!');
+                    $this->_print_info('Hook call exists!');
                     $this->_lineBreak();
                 }
                 break;
@@ -118,11 +118,11 @@ class RegisterCommand extends Command
                     // Update class version
                     $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
                     // Print end
-                    $this->_print('Model registered!');
+                    $this->_print_success('Model registered!');
                     $this->_lineBreak();
                 } else {
                     // Print exists
-                    $this->_print('Model registration exists!');
+                    $this->_print_info('Model registration exists!');
                     $this->_lineBreak();
                 }
                 break;
@@ -140,16 +140,16 @@ class RegisterCommand extends Command
                         // Update class version
                         $this->updateComment('version', $this->config['version'], $this->getMainClassPath());
                         // Print end
-                        $this->_print('Asset registered!');
+                        $this->_print_success('Asset registered!');
                         $this->_lineBreak();
                     } else {
                         // Print exists
-                        $this->_print('Asset registration exists!');
+                        $this->_print_info('Asset registration exists!');
                         $this->_lineBreak();
                     }
                 } else {
                     // Print exists
-                    $this->_print('Asset doesn\'t exist!');
+                    $this->_print_info('Asset doesn\'t exist!');
                     $this->_lineBreak();
                 }
                 break;

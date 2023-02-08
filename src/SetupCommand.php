@@ -15,7 +15,7 @@ use WPMVC\Commands\Traits\YesNoInputTrait;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.12
+ * @version 1.1.17
  */
 class SetupCommand extends Command
 {
@@ -157,7 +157,7 @@ class SetupCommand extends Command
                 $this->_lineBreak();
                 $this->_print('Your project\'s license is "%s"', $this->config['license']);
                 $this->_lineBreak();
-                $this->_print('Setup completed!');
+                $this->_print_success('Setup completed!');
                 $this->_lineBreak();
                 $this->_print('------------------------------');
                 $this->_lineBreak();

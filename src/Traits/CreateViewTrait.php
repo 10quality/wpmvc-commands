@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.12
+ * @version 1.1.17
  */
 trait CreateViewTrait
 {
@@ -50,11 +50,11 @@ trait CreateViewTrait
                                 $this->getTemplate($template))
                         );
                         // Print created
-                        $this->_print('View created!');
+                        $this->_print_success('View created!');
                         $this->_lineBreak();
                     } else {
                         // Print exists
-                        $this->_print('View exists!');
+                        $this->_print_info('View exists!');
                         $this->_lineBreak();
                     }
                 } else {

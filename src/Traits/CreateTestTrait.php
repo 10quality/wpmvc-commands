@@ -14,7 +14,7 @@ use WPMVC\Commands\Visitors\AddClassMethodVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.12
+ * @version 1.1.17
  */
 trait CreateTestTrait
 {
@@ -50,11 +50,11 @@ trait CreateTestTrait
                     )
                 );
                 // Print created
-                $this->_print('Test case created!');
+                $this->_print_success('Test case created!');
                 $this->_lineBreak();
             } else {
                 // Print exists
-                $this->_print('Test case exists!');
+                $this->_print_info('Test case exists!');
                 $this->_lineBreak();
             }
         } catch (Exception $e) {
@@ -96,7 +96,7 @@ trait CreateTestTrait
             }
         } else {
             // Print exists
-            $this->_print('Test method exists!');
+            $this->_print_info('Test method exists!');
             $this->_lineBreak();
         }
     }

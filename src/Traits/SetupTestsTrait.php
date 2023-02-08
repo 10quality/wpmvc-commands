@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10 Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.14
+ * @version 1.1.17
  */
 trait SetupTestsTrait
 {
@@ -51,7 +51,7 @@ trait SetupTestsTrait
                     $this->_print('Clonning, please wait...');
                     $this->_lineBreak();
                     $this->_print(shell_exec(__DIR__.'/../../shell/install-test-suit.sh '.$testSuitPath.' 2>&1'));
-                    $this->_print('Clonning, completed');
+                    $this->_print_success('Clonning, completed');
                     $this->_lineBreak();
                 }
                 // Creating wp-test-config.php
@@ -63,7 +63,7 @@ trait SetupTestsTrait
                 if (file_exists($filename)) {
                     $this->_print('------------------------------');
                     $this->_lineBreak();
-                    if ($this->getYesInput('Would you like to create a new WP testing config file?')) {
+                    if ($this->getYesInput('Would you like to create a new WP testing config file '.$this->yesno().'?')) {
                         $this->_print('------------------------------');
                         $this->_lineBreak();
                         // We need to create a file
@@ -82,7 +82,7 @@ trait SetupTestsTrait
                         $config = str_replace('\'ABSPATH\', \'/\'', '\'ABSPATH\', dirname( __FILE__ ) . \'/\'', $config );
                         $config = str_replace('\'ABSPATH\', \'/tmp/wordpress/\'', '\'ABSPATH\', dirname( __FILE__ ) . \'/\'', $config );
                         $this->_lineBreak();
-                        if ($this->getYesInput('Would you like to configure the database connection?')) {
+                        if ($this->getYesInput('Would you like to configure the database connection '.$this->yesno().'?')) {
                             $this->_print('Enter the database host:');
                             $this->_lineBreak();
                             $dbOption = $this->listener->getInput();
@@ -104,7 +104,7 @@ trait SetupTestsTrait
                         $configFilename = ABSPATH . '/' . $wpTestConfig;
                         file_put_contents( $configFilename, $config );
                         $this->_lineBreak();
-                        $this->_print('WP testing config file created.');
+                        $this->_print_success('WP testing config file created.');
                         $this->_lineBreak();
                     }
                 }
@@ -152,7 +152,7 @@ trait SetupTestsTrait
             // Complete
             $this->_print('------------------------------');
             $this->_lineBreak();
-            $this->_print('WordPress PHPUnit test suite setup completed');
+            $this->_print_success('WordPress PHPUnit test suite setup completed');
             $this->_lineBreak();
             $this->_print('------------------------------');
             $this->_lineBreak();
