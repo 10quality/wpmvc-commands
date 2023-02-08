@@ -44,6 +44,7 @@ class GeneratePotTest extends WpmvcAyucoTestCase
     /**
      * Test resulting message.
      * @group pot
+     * @group localization
      */
     public function testGeneration()
     {
@@ -64,6 +65,7 @@ class GeneratePotTest extends WpmvcAyucoTestCase
     /**
      * Test resulting message.
      * @group pot
+     * @group localization
      */
     public function testExistingGeneration()
     {

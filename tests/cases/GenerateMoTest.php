@@ -1,6 +1,7 @@
 <?php
 
 use Gettext\Generator\PoGenerator;
+use Gettext\Loader\MoLoader;
 use Gettext\Loader\PoLoader;
 
 /**
@@ -12,7 +13,7 @@ use Gettext\Loader\PoLoader;
  * @package WPMVC\Commands
  * @version 1.1.17
  */
-class GeneratePoTest extends WpmvcAyucoTestCase
+class GenerateMoTest extends WpmvcAyucoTestCase
 {
     /**
      * Tests path.
@@ -41,37 +42,17 @@ class GeneratePoTest extends WpmvcAyucoTestCase
     }
     /**
      * Test resulting message.
-     * @group po
+     * @group mo
      * @group localization
      */
     public function testGeneration()
     {
         // Prepare
         $loader = new PoLoader;
-        $filename = FRAMEWORK_PATH.'/environment/assets/lang/my-app-es_ES.po';
-        // Execure
-        $execution = exec('php '.WPMVC_AYUCO.' generate po:es_ES');
-        $translations = $loader->loadFile($filename);
-        // Assert
-        $this->assertEquals('PO:es_ES file generated!', $execution);
-        $this->assertFileExists($filename);
-        $this->assertCount(2, $translations);
-        $this->assertEquals('es_ES', $translations->getHeaders()->get('Language'));
-        $this->assertEquals('my-app', $translations->getHeaders()->get('X-Domain'));
-        $this->assertEquals('1.0.0', $translations->getHeaders()->get('MIME-Version'));
-    }
-    /**
-     * Test resulting message.
-     * @group po
-     * @group localization
-     */
-    public function testExistingGeneration()
-    {
-        // Prepare
-        $loader = new PoLoader;
-        $filename = FRAMEWORK_PATH.'/environment/assets/lang/my-app-es_ES.po';
+        $filename = FRAMEWORK_PATH.'/environment/assets/lang/my-app-es_ES.mo';
+        $po_filename = FRAMEWORK_PATH.'/environment/assets/lang/my-app-es_ES.po';
         exec('php '.WPMVC_AYUCO.' generate po:es_ES');
-        $translations = $loader->loadFile($filename);
+        $translations = $loader->loadFile($po_filename);
         $translation = $translations->find(null, 'View text 1');
         $translation->translate('Ver texto 1');
         $translations = $translations->add($translation);
@@ -79,17 +60,14 @@ class GeneratePoTest extends WpmvcAyucoTestCase
         $translation->translate('Probar assignar variable');
         $translations = $translations->add($translation);
         $generator = new PoGenerator();
-        $generator->generateFile($translations, $filename);
-        if (!is_file(TESTING_PATH.'/app/Localize/Test2.php'))
-            file_put_contents(TESTING_PATH.'/app/Localize/Test2.php', '<?php namespace MyApp\Localize;'
-                . ' class Test2 { public function __construct() { $assign = __( \'New string\', \'my-app\' );}}'
-            );
+        $generator->generateFile($translations, $po_filename);
+        $loader = new MoLoader;
         // Execure
-        $execution = exec('php '.WPMVC_AYUCO.' generate po:es_ES');
+        $execution = exec('php '.WPMVC_AYUCO.' generate mo:es_ES');
         $translations = $loader->loadFile($filename);
         // Assert
-        $this->assertEquals('PO:es_ES file updated!', $execution);
+        $this->assertEquals('MO:es_ES file generated!', $execution);
         $this->assertFileExists($filename);
-        $this->assertCount(3, $translations);
+        $this->assertCount(2, $translations);
     }
 }

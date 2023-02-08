@@ -5,6 +5,7 @@ namespace WPMVC\Commands\Traits;
 use Exception;
 use Ayuco\Exceptions\NoticeException;
 use Gettext\Translations;
+use Gettext\Generator\MoGenerator;
 use Gettext\Generator\PoGenerator;
 use Gettext\Loader\PoLoader;
 use TenQuality\Gettext\Scanner\WPJsScanner;
@@ -81,7 +82,10 @@ trait GeneratePotTrait
                 mkdir($this->config['localize']['path'], 0777, true);
             // Write pot file
             $generator = new PoGenerator();
-            $generator->generateFile($translations, $filename);
+            $output = $generator->generateString($translations, $filename);
+            $output = str_replace($this->rootPath, '', $output);
+            $output = str_replace('#: \assets', '#: /assets', $output);
+            file_put_contents($filename, $output);
             // Print end
             $this->_print($is_update ? 'POT file updated!' : 'POT file generated!');
             $this->_lineBreak();
@@ -128,6 +132,35 @@ trait GeneratePotTrait
             $generator->generateFile($translations, $po_filename);
             // Print end
             $this->_print('PO:'.$locale.($to_update ? ' file updated!' : ' file generated!'));
+            $this->_lineBreak();
+        } catch (Exception $e) {
+            error_log($e);
+            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+        }
+    }
+
+    /**
+     * Generate MO file.
+     * @since 1.1.0
+     * 
+     * @param string $locale PO locale.
+     */
+    protected function generateMo($locale)
+    {
+        try {
+            $domain = $this->config['localize']['textdomain'];
+            // Filenames
+            $po_filename = $this->config['localize']['path'].$domain.'-'.$locale.'.po';
+            // Handle PO
+            if (!file_exists($po_filename))
+                throw new NoticeException('PO:'.$locale.' file doesn\'t exists, nothing to generate.');
+            $loader = new PoLoader;
+            $translations = $loader->loadFile($po_filename);
+            // Write pot file
+            $generator = new MoGenerator();
+            $generator->generateFile($translations, $this->config['localize']['path'].$domain.'-'.$locale.'.mo');
+            // Print end
+            $this->_print('MO:'.$locale.' file generated!');
             $this->_lineBreak();
         } catch (Exception $e) {
             error_log($e);
