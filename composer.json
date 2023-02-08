@@ -22,5 +22,10 @@
             "WPMVC\\Commands\\": "src"
         }
     },
+    "scripts": {
+        "test": [
+            "phpunit"
+        ]
+    },
     "minimum-stability": "dev"
 }
