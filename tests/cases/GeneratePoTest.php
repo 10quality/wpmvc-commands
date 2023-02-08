@@ -92,4 +92,28 @@ class GeneratePoTest extends WpmvcAyucoTestCase
         $this->assertFileExists($filename);
         $this->assertCount(3, $translations);
     }
+    /**
+     * Test resulting message.
+     * @group po
+     * @group localization
+     */
+    public function testExistingGenerationWithClearOption()
+    {
+        // Prepare
+        $loader = new PoLoader;
+        $filename = FRAMEWORK_PATH.'/environment/assets/lang/my-app-es_ES.po';
+        if (!is_file(TESTING_PATH.'/app/Localize/Test2.php'))
+            file_put_contents(TESTING_PATH.'/app/Localize/Test2.php', '<?php namespace MyApp\Localize;'
+                . ' class Test2 { public function __construct() { $assign = __( \'New string\', \'my-app\' );}}'
+            );
+        exec('php '.WPMVC_AYUCO.' generate po:es_ES');
+        unlink(TESTING_PATH.'/app/Localize/Test2.php');
+        // Execure
+        $execution = exec('php '.WPMVC_AYUCO.' generate po:es_ES --clear');
+        $translations = $loader->loadFile($filename);
+        // Assert
+        $this->assertEquals('PO:es_ES file generated!', $execution);
+        $this->assertFileExists($filename);
+        $this->assertCount(2, $translations);
+    }
 }

@@ -85,6 +85,8 @@ trait GeneratePotTrait
             $output = $generator->generateString($translations, $filename);
             $output = str_replace($this->rootPath, '', $output);
             $output = str_replace('#: \assets', '#: /assets', $output);
+            if ($is_update)
+                unlink($filename);
             file_put_contents($filename, $output);
             // Print end
             $this->_print($is_update ? 'POT file updated!' : 'POT file generated!');
@@ -114,7 +116,8 @@ trait GeneratePotTrait
             $translations = null;
             $to_update = false;
             $loader = new PoLoader;
-            if (file_exists($po_filename)) {
+            $clear = array_key_exists('clear', $this->options);
+            if (!$clear && file_exists($po_filename)) {
                 $translations = $loader->loadFile($po_filename);
                 $translations = $translations->mergeWith($loader->loadFile($pot_filename));
                 $to_update = true;
