@@ -6,6 +6,7 @@ use Exception;
 use Ayuco\Exceptions\NoticeException;
 use Gettext\Translations;
 use Gettext\Generator\PoGenerator;
+use Gettext\Loader\PoLoader;
 use TenQuality\Gettext\Scanner\WPJsScanner;
 use TenQuality\Gettext\Scanner\WPPhpScanner;
 
@@ -31,6 +32,8 @@ trait GeneratePotTrait
         try {
             $domain = $this->config['localize']['textdomain'];
             $translations = Translations::create($domain, $lang);
+            $filename = $this->config['localize']['path'].$domain.'.pot';
+            $is_update = file_exists($filename);
             // Prepare headers
             $translations->getHeaders()->set('Project-Id-Version', $this->config['namespace']);
             $translations->getHeaders()->set('POT-Creation-Date', date('Y-m-d H:i:s'));
@@ -78,9 +81,53 @@ trait GeneratePotTrait
                 mkdir($this->config['localize']['path'], 0777, true);
             // Write pot file
             $generator = new PoGenerator();
-            $generator->generateFile($translations, $this->config['localize']['path'].$domain.'.pot');
+            $generator->generateFile($translations, $filename);
             // Print end
-            $this->_print('POT file generated!');
+            $this->_print($is_update ? 'POT file updated!' : 'POT file generated!');
+            $this->_lineBreak();
+        } catch (Exception $e) {
+            error_log($e);
+            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+        }
+    }
+
+    /**
+     * Generate PO file.
+     * @since 1.1.0
+     * 
+     * @param string $locale PO locale.
+     * @param string $lang   Pot default language.
+     */
+    protected function generatePo($locale, $lang = 'en')
+    {
+        try {
+            $domain = $this->config['localize']['textdomain'];
+            // Do we have a POT file?
+            $pot_filename = $this->config['localize']['path'].$domain.'.pot';
+            $this->generatePot($lang);
+            // Does PO file already exist?
+            $po_filename = $this->config['localize']['path'].$domain.'-'.$locale.'.po';
+            $translations = null;
+            $to_update = false;
+            $loader = new PoLoader;
+            if (file_exists($po_filename)) {
+                $translations = $loader->loadFile($po_filename);
+                $translations = $translations->mergeWith($loader->loadFile($pot_filename));
+                $to_update = true;
+                $translations->getHeaders()->set('PO-Update-Date', date('Y-m-d H:i:s'));
+            } else {
+                $translations = $loader->loadFile($pot_filename);
+                $translations->getHeaders()->set('PO-Creation-Date', date('Y-m-d H:i:s'));
+            }
+            $translations->getHeaders()->setLanguage($locale);
+            // Prepare
+            if (!is_dir($this->config['localize']['path']))
+                mkdir($this->config['localize']['path'], 0777, true);
+            // Write pot file
+            $generator = new PoGenerator();
+            $generator->generateFile($translations, $po_filename);
+            // Print end
+            $this->_print('PO:'.$locale.($to_update ? ' file updated!' : ' file generated!'));
             $this->_lineBreak();
         } catch (Exception $e) {
             error_log($e);
