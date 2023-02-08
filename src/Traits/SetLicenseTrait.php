@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.12
+ * @version 1.1.17
  */
 trait SetLicenseTrait
 {
@@ -76,7 +76,7 @@ trait SetLicenseTrait
                 $this->replaceInFile('license\'(|\s)=>(|\s)\''.$current.'\'', 'license\' => \''.$license.'\'', $this->configFilename);
                 $this->config = include $this->configFilename;
                 // Print end
-                $this->_print('License updated!');
+                $this->_print_success('License updated!');
                 $this->_lineBreak();
             } else {
                 throw new NoticeException('License key missing at "app/Config/app.php". Add the "license" setting in the configuration file to use this command.');

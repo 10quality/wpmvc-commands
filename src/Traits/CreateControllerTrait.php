@@ -15,7 +15,7 @@ use WPMVC\Commands\Visitors\AddClassPropertyVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.10
+ * @version 1.1.17
  */
 trait CreateControllerTrait
 {
@@ -53,11 +53,11 @@ trait CreateControllerTrait
                     )
                 );
                 // Print created
-                $this->_print('Controller created!');
+                $this->_print_success('Controller created!');
                 $this->_lineBreak();
             } else {
                 // Print exists
-                $this->_print('Controller exists!');
+                $this->_print_info('Controller exists!');
                 $this->_lineBreak();
             }
         } catch (Exception $e) {
@@ -136,11 +136,11 @@ trait CreateControllerTrait
                     )
                 );
                 // Print created
-                $this->_print('Controller created!');
+                $this->_print_success('Controller created!');
                 $this->_lineBreak();
             } else {
                 // Print exists
-                $this->_print('Controller exists!');
+                $this->_print_info('Controller exists!');
                 $this->_lineBreak();
             }
         } catch (Exception $e) {
@@ -183,7 +183,7 @@ trait CreateControllerTrait
             }
         } else {
             // Print exists
-            $this->_print('Property exists!');
+            $this->_print_info('Property exists!');
             $this->_lineBreak();
         }
     }

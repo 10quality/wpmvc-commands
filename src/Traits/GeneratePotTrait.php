@@ -3,6 +3,7 @@
 namespace WPMVC\Commands\Traits;
 
 use Exception;
+use Ayuco\Coloring;
 use Ayuco\Exceptions\NoticeException;
 use Gettext\Translations;
 use Gettext\Generator\MoGenerator;
@@ -89,11 +90,11 @@ trait GeneratePotTrait
                 unlink($filename);
             file_put_contents($filename, $output);
             // Print end
-            $this->_print($is_update ? 'POT file updated!' : 'POT file generated!');
+            $this->_print_success($is_update ? 'POT file updated!' : 'POT file generated!');
             $this->_lineBreak();
         } catch (Exception $e) {
             error_log($e);
-            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+            throw $e;
         }
     }
 
@@ -134,11 +135,11 @@ trait GeneratePotTrait
             $generator = new PoGenerator();
             $generator->generateFile($translations, $po_filename);
             // Print end
-            $this->_print('PO:'.$locale.($to_update ? ' file updated!' : ' file generated!'));
+            $this->_print_success('PO:'.$locale.($to_update ? ' file updated!' : ' file generated!'));
             $this->_lineBreak();
         } catch (Exception $e) {
             error_log($e);
-            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+            throw $e;
         }
     }
 
@@ -163,11 +164,11 @@ trait GeneratePotTrait
             $generator = new MoGenerator();
             $generator->generateFile($translations, $this->config['localize']['path'].$domain.'-'.$locale.'.mo');
             // Print end
-            $this->_print('MO:'.$locale.' file generated!');
+            $this->_print_success('MO:'.$locale.' file generated!');
             $this->_lineBreak();
         } catch (Exception $e) {
             error_log($e);
-            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+            throw $e;
         }
     }
 
@@ -193,10 +194,10 @@ trait GeneratePotTrait
                 $this->_print('-- Original text');
                 $this->_lineBreak();
                 if ($translation->getContext()) {
-                    $this->_print('-- CONTEXT: '.$translation->getContext());
+                    $this->_print('-- CONTEXT: '.Coloring::apply('color_42', $translation->getContext()));
                     $this->_lineBreak();
                 }
-                $this->_print($translation->getOriginal());
+                $this->_print(Coloring::apply('color_31', $translation->getOriginal()));
                 $this->_lineBreak();
                 $current_translation = $translation->getTranslation();
                 $translate = true;
@@ -204,9 +205,9 @@ trait GeneratePotTrait
                 if (!empty($current_translation)) {
                     $this->_print('-- Translated text');
                     $this->_lineBreak();
-                    $this->_print($current_translation);
+                    $this->_print(Coloring::apply('color_11', $current_translation));
                     $this->_lineBreak();
-                    $this->_print('-- Do you want to change the existing translation [Yes]?');
+                    $this->_print('-- Do you want to change the existing translation '.$this->yesno().'?');
                     $this->_lineBreak();
                     $translate = $this->confirm();
                 }
@@ -219,19 +220,19 @@ trait GeneratePotTrait
                     $this->_print('-- Plural text');
                     $this->_lineBreak();
                     if ($translation->getContext()) {
-                        $this->_print('-- CONTEXT: '.$translation->getContext());
+                        $this->_print('-- CONTEXT: '.Coloring::apply('color_42', $translation->getContext()));
                         $this->_lineBreak();
                     }
-                    $this->_print($translation->getPlural());
+                    $this->_print(Coloring::apply('color_31', $translation->getPlural()));
                     $this->_lineBreak();
                     $current_translation = implode(' ', $translation->getPluralTranslations());
                     $translate = true;
                     if (!empty($current_translation)) {
                         $this->_print('-- Translated text');
                         $this->_lineBreak();
-                        $this->_print($current_translation);
+                        $this->_print(Coloring::apply('color_11', $current_translation));
                         $this->_lineBreak();
-                        $this->_print('-- Do you want to change the existing plural translation [Yes]?');
+                        $this->_print('-- Do you want to change the existing plural translation '.$this->yesno().'?');
                         $this->_lineBreak();
                         $translate = $this->confirm();
                     }
@@ -249,13 +250,13 @@ trait GeneratePotTrait
             if (count($translations) > 0) {
                 $this->_print('------------------------------');
                 $this->_lineBreak();
-                $this->_print('Translations for PO:'.$locale.' have been generated!');
+                $this->_print_success('Translations for PO:'.$locale.' have been generated!');
                 $this->_lineBreak();
                 $this->generateMo($locale);
             }
         } catch (Exception $e) {
             error_log($e);
-            throw new NoticeException('Command "'.$this->key.'": Fatal error ocurred.');
+            throw $e;
         }
     }
 }

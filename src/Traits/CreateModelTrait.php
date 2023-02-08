@@ -15,7 +15,7 @@ use WPMVC\Commands\Visitors\AddClassPropertyVisitor;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.10
+ * @version 1.1.17
  */
 trait CreateModelTrait
 {
@@ -56,11 +56,11 @@ trait CreateModelTrait
                     )
                 );
                 // Print created
-                $this->_print('Model created!');
+                $this->_print_success('Model created!');
                 $this->_lineBreak();
             } else {
                 // Print exists
-                $this->_print('Model exists!');
+                $this->_print_info('Model exists!');
                 $this->_lineBreak();
             }
         } catch (Exception $e) {
@@ -102,7 +102,7 @@ trait CreateModelTrait
             }
         } else {
             // Print exists
-            $this->_print('Method exists!');
+            $this->_print_info('Method exists!');
             $this->_lineBreak();
         }
     }
@@ -138,7 +138,7 @@ trait CreateModelTrait
             }
         } else {
             // Print exists
-            $this->_print('Property exists!');
+            $this->_print_info('Property exists!');
             $this->_lineBreak();
         }
     }

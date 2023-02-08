@@ -3,6 +3,9 @@
 
 require_once __DIR__.'/../../vendor/autoload.php';
 
+if ( ! defined( 'WP_CONTENT_DIR' ) ) define( 'WP_CONTENT_DIR', __DIR__ . '/../../' );
+if ( ! defined( 'ABSPATH' ) ) define( 'ABSPATH', WP_CONTENT_DIR . '/../' );
+
 use Ayuco\Listener;
 use WPMVC\Commands\SetupCommand;
 use WPMVC\Commands\RegisterCommand;

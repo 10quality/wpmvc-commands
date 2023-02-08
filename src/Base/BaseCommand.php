@@ -2,6 +2,7 @@
 
 namespace WPMVC\Commands\Base;
 
+use Ayuco\Coloring;
 use Ayuco\Command;
 use Ayuco\Exceptions\NoticeException;
 use WPMVC\Commands\Traits\FilesystemTrait;
@@ -296,5 +297,35 @@ class BaseCommand extends Command
     {
         $yes = strtolower( $this->listener->getInput() );
         return empty($yes) || substr($yes, 0, 1) === 'y' || $yes === 1;
+    }
+    /**
+     * Prints in success coloring.
+     * @since 1.1.17
+     * 
+     * @param string $message
+     */
+    public function _print_success($message)
+    {
+        $this->_print(Coloring::apply('color_10', $message));
+    }
+    /**
+     * Prints in info coloring.
+     * @since 1.1.17
+     * 
+     * @param string $message
+     */
+    public function _print_info($message)
+    {
+        $this->_print(Coloring::apply('color_27', $message));
+    }
+    /**
+     * Returns Yes|No.
+     * @since 1.1.17
+     * 
+     * @return string
+     */
+    public function yesno()
+    {
+        return '['.Coloring::apply('color_10', 'Yes').'|'.Coloring::apply('color_09', 'No').']';
     }
 }

@@ -12,7 +12,7 @@ use Ayuco\Exceptions\NoticeException;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.2
+ * @version 1.1.7
  */
 trait SetVersionTrait
 {
@@ -53,7 +53,7 @@ trait SetVersionTrait
                     $filename
                 );
             // Print end
-            $this->_print('Version updated!');
+            $this->_print_success('Version updated!');
             $this->_lineBreak();
         } catch (Exception $e) {
             file_put_contents(
