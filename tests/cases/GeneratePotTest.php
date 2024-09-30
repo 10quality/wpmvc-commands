@@ -9,7 +9,7 @@ use Gettext\Loader\PoLoader;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.17
+ * @version 1.1.19
  */
 class GeneratePotTest extends WpmvcAyucoTestCase
 {
@@ -17,6 +17,7 @@ class GeneratePotTest extends WpmvcAyucoTestCase
      * Tests path.
      */
     protected $path = [
+        FRAMEWORK_PATH.'/environment/assets/lang/test',
         FRAMEWORK_PATH.'/environment/assets/lang/',
         FRAMEWORK_PATH.'/environment/assets/views/',
         FRAMEWORK_PATH.'/environment/assets/',
@@ -31,6 +32,10 @@ class GeneratePotTest extends WpmvcAyucoTestCase
             mkdir(TESTING_PATH.'/assets/views/', 0777, true);
         if (!is_dir(TESTING_PATH.'/app/Localize/'))
             mkdir(TESTING_PATH.'/app/Localize/', 0777, true);
+        if (!is_dir(TESTING_PATH.'/assets/lang/'))
+            mkdir(TESTING_PATH.'/assets/lang/', 0777, true);
+        if (!is_dir(TESTING_PATH.'/assets/lang/test/'))
+            mkdir(TESTING_PATH.'/assets/lang/test/', 0777, true);
         if (!is_file(TESTING_PATH.'/assets/views/localize.php'))
             file_put_contents(TESTING_PATH.'/assets/views/localize.php', '<?php echo _e( \'View text 1\', \'my-app\' ) ?>');
         if (!is_file(TESTING_PATH.'/app/Localize/Test.php'))
@@ -40,6 +45,8 @@ class GeneratePotTest extends WpmvcAyucoTestCase
                 . ' _e( \'Test echoed string "Yolo"\', \'my-app\' ); $numeric = _n( \'One string\', \'%d strings\', 3, \'my-app\' );'
                 . ' _e( \'Other domain\', \'other-domain\' );}}'
             );
+        if (!is_file(TESTING_PATH.'/assets/lang/test/test.php'))
+            file_put_contents(TESTING_PATH.'/assets/lang/test/test.php', '<?php return array( __( \'Lang text 1\', \'my-app\' ) );');
     }
     /**
      * Test resulting message.
@@ -57,7 +64,7 @@ class GeneratePotTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertEquals('POT file generated!', $execution);
         $this->assertFileExists($filename);
-        $this->assertCount(5, $translations);
+        $this->assertCount(6, $translations);
         $this->assertEquals('en', $translations->getHeaders()->get('Language'));
         $this->assertEquals('my-app', $translations->getHeaders()->get('X-Domain'));
         $this->assertEquals('1.0.0', $translations->getHeaders()->get('MIME-Version'));
@@ -83,7 +90,7 @@ class GeneratePotTest extends WpmvcAyucoTestCase
         // Assert
         $this->assertEquals('POT file updated!', $execution);
         $this->assertFileExists($filename);
-        $this->assertCount(6, $translations);
+        $this->assertCount(7, $translations);
         $this->assertEquals('en', $translations->getHeaders()->get('Language'));
         $this->assertEquals('my-app', $translations->getHeaders()->get('X-Domain'));
         $this->assertEquals('1.0.0', $translations->getHeaders()->get('MIME-Version'));

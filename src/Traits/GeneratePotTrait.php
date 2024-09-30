@@ -19,7 +19,7 @@ use TenQuality\Gettext\Scanner\WPPhpScanner;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC\Commands
- * @version 1.1.18
+ * @version 1.1.19
  */
 trait GeneratePotTrait
 {
@@ -68,6 +68,16 @@ trait GeneratePotTrait
                 $scanner->scanFile($file);
             }
             foreach (glob($this->getViewsPath().'**/*.php') as $file) {
+                if ($this->isFileToLocalizeExcluded($file))
+                    continue;
+                $scanner->scanFile($file);
+            }
+            foreach (glob($this->getAssetsPath().'lang/*.php') as $file) {
+                if ($this->isFileToLocalizeExcluded($file))
+                    continue;
+                $scanner->scanFile($file);
+            }
+            foreach (glob($this->getAssetsPath().'lang/**/*.php') as $file) {
                 if ($this->isFileToLocalizeExcluded($file))
                     continue;
                 $scanner->scanFile($file);
