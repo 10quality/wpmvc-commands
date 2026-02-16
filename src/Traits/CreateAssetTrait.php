@@ -75,8 +75,8 @@ trait CreateAssetTrait
                             throw new Exception($type . ' master file doesn\'t exists.');
                         $contents = file_get_contents($master);
                         $contents .= $type === 'sass'
-                            ? "\n".'@import parts/'.$filename.';'
-                            : "\n".'@import \'parts/'.$filename.'\';';
+                            ? "\n".'@use parts/'.$filename.';'
+                            : "\n".'@use \'parts/'.$filename.'\';';
                         file_put_contents($master, $contents);
                         // Prepare parts path
                         $path .= '/parts';

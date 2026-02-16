@@ -111,7 +111,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertFileExists($masterfile);
         $this->assertFileExists($partfile);
         $this->assertPregMatchContents('/master/', $masterfile);
-        $this->assertPregMatchContents('/\@import(|\s)parts\/theme\;/', $masterfile);
+        $this->assertPregMatchContents('/\@use(|\s)parts\/theme\;/', $masterfile);
     }
     /**
      * Tests sass master and partials asset creation.
@@ -133,8 +133,8 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertFileExists($masterfile);
         $this->assertFileExists($part1file);
         $this->assertFileExists($part2file);
-        $this->assertPregMatchContents('/\@import(|\s)parts\/header\;/', $masterfile);
-        $this->assertPregMatchContents('/\@import(|\s)parts\/footer\;/', $masterfile);
+        $this->assertPregMatchContents('/\@use(|\s)parts\/header\;/', $masterfile);
+        $this->assertPregMatchContents('/\@use(|\s)parts\/footer\;/', $masterfile);
     }
     /**
      * Tests sass gitignore update.
@@ -197,7 +197,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertFileExists($masterfile);
         $this->assertFileExists($partfile);
         $this->assertPregMatchContents('/master/', $masterfile);
-        $this->assertPregMatchContents('/\@import(|\s)\\\'parts\/theme\\\'\;/', $masterfile);
+        $this->assertPregMatchContents('/\@use(|\s)\\\'parts\/theme\\\'\;/', $masterfile);
     }
     /**
      * Tests sass master and partials asset creation.
@@ -219,7 +219,7 @@ class CreateAssetTest extends WpmvcAyucoTestCase
         $this->assertFileExists($masterfile);
         $this->assertFileExists($part1file);
         $this->assertFileExists($part2file);
-        $this->assertPregMatchContents('/\@import(|\s)\\\'parts\/header\\\'\;/', $masterfile);
-        $this->assertPregMatchContents('/\@import(|\s)\\\'parts\/footer\\\'\;/', $masterfile);
+        $this->assertPregMatchContents('/\@use(|\s)\\\'parts\/header\\\'\;/', $masterfile);
+        $this->assertPregMatchContents('/\@use(|\s)\\\'parts\/footer\\\'\;/', $masterfile);
     }
 }
