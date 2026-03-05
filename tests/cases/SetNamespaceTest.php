@@ -62,6 +62,7 @@ class SetNamespaceTest extends WpmvcAyucoTestCase
         // Execute
         $execution = exec('php '.WPMVC_AYUCO.' set namespace:ComposerValue');
         // Assert
+        $this->assertPregMatchContents('/\"autoloader-suffix\":(|\s)\"ComposerValue\"/', $filename);
         $this->assertPregMatchContents('/\"ComposerValue\\\\\\\"(|\s)\:(|\s)\"app/', $filename);
     }
     /**
