@@ -29,6 +29,9 @@ if (file_exists($candidate))
     unlink($candidate);
 file_put_contents($candidate, '{
   "name": "wpmvc/my-app",
+  "config": {
+     "autoloader-suffix": "MyApp"
+  },
   "autoload":{
     "psr-4": {
       "MyApp\\\\": "app"
